@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  # Data API and authentication/authorization
+  clubdidi-web:
+    image: node:8.4.0-alpine
+    hostname: elm
+    ports:
+      - "80:5000"
+    volumes:
+      - ./:/usr/src/app
+    user: node
+    working_dir: /usr/src/app
+    command: node server.js

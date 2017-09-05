@@ -1,0 +1,38 @@
+<!doctype html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="material-components-web.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+    <style>
+      html, body {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+      }
+
+      :root {
+        --mdc-theme-primary: #E91E63;
+        --mdc-theme-primary-light: #E91E63;
+        --mdc-theme-primary-dark: #C2185B;
+        --mdc-theme-secondary: #FFEB3B;
+        --mdc-theme-secondary-light: #757575;
+        --mdc-theme-secondary-dark: #212121;
+        --mdc-theme-background: #FFFFFF;
+      }
+    </style>
+  </head>
+  <body id="body">
+    <script src="main.js"></script>
+    <script>
+    var node = document.getElementById('body');
+var app = Elm.Main.embed(node);
+// Note: if your Elm module is named "MyThing.Root" you
+// would call "Elm.MyThing.Root.embed(node)" instead.
+</script>
+  </body>
+</html>

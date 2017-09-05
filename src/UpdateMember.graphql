@@ -1,0 +1,13 @@
+mutation UpdateMember ($input: UpdateMemberInput!) {
+  updateMember (input: $input) {
+    member {
+      id,
+      firstName
+      lastName
+      email
+      dateOfBirth
+      payed
+      volunteer
+    }
+  }
+}
