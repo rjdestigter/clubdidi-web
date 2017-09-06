@@ -8,7 +8,49 @@ module UpdateMember exposing (UpdateMember, updateMember)
 import GraphQL exposing (apply, maybeEncode)
 import Http
 import Json.Decode exposing (..)
-import Json.Encode exposing (encode)
+import Json.Encode as Encode exposing (encode)
+import Members exposing (Member, Roles, Role, roleToString, memberDecoder)
+import Date exposing (Date, Month(..))
+
+
+monthToInt : Month -> String
+monthToInt month =
+    case month of
+        Jan ->
+            "01"
+
+        Feb ->
+            "02"
+
+        Mar ->
+            "03"
+
+        Apr ->
+            "04"
+
+        May ->
+            "05"
+
+        Jun ->
+            "06"
+
+        Jul ->
+            "07"
+
+        Aug ->
+            "08"
+
+        Sep ->
+            "09"
+
+        Oct ->
+            "10"
+
+        Nov ->
+            "11"
+
+        Dec ->
+            "12"
 
 
 endpointUrl : String
@@ -33,51 +75,46 @@ type alias UpdateMember =
     }
 
 
-updateMember :
-    { input :
-        { id : Maybe String
-        , firstName : Maybe String
-        , lastName : Maybe String
-        , email : Maybe String
-        , volunteer : Maybe Bool
-        , dateOfBirth : Maybe String
-        , payed : Maybe String
-        , clientMutationId : Maybe String
-        }
-    }
-    -> Http.Request UpdateMember
-updateMember params =
+dateOfBirthEncoder : String -> String
+dateOfBirthEncoder dob =
+    case Date.fromString dob of
+        Ok date ->
+            String.join "-" [ Date.year date |> toString, Date.month date |> monthToInt, Date.day date |> toString ]
+
+        _ ->
+            ""
+
+
+dateToString : Date -> String
+dateToString date =
+    String.join "-" [ Date.year date |> toString, Date.month date |> monthToInt, Date.day date |> toString ]
+
+
+updateMember : Date -> Member -> Http.Request Member
+updateMember date member =
     let
         graphQLQuery =
-            """mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer } } }"""
+            """mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }"""
     in
-    let
-        graphQLParams =
-            Json.Encode.object
-                [ ( "input", Json.Encode.object [ ( "id", maybeEncode Json.Encode.string params.input.id ), ( "firstName", maybeEncode Json.Encode.string params.input.firstName ), ( "lastName", maybeEncode Json.Encode.string params.input.lastName ), ( "email", maybeEncode Json.Encode.string params.input.email ), ( "volunteer", maybeEncode Json.Encode.bool params.input.volunteer ), ( "dateOfBirth", maybeEncode Json.Encode.string params.input.dateOfBirth ), ( "payed", maybeEncode Json.Encode.string params.input.payed ), ( "clientMutationId", maybeEncode Json.Encode.string params.input.clientMutationId ) ] )
-                ]
-    in
-    GraphQL.mutation endpointUrl graphQLQuery "UpdateMember" graphQLParams updateMemberDecoder
+        let
+            graphQLParams =
+                Encode.object
+                    [ ( "input"
+                      , Encode.object
+                            [ ( "id", Encode.string member.id )
+                            , ( "firstName", Encode.string member.firstName )
+                            , ( "lastName", Encode.string member.lastName )
+                            , ( "email", Encode.string member.email )
+                            , ( "volunteer", Encode.bool member.volunteer )
+                            , ( "dateOfBirth", Encode.string (dateOfBirthEncoder member.dateOfBirth) )
+                            , ( "payed", Encode.string (dateToString date) )
+                            ]
+                      )
+                    ]
+        in
+            GraphQL.mutation endpointUrl graphQLQuery "UpdateMember" graphQLParams updateMemberDecoder
 
 
-updateMemberDecoder : Decoder UpdateMember
+updateMemberDecoder : Decoder Member
 updateMemberDecoder =
-    map UpdateMember
-        (field "updateMember"
-            (maybe
-                (map (\member -> { member = member })
-                    (field "member"
-                        (maybe
-                            (map (\id firstName lastName email dateOfBirth payed volunteer -> { id = id, firstName = firstName, lastName = lastName, email = email, dateOfBirth = dateOfBirth, payed = payed, volunteer = volunteer }) (field "id" string)
-                                |> apply (maybe (field "firstName" string))
-                                |> apply (maybe (field "lastName" string))
-                                |> apply (maybe (field "email" string))
-                                |> apply (maybe (field "dateOfBirth" string))
-                                |> apply (maybe (field "payed" bool))
-                                |> apply (maybe (field "volunteer" bool))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+    at [ "data", "updateMember", "member" ] memberDecoder

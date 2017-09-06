@@ -1,7 +1,8 @@
 module Model exposing (..)
 
-import MembersData exposing (Members, Member, Role)
+import Members exposing (Members, Member, Role)
 import Http
+
 
 type FilterBy
     = ByFirstName String
@@ -9,15 +10,20 @@ type FilterBy
     | ByRole Role
     | ByVolunteer Maybe Bool
 
+
 type Flag
-  = Menu
+    = Menu
+
 
 type Msg
     = ReceiveMembers (Result Http.Error Members)
+    | ReceiveMember (Result Http.Error Member)
     | OnFilter FilterBy
     | OnToggleFlag Flag
     | OnEdit Member
     | OnRoute Route
+    | OnSubmit
+
 
 type alias Filters =
     { firstName : String
@@ -26,16 +32,18 @@ type alias Filters =
     , roles : List Role
     }
 
+
 type Route
-  = MembersList
-  | AddMember
-  | EditMember (Maybe Member)
-  | DeleteMember
+    = MembersList
+    | AddMember
+    | EditMember (Maybe Member)
+    | DeleteMember
+
 
 type alias Model =
     { members : Members
     , filters : Filters
-    , flags : { menu: Bool }
+    , flags : { menu : Bool }
     , mutate : Member
-    , route: Route
+    , route : Route
     }

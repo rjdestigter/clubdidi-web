@@ -4,12 +4,17 @@ import Html as Html
 import Html exposing (Html, node, div, header, section, a, span, ul, li, button, text, table, tr, td)
 import Html.Attributes as Attr exposing (attribute, class, href, style)
 import Http
-import MembersData exposing (Member, Members, Role)
+import Members exposing (Member, Members, Role)
 import Regex
 import MDC exposing (..)
 import Model exposing (..)
 import MembersList exposing (membersView)
 import Form exposing (memberForm)
+import Debug
+import UpdateMember exposing (updateMember)
+import Task
+import Date
+
 
 main : Program Never Model Msg
 main =
@@ -42,7 +47,7 @@ init : ( Model, Cmd Msg )
 init =
     let
         commands =
-            MembersData.members
+            Members.members
                 |> Http.send ReceiveMembers
     in
         ( initialModel, commands )
@@ -85,12 +90,20 @@ drawer toggled =
 
 routedView : Model -> Html Msg
 routedView model =
-  case model.route of
-    MembersList -> membersView (getMembers model) model.filters
-    EditMember _ -> memberForm model.mutate
-    AddMember -> memberForm model.mutate
-    _ -> text "WIP"
-    
+    case model.route of
+        MembersList ->
+            membersView (getMembers model) model.filters
+
+        EditMember _ ->
+            memberForm model.mutate
+
+        AddMember ->
+            memberForm model.mutate
+
+        _ ->
+            text "WIP"
+
+
 view : Model -> Html Msg
 view model =
     div
@@ -115,7 +128,7 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
     let
-        { members, filters, flags } =
+        { members, filters, flags, mutate } =
             model
     in
         case action of
@@ -123,7 +136,21 @@ update action model =
                 ( { model | members = res }, Cmd.none )
 
             ReceiveMembers (Err e) ->
-                ( model, Cmd.none )
+                let
+                    foo =
+                        Debug.log "Oops" e
+                in
+                    ( model, Cmd.none )
+
+            ReceiveMember (Ok member) ->
+                ( { model | members = member :: (List.filter (\{ id } -> id /= member.id) members) }, Cmd.none )
+
+            ReceiveMember (Err e) ->
+                let
+                    foo =
+                        Debug.log "Oops" e
+                in
+                    ( model, Cmd.none )
 
             OnToggleFlag flag ->
                 case flag of
@@ -144,6 +171,15 @@ update action model =
             OnEdit member ->
                 ( { model | mutate = member, route = EditMember (Just member) }, Cmd.none )
 
+            OnSubmit ->
+                model
+                    ! [ let
+                            httpTask =
+                                Task.andThen (\date -> UpdateMember.updateMember date model.mutate |> Http.toTask) Date.now
+                        in
+                            Task.attempt ReceiveMember httpTask
+                      ]
+
             OnRoute route ->
                 case route of
                     AddMember ->
@@ -151,8 +187,11 @@ update action model =
 
                     EditMember maybeMember ->
                         case maybeMember of
-                          Just member -> { model | route = route, mutate = member } ! []
-                          Nothing -> { model | route = route } ! []
+                            Just member ->
+                                { model | route = route, mutate = member } ! []
+
+                            Nothing ->
+                                { model | route = route } ! []
 
                     _ ->
                         { model | route = MembersList } ! []
