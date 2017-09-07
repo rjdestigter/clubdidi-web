@@ -21,8 +21,11 @@ type Msg
     | OnFilter FilterBy
     | OnToggleFlag Flag
     | OnEdit Member
+    | OnChange Member
     | OnRoute Route
     | OnSubmit
+    | OpenDatePicker String
+    | UpdateDateValue String
 
 
 type alias Filters =

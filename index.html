@@ -3,7 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- Style Sheets -->
     <link href="material-components-web.css" rel="stylesheet" type="text/css" />
+    <link href="button.css" rel="stylesheet" type="text/css" />
+    <link href="datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <link rel="stylesheet"
@@ -27,12 +31,37 @@
     </style>
   </head>
   <body id="body">
+    <script src="jquery.slim.min.js"></script>
+    <script src="datepicker.min.js"></script>
+    <script src="datepicker.en.js"></script>
     <script src="main.js"></script>
-    <script>
-    var node = document.getElementById('body');
-var app = Elm.Main.embed(node);
-// Note: if your Elm module is named "MyThing.Root" you
-// would call "Elm.MyThing.Root.embed(node)" instead.
-</script>
+      <script>
+        var node = document.getElementById('body');
+        var app = Elm.Main.embed(node);
+
+        app.ports.openDatepicker.subscribe(function(date) {
+          setTimeout (function () {
+
+            var picker = $("#date-input").datepicker({
+              showOn: "focus",
+              onSelect: sendDate,
+              dateFormat: 'dd/mm/yyyy',
+            }).data('datepicker')
+
+            if (date) {
+              var dateObj = new Date(date.split("/").reverse().join("/"))
+
+              if (dateObj.toString() !== "Invalid Date") {
+                picker.selectDate(dateObj)
+              }
+            }
+          }, 500)
+        });
+
+        function sendDate (dateString) {
+          debugger
+          app.ports.changeDateValue.send(dateString)
+        }
+      </script>
   </body>
 </html>

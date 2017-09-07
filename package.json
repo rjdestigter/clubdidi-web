@@ -4,8 +4,10 @@
   "version": "0.4.1",
   "license": "ISC",
   "dependencies": {
+    "air-datepicker": "^2.2.3",
     "compression": "^1.7.0",
     "express": "^4.15.4",
+    "material-components-web": "^0.20.0",
     "path": "^0.12.7"
   }
 }

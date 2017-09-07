@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Html as Html
 import Html exposing (Html, node, div, header, section, a, span, ul, li, button, text, table, tr, td)
@@ -11,14 +11,19 @@ import Model exposing (..)
 import MembersList exposing (membersView)
 import Form exposing (memberForm)
 import Debug
-import UpdateMember exposing (updateMember)
+import SubmitMember
 import Task
 import Date
 
 
 main : Program Never Model Msg
 main =
-    Html.program { init = init, update = update, view = view, subscriptions = \_ -> Sub.none }
+    Html.program { init = init, update = update, view = view, subscriptions = subscriptions }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    changeDateValue UpdateDateValue
 
 
 blankMember : Member
@@ -36,7 +41,7 @@ initialModel =
         , roles = []
         }
     , flags =
-        { menu = False
+        { menu = True
         }
     , mutate = blankMember
     , route = MembersList
@@ -169,13 +174,16 @@ update action model =
                         ( model, Cmd.none )
 
             OnEdit member ->
-                ( { model | mutate = member, route = EditMember (Just member) }, Cmd.none )
+                { model | mutate = member, route = EditMember (Just member) } ! [ openDatepicker member.dateOfBirth ]
+
+            OnChange member ->
+                { model | mutate = member } ! []
 
             OnSubmit ->
                 model
                     ! [ let
                             httpTask =
-                                Task.andThen (\date -> UpdateMember.updateMember date model.mutate |> Http.toTask) Date.now
+                                Task.andThen (\date -> SubmitMember.submit date model.mutate |> Http.toTask) Date.now
                         in
                             Task.attempt ReceiveMember httpTask
                       ]
@@ -183,19 +191,27 @@ update action model =
             OnRoute route ->
                 case route of
                     AddMember ->
-                        { model | route = route, mutate = blankMember } ! []
+                        { model | route = route, mutate = blankMember } ! [ openDatepicker mutate.dateOfBirth ]
 
                     EditMember maybeMember ->
                         case maybeMember of
                             Just member ->
-                                { model | route = route, mutate = member } ! []
+                                { model | route = route, mutate = member } ! [ openDatepicker member.dateOfBirth ]
 
                             Nothing ->
-                                { model | route = route } ! []
+                                { model | route = route } ! [ openDatepicker mutate.dateOfBirth ]
 
                     _ ->
                         { model | route = MembersList } ! []
 
+            OpenDatePicker date ->
+                model ! [ openDatepicker date ]
+
+            UpdateDateValue dateString ->
+                { model | mutate = { mutate | dateOfBirth = dateString } } ! []
 
 
--- _ -> ( model, Cmd.none )
+port openDatepicker : String -> Cmd msg
+
+
+port changeDateValue : (String -> msg) -> Sub msg

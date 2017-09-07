@@ -3,7 +3,7 @@
 -}
 
 
-module Members exposing (Members, Member, Roles, Role, memberDecoder, members, roleToString, stringToRole)
+module Members exposing (Members, Member, Roles, Role(..), memberDecoder, members, roleToString, stringToRole)
 
 import GraphQL exposing (apply, maybeEncode)
 import Http
@@ -13,7 +13,7 @@ import Json.Encode exposing (encode)
 
 endpointUrl : String
 endpointUrl =
-    "http://138.197.161.149:8080/graphql"
+    "http://localhost:8080/graphql"
 
 
 type Role

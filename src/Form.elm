@@ -1,58 +1,118 @@
 module Form exposing (memberForm)
 
-import Members exposing (Member)
+import Members exposing (Member, Role(..))
 import Model exposing (Msg(..))
-import Html exposing (Html, form, div, text, section, button, label, input)
-import Html.Attributes exposing (class, style, type_, id, checked, for, name)
-import Html.Events exposing (onClick)
-import MDC exposing (textfield)
+import Html as H exposing (Html, form, div, text, section, button)
+import Html.Attributes as A exposing (class, style, type_)
+import Html.Events as E exposing (onClick)
+import MDC exposing (..)
+import Svg as S
 
 
 onChangeFirstName : Member -> String -> Msg
 onChangeFirstName member value =
-    OnEdit { member | firstName = value }
+    OnChange { member | firstName = value }
 
 
 onChangeLastName : Member -> String -> Msg
 onChangeLastName member value =
-    OnEdit { member | lastName = value }
+    OnChange { member | lastName = value }
 
 
-formField : List (Html msg) -> Html msg
-formField children =
-    div [ class "mdc-form-field", style [ ( "display", "block" ) ] ] children
+onChangeEmail : Member -> String -> Msg
+onChangeEmail member value =
+    OnChange { member | email = value }
 
 
-radio : Html msg
-radio =
-    formField
-        [ div
+onChangeDOB : Member -> String -> Msg
+onChangeDOB member value =
+    OnChange { member | dateOfBirth = value }
+
+
+onToggleRole : Role -> Member -> Msg
+onToggleRole role member =
+    let
+        nextRoles =
+            case List.member role member.roles of
+                True ->
+                    List.filter (\r -> r /= role) member.roles
+
+                False ->
+                    role :: member.roles
+    in
+        OnChange { member | roles = nextRoles }
+
+
+strokedBtn : String -> Html msg
+strokedBtn label =
+    button [ class "mdc-button mdc-button--stroked mdc-button--dense mdc-button--primary" ] [ text label ]
+
+
+months : List String
+months =
+    [ "Jan"
+    , "Feb"
+    , "Mar"
+    , "Apr"
+    , "May"
+    , "Jun"
+    , "Jul"
+    , "Aug"
+    , "Sep"
+    , "Oct"
+    , "Nov"
+    , "Dec"
+    ]
+
+
+monthSelector : Html msg
+monthSelector =
+    List.map strokedBtn months |> formFields
+
+
+radio : String -> Bool -> Html msg
+radio label checked =
+    formFields
+        [ H.div
             [ class "mdc-radio" ]
-            [ input
-                [ class "mdc-radio__native-control", type_ "radio", id "radio-1", name "radios", checked False ]
+            [ H.input
+                [ class "mdc-radio__native-control", A.type_ "radio", A.id "radio-1", A.name "radios", A.checked checked ]
                 []
-            , div
+            , H.div
                 [ class "mdc-radio__background" ]
-                [ div
+                [ H.div
                     [ class "mdc-radio__outer-circle" ]
                     []
-                , div
+                , H.div
                     [ class "mdc-radio__inner-circle" ]
                     []
                 ]
             ]
-        , label
-            [ id "radio-1-label", for "radio-1" ]
-            [ text "Radio 1" ]
+        , H.label
+            [ A.id label, A.for label ]
+            [ H.text label ]
         ]
 
 
 memberForm : Member -> Html Msg
 memberForm member =
-    form [ class "mdc-card", style [ ( "margin", "15px" ), ( "padding", "15px" ), ( "display", "inline-flex" ) ] ]
-        [ textfield member.firstName "First Name" (onChangeFirstName member) |> List.singleton |> formField
-        , textfield member.lastName "Last Name" (onChangeLastName member) |> List.singleton |> formField
-        , radio
+    form [ class "mdc-card", style [ ( "max-width", "800px" ), ( "margin", "15px" ), ( "padding", "15px" ) ] ]
+        [ textfield member.firstName "First Name" (onChangeFirstName member) |> formField
+        , textfield member.lastName "Last Name" (onChangeLastName member) |> formField
+        , textfield member.email "E-mail" (onChangeEmail member) |> formField
+        , datepicker member.dateOfBirth "Date of Birth" (onChangeDOB member) |> formField
+        , div []
+            [ H.label [] [ text "Volunteer" ]
+            , div [] [ checkbox "Front of House" (List.member FrontOfHouse member.roles) (onToggleRole FrontOfHouse member) ]
+            , div [] [ checkbox "Bar Tending" (List.member BarTending member.roles) (onToggleRole BarTending member) ]
+            , div [] [ checkbox "Security" (List.member Security member.roles) (onToggleRole Security member) ]
+            , div [] [ checkbox "Floating" (List.member Floating member.roles) (onToggleRole Floating member) ]
+            , div [] [ checkbox "Set-up" (List.member SetUp member.roles) (onToggleRole SetUp member) ]
+            , div [] [ checkbox "Tech" (List.member Tech member.roles) (onToggleRole Tech member) ]
+            , div [] [ checkbox "Maintenance" (List.member Maintenance member.roles) (onToggleRole Maintenance member) ]
+            , div [] [ checkbox "Cleaning" (List.member Cleaning member.roles) (onToggleRole Cleaning member) ]
+            , div [] [ checkbox "Whatever Mama needs" (List.member WhateverMamaNeeds member.roles) (onToggleRole WhateverMamaNeeds member) ]
+            ]
         , section [ class "mdc-card__actions" ]
             [ button [ class "mdc-button mdc-button--raised", type_ "button", onClick OnSubmit ] [ text "Submit" ] ]
         ]
