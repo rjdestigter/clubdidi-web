@@ -11,10 +11,13 @@ ariaHidden : H.Attribute msg
 ariaHidden = attribute "aria-hidden" "true"
 
 textfield : String -> String -> (String -> msg) -> Html msg
-textfield value label onChange =
+textfield value label onChange = input "text" value label onChange
+
+input : String -> String -> String -> (String -> msg) -> Html msg
+input type_ value label onChange =
   div [ class "mdc-textfield mdc-textfield--box" ]
     [ H.input
-      [ A.type_ "text"
+      [ A.type_ type_
       , A.id label
       , A.placeholder label
       , A.value value

@@ -6,6 +6,7 @@
   "dependencies": {
     "compression": "^1.7.0",
     "express": "^4.15.4",
+    "material-components-web": "^0.20.0",
     "path": "^0.12.7"
   }
 }

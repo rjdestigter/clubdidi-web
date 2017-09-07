@@ -36,7 +36,7 @@ initialModel =
         , roles = []
         }
     , flags =
-        { menu = False
+        { menu = True
         }
     , mutate = blankMember
     , route = MembersList

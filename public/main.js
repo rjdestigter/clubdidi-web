@@ -13556,8 +13556,8 @@ var _user$project$MDC$toolbar = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$MDC$textfield = F3(
-	function (value, label, onChange) {
+var _user$project$MDC$input = F4(
+	function (type_, value, label, onChange) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -13571,7 +13571,7 @@ var _user$project$MDC$textfield = F3(
 					_elm_lang$html$Html$input,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$type_('text'),
+						_0: _elm_lang$html$Html_Attributes$type_(type_),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$id(label),
@@ -13597,6 +13597,10 @@ var _user$project$MDC$textfield = F3(
 					{ctor: '[]'}),
 				_1: {ctor: '[]'}
 			});
+	});
+var _user$project$MDC$textfield = F3(
+	function (value, label, onChange) {
+		return A4(_user$project$MDC$input, 'text', value, label, onChange);
 	});
 var _user$project$MDC$ariaHidden = A2(_elm_lang$html$Html_Attributes$attribute, 'aria-hidden', 'true');
 var _user$project$MDC$drawerItem = F3(
@@ -13698,7 +13702,198 @@ var _user$project$MDC$menu = F2(
 			});
 	});
 
-var _user$project$Form$formField = function (field) {
+var _user$project$Form$dialog = A2(
+	_elm_lang$html$Html$aside,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$id('my-mdc-dialog'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('mdc-dialog'),
+			_1: {
+				ctor: '::',
+				_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'alertdialog'),
+				_1: {ctor: '[]'}
+			}
+		}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__surface'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$header,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__header'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h2,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__header__title'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Use Google\'s location service?'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$section,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__body'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$footer,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__footer'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$type_('undefined'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Decline'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$type_('undefined'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Accept'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__backdrop'),
+					_1: {ctor: '[]'}
+				},
+				{ctor: '[]'}),
+			_1: {ctor: '[]'}
+		}
+	});
+var _user$project$Form$months = {
+	ctor: '::',
+	_0: 'Jan',
+	_1: {
+		ctor: '::',
+		_0: 'Feb',
+		_1: {
+			ctor: '::',
+			_0: 'Mar',
+			_1: {
+				ctor: '::',
+				_0: 'Apr',
+				_1: {
+					ctor: '::',
+					_0: 'May',
+					_1: {
+						ctor: '::',
+						_0: 'Jun',
+						_1: {
+							ctor: '::',
+							_0: 'Jul',
+							_1: {
+								ctor: '::',
+								_0: 'Aug',
+								_1: {
+									ctor: '::',
+									_0: 'Sep',
+									_1: {
+										ctor: '::',
+										_0: 'Oct',
+										_1: {
+											ctor: '::',
+											_0: 'Nov',
+											_1: {
+												ctor: '::',
+												_0: 'Dec',
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _user$project$Form$strokedBtn = function (label) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--stroked mdc-button--dense mdc-button--primary'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(label),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Form$formFields = function (children) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -13715,12 +13910,28 @@ var _user$project$Form$formField = function (field) {
 				_1: {ctor: '[]'}
 			}
 		},
-		{
-			ctor: '::',
-			_0: field,
-			_1: {ctor: '[]'}
-		});
+		children);
 };
+var _user$project$Form$formField = function (child) {
+	return _user$project$Form$formFields(
+		_elm_lang$core$List$singleton(child));
+};
+var _user$project$Form$monthSelector = _user$project$Form$formFields(
+	A2(_elm_lang$core$List$map, _user$project$Form$strokedBtn, _user$project$Form$months));
+var _user$project$Form$onChangeDOB = F2(
+	function (member, value) {
+		return _user$project$Model$OnEdit(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{dateOfBirth: value}));
+	});
+var _user$project$Form$onChangeEmail = F2(
+	function (member, value) {
+		return _user$project$Model$OnEdit(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{email: value}));
+	});
 var _user$project$Form$onChangeLastName = F2(
 	function (member, value) {
 		return _user$project$Model$OnEdit(
@@ -13746,14 +13957,18 @@ var _user$project$Form$memberForm = function (member) {
 				_0: _elm_lang$html$Html_Attributes$style(
 					{
 						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'margin', _1: '15px'},
+						_0: {ctor: '_Tuple2', _0: 'max-width', _1: '500px'},
 						_1: {
 							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
+							_0: {ctor: '_Tuple2', _0: 'margin', _1: '15px'},
 							_1: {
 								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'display', _1: 'inline-flex'},
-								_1: {ctor: '[]'}
+								_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'display', _1: 'inline-flex'},
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}),
@@ -13778,34 +13993,62 @@ var _user$project$Form$memberForm = function (member) {
 						_user$project$Form$onChangeLastName(member))),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$section,
-						{
+					_0: _user$project$Form$formField(
+						A3(
+							_user$project$MDC$textfield,
+							member.email,
+							'E-mail',
+							_user$project$Form$onChangeEmail(member))),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$label,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Date of Birth'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$button,
-								{
+							_0: _user$project$Form$monthSelector,
+							_1: {
+								ctor: '::',
+								_0: _user$project$Form$dialog,
+								_1: {
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(_user$project$Model$OnSubmit),
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Submit'),
+									_0: A2(
+										_elm_lang$html$Html$section,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onClick(_user$project$Model$OnSubmit),
+														_1: {ctor: '[]'}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Submit'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
 				}
 			}
 		});
@@ -14399,7 +14642,7 @@ var _user$project$Main$initialModel = {
 		volunteer: _elm_lang$core$Maybe$Nothing,
 		roles: {ctor: '[]'}
 	},
-	flags: {menu: false},
+	flags: {menu: true},
 	mutate: _user$project$Main$blankMember,
 	route: _user$project$Model$MembersList
 };
