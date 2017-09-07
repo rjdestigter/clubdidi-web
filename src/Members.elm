@@ -13,7 +13,7 @@ import Json.Encode exposing (encode)
 
 endpointUrl : String
 endpointUrl =
-    "http://localhost:8080/graphql"
+    "http://138.197.161.149:8080/graphql"
 
 
 type Role

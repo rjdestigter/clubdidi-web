@@ -13312,7 +13312,7 @@ var _user$project$Members$roleToString = function (role) {
 			return _p0._0;
 	}
 };
-var _user$project$Members$endpointUrl = 'http://localhost:8080/graphql';
+var _user$project$Members$endpointUrl = 'http://138.197.161.149:8080/graphql';
 var _user$project$Members$Member = F8(
 	function (a, b, c, d, e, f, g, h) {
 		return {id: a, firstName: b, lastName: c, email: d, dateOfBirth: e, payed: f, volunteer: g, roles: h};
@@ -13698,7 +13698,7 @@ var _user$project$MDC$menu = F2(
 			});
 	});
 
-var _user$project$Form$formField = function (field) {
+var _user$project$Form$formField = function (children) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -13715,12 +13715,100 @@ var _user$project$Form$formField = function (field) {
 				_1: {ctor: '[]'}
 			}
 		},
-		{
-			ctor: '::',
-			_0: field,
-			_1: {ctor: '[]'}
-		});
+		children);
 };
+var _user$project$Form$radio = _user$project$Form$formField(
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('mdc-radio'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('mdc-radio__native-control'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('radio'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$id('radio-1'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$name('radios'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$checked(false),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('mdc-radio__background'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('mdc-radio__outer-circle'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('mdc-radio__inner-circle'),
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$label,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$id('radio-1-label'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$for('radio-1'),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Radio 1'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$Form$onChangeLastName = F2(
 	function (member, value) {
 		return _user$project$Model$OnEdit(
@@ -13763,49 +13851,59 @@ var _user$project$Form$memberForm = function (member) {
 		{
 			ctor: '::',
 			_0: _user$project$Form$formField(
-				A3(
-					_user$project$MDC$textfield,
-					member.firstName,
-					'First Name',
-					_user$project$Form$onChangeFirstName(member))),
+				_elm_lang$core$List$singleton(
+					A3(
+						_user$project$MDC$textfield,
+						member.firstName,
+						'First Name',
+						_user$project$Form$onChangeFirstName(member)))),
 			_1: {
 				ctor: '::',
 				_0: _user$project$Form$formField(
-					A3(
-						_user$project$MDC$textfield,
-						member.lastName,
-						'Last Name',
-						_user$project$Form$onChangeLastName(member))),
+					_elm_lang$core$List$singleton(
+						A3(
+							_user$project$MDC$textfield,
+							member.lastName,
+							'Last Name',
+							_user$project$Form$onChangeLastName(member)))),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$section,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$button,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
-									_1: {
+					_0: _user$project$Form$radio,
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$section,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(_user$project$Model$OnSubmit),
+										_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$type_('button'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(_user$project$Model$OnSubmit),
+												_1: {ctor: '[]'}
+											}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Submit'),
 										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Submit'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});
@@ -14080,7 +14178,7 @@ var _user$project$UpdateMember$updateMemberDecoder = A2(
 		}
 	},
 	_user$project$Members$memberDecoder);
-var _user$project$UpdateMember$endpointUrl = 'http://localhost:8080/graphql';
+var _user$project$UpdateMember$endpointUrl = 'http://138.197.161.149:8080/graphql';
 var _user$project$UpdateMember$monthToInt = function (month) {
 	var _p0 = month;
 	switch (_p0.ctor) {
