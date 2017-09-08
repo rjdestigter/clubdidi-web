@@ -82,19 +82,25 @@ rolesEncoder roles =
         |> List.map Encode.string
 
 
-submit : Date -> Member -> Http.Request Member
-submit date member =
+submit : String -> Date -> Member -> Http.Request Member
+submit token date member =
     let
         isNew =
             String.isEmpty member.id
 
-        ( operationName, graphQLQuery ) =
+        ( operationName, graphQLQuery, decoder ) =
             case isNew of
                 True ->
-                    ( "CreateMember", """mutation CreateMember($input: CreateMemberInput!) { createMember(input: $input) { member { firstName lastName email dateOfBirth payed volunteer roles } } }""" )
+                    ( "CreateMember"
+                    , """mutation CreateMember($input: CreateMemberInput!) { createMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }"""
+                    , submitMemberDecoder "createMember"
+                    )
 
                 False ->
-                    ( "UpdateMember", """mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }""" )
+                    ( "UpdateMember"
+                    , """mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }"""
+                    , submitMemberDecoder "updateMember"
+                    )
     in
         let
             encoders =
@@ -121,9 +127,9 @@ submit date member =
                       )
                     ]
         in
-            GraphQL.mutation endpointUrl graphQLQuery operationName graphQLParams updateMemberDecoder
+            GraphQL.mutation endpointUrl token graphQLQuery operationName graphQLParams decoder
 
 
-updateMemberDecoder : Decoder Member
-updateMemberDecoder =
-    at [ "data", "updateMember", "member" ] memberDecoder
+submitMemberDecoder : String -> Decoder Member
+submitMemberDecoder key =
+    at [ "data", key, "member" ] memberDecoder

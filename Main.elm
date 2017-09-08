@@ -14,7 +14,7 @@ import Debug
 import SubmitMember
 import Task
 import Date
-
+import Login exposing (..)
 
 main : Program Never Model Msg
 main =
@@ -45,17 +45,12 @@ initialModel =
         }
     , mutate = blankMember
     , route = MembersList
+    , user = User "" ""
     }
 
 
 init : ( Model, Cmd Msg )
-init =
-    let
-        commands =
-            Members.members
-                |> Http.send ReceiveMembers
-    in
-        ( initialModel, commands )
+init = initialModel ! []
 
 
 toolbar : Html Msg
@@ -108,9 +103,14 @@ routedView model =
         _ ->
             text "WIP"
 
-
 view : Model -> Html Msg
 view model =
+    case isAuthenticated model.user of
+      True -> authenticatedView model
+      False -> loginScreen model.user
+
+authenticatedView : Model -> Html Msg
+authenticatedView model =
     div
         [ class "mdc-theme--background mdc-typography mdc-typography--body1"
         , style
@@ -157,6 +157,24 @@ update action model =
                 in
                     ( model, Cmd.none )
 
+            Login ->
+              case model.user of
+                Authenticated _ ->
+                  { model | user = User "" "" } ! []
+                User username password ->
+                  model ! [login username password]
+
+            ReceiveToken (Ok token) ->
+                { model | user = Authenticated token } ! [Members.members token
+                    |> Http.send ReceiveMembers]
+
+            ReceiveToken (Err e) ->
+                let
+                    foo =
+                        Debug.log "Oops" e
+                in
+                    ( model, Cmd.none )
+
             OnToggleFlag flag ->
                 case flag of
                     Menu ->
@@ -180,13 +198,17 @@ update action model =
                 { model | mutate = member } ! []
 
             OnSubmit ->
-                model
-                    ! [ let
-                            httpTask =
-                                Task.andThen (\date -> SubmitMember.submit date model.mutate |> Http.toTask) Date.now
-                        in
-                            Task.attempt ReceiveMember httpTask
-                      ]
+                case model.user of
+                  Authenticated token ->
+                    model
+                        ! [ let
+                                httpTask =
+                                    Task.andThen (\date -> SubmitMember.submit token date model.mutate |> Http.toTask) Date.now
+                            in
+                                Task.attempt ReceiveMember httpTask
+                          ]
+                  _ ->
+                    model ! []
 
             OnRoute route ->
                 case route of
@@ -210,6 +232,8 @@ update action model =
             UpdateDateValue dateString ->
                 { model | mutate = { mutate | dateOfBirth = dateString } } ! []
 
+            UpdateUser user ->
+                { model | user = user } ! []
 
 port openDatepicker : String -> Cmd msg
 

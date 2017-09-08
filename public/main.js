@@ -13575,8 +13575,8 @@ var _user$project$GraphQL$queryResult = function (decoder) {
 			}
 		});
 };
-var _user$project$GraphQL$buildRequestWithBody = F6(
-	function (verb, url, query, operation, variables, decoder) {
+var _user$project$GraphQL$buildRequestWithBody = F7(
+	function (verb, url, token, query, operation, variables, decoder) {
 		var params = _elm_lang$core$Json_Encode$object(
 			{
 				ctor: '::',
@@ -13605,7 +13605,25 @@ var _user$project$GraphQL$buildRequestWithBody = F6(
 				headers: {
 					ctor: '::',
 					_0: A2(_elm_lang$http$Http$header, 'Accept', 'application/json'),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$http$Http$header,
+							'Authorization',
+							A2(
+								_elm_lang$core$String$join,
+								' ',
+								{
+									ctor: '::',
+									_0: 'Bearer',
+									_1: {
+										ctor: '::',
+										_0: token,
+										_1: {ctor: '[]'}
+									}
+								})),
+						_1: {ctor: '[]'}
+					}
 				},
 				url: url,
 				body: _elm_lang$http$Http$jsonBody(params),
@@ -13614,18 +13632,18 @@ var _user$project$GraphQL$buildRequestWithBody = F6(
 				withCredentials: false
 			});
 	});
-var _user$project$GraphQL$fetch = F6(
-	function (verb, url, query, operation, variables, decoder) {
-		var request = A6(_user$project$GraphQL$buildRequestWithBody, 'POST', url, query, operation, variables, decoder);
+var _user$project$GraphQL$fetch = F7(
+	function (verb, url, token, query, operation, variables, decoder) {
+		var request = A7(_user$project$GraphQL$buildRequestWithBody, 'POST', url, token, query, operation, variables, decoder);
 		return request;
 	});
-var _user$project$GraphQL$mutation = F5(
-	function (url, query, operation, variables, decoder) {
-		return A6(_user$project$GraphQL$fetch, 'POST', url, query, operation, variables, decoder);
+var _user$project$GraphQL$mutation = F6(
+	function (url, token, query, operation, variables, decoder) {
+		return A7(_user$project$GraphQL$fetch, 'POST', url, token, query, operation, variables, decoder);
 	});
-var _user$project$GraphQL$query = F6(
-	function (method, url, query, operation, variables, decoder) {
-		return A6(_user$project$GraphQL$fetch, method, url, query, operation, variables, decoder);
+var _user$project$GraphQL$query = F7(
+	function (method, url, token, query, operation, variables, decoder) {
+		return A7(_user$project$GraphQL$fetch, method, url, token, query, operation, variables, decoder);
 	});
 
 var _user$project$Members$roleToString = function (role) {
@@ -13722,20 +13740,20 @@ var _user$project$Members$membersDecoder = A2(
 		}
 	},
 	_elm_lang$core$Json_Decode$list(_user$project$Members$memberDecoder));
-var _user$project$Members$members = function () {
+var _user$project$Members$members = function (token) {
 	var graphQLQuery = 'query members { members { id firstName lastName email dateOfBirth payed volunteer roles } }';
 	var graphQLParams = _elm_lang$core$Json_Encode$object(
 		{ctor: '[]'});
-	return A6(_user$project$GraphQL$query, 'GET', _user$project$Members$endpointUrl, graphQLQuery, 'members', graphQLParams, _user$project$Members$membersDecoder);
-}();
+	return A7(_user$project$GraphQL$query, 'GET', _user$project$Members$endpointUrl, token, graphQLQuery, 'members', graphQLParams, _user$project$Members$membersDecoder);
+};
 
 var _user$project$Model$Filters = F4(
 	function (a, b, c, d) {
 		return {firstName: a, lastName: b, volunteer: c, roles: d};
 	});
-var _user$project$Model$Model = F5(
-	function (a, b, c, d, e) {
-		return {members: a, filters: b, flags: c, mutate: d, route: e};
+var _user$project$Model$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {members: a, filters: b, flags: c, mutate: d, route: e, user: f};
 	});
 var _user$project$Model$ByVolunteer = F2(
 	function (a, b) {
@@ -13751,6 +13769,13 @@ var _user$project$Model$ByFirstName = function (a) {
 	return {ctor: 'ByFirstName', _0: a};
 };
 var _user$project$Model$Menu = {ctor: 'Menu'};
+var _user$project$Model$ReceiveToken = function (a) {
+	return {ctor: 'ReceiveToken', _0: a};
+};
+var _user$project$Model$Login = {ctor: 'Login'};
+var _user$project$Model$UpdateUser = function (a) {
+	return {ctor: 'UpdateUser', _0: a};
+};
 var _user$project$Model$UpdateDateValue = function (a) {
 	return {ctor: 'UpdateDateValue', _0: a};
 };
@@ -13785,6 +13810,13 @@ var _user$project$Model$EditMember = function (a) {
 };
 var _user$project$Model$AddMember = {ctor: 'AddMember'};
 var _user$project$Model$MembersList = {ctor: 'MembersList'};
+var _user$project$Model$User = F2(
+	function (a, b) {
+		return {ctor: 'User', _0: a, _1: b};
+	});
+var _user$project$Model$Authenticated = function (a) {
+	return {ctor: 'Authenticated', _0: a};
+};
 
 var _user$project$MDC$formFields = function (children) {
 	return A2(
@@ -14707,6 +14739,198 @@ var _user$project$Form$memberForm = function (member) {
 		});
 };
 
+var _user$project$Login$isAuthenticated = function (user) {
+	var _p0 = user;
+	if (_p0.ctor === 'Authenticated') {
+		return !_elm_lang$core$String$isEmpty(_p0._0);
+	} else {
+		return false;
+	}
+};
+var _user$project$Login$onChangePassword = F2(
+	function (user, password) {
+		var _p1 = user;
+		if (_p1.ctor === 'Authenticated') {
+			return _user$project$Model$UpdateUser(
+				A2(_user$project$Model$User, '', password));
+		} else {
+			return _user$project$Model$UpdateUser(
+				A2(_user$project$Model$User, _p1._0, password));
+		}
+	});
+var _user$project$Login$onChangeUsername = F2(
+	function (user, username) {
+		var _p2 = user;
+		if (_p2.ctor === 'Authenticated') {
+			return _user$project$Model$UpdateUser(
+				A2(_user$project$Model$User, username, ''));
+		} else {
+			return _user$project$Model$UpdateUser(
+				A2(_user$project$Model$User, username, _p2._1));
+		}
+	});
+var _user$project$Login$loginScreen = function (user) {
+	var _p3 = function () {
+		var _p4 = user;
+		if (_p4.ctor === 'Authenticated') {
+			return {ctor: '_Tuple2', _0: '', _1: ''};
+		} else {
+			return {ctor: '_Tuple2', _0: _p4._0, _1: _p4._1};
+		}
+	}();
+	var username = _p3._0;
+	var password = _p3._1;
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'height', _1: '100%'},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'display', _1: 'flex'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'alignItems', _1: 'center'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'justifyContent', _1: 'center'},
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$form,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('mdc-card'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'margin', _1: 'auto auto'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'width', _1: '300px'},
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A3(
+						_user$project$MDC$textfield,
+						username,
+						'Username',
+						_user$project$Login$onChangeUsername(user)),
+					_1: {
+						ctor: '::',
+						_0: A3(
+							_user$project$MDC$textfield,
+							password,
+							'Password',
+							_user$project$Login$onChangePassword(user)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$section,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$type_('button'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onClick(_user$project$Model$Login),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Login'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Login$login = F2(
+	function (username, password) {
+		return A2(
+			_elm_lang$http$Http$send,
+			_user$project$Model$ReceiveToken,
+			_elm_lang$http$Http$request(
+				{
+					method: 'POST',
+					headers: {
+						ctor: '::',
+						_0: A2(_elm_lang$http$Http$header, 'Accept', 'application/json'),
+						_1: {ctor: '[]'}
+					},
+					url: 'http://localhost:8080/token',
+					body: _elm_lang$http$Http$jsonBody(
+						_elm_lang$core$Json_Encode$object(
+							{
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'email',
+									_1: _elm_lang$core$Json_Encode$string(username)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'password',
+										_1: _elm_lang$core$Json_Encode$string(password)
+									},
+									_1: {ctor: '[]'}
+								}
+							})),
+					expect: _elm_lang$http$Http$expectJson(
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							{
+								ctor: '::',
+								_0: 'token',
+								_1: {ctor: '[]'}
+							},
+							_elm_lang$core$Json_Decode$string)),
+					timeout: _elm_lang$core$Maybe$Nothing,
+					withCredentials: false
+				}));
+	});
+
 var _user$project$MembersList$filterCell = function (child) {
 	return A2(
 		_elm_lang$html$Html$td,
@@ -14960,22 +15184,24 @@ var _user$project$MembersList$membersView = F2(
 			A2(_elm_lang$core$List$map, _user$project$MembersList$memberRow, members));
 	});
 
-var _user$project$SubmitMember$updateMemberDecoder = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'data',
-		_1: {
+var _user$project$SubmitMember$submitMemberDecoder = function (key) {
+	return A2(
+		_elm_lang$core$Json_Decode$at,
+		{
 			ctor: '::',
-			_0: 'updateMember',
+			_0: 'data',
 			_1: {
 				ctor: '::',
-				_0: 'member',
-				_1: {ctor: '[]'}
+				_0: key,
+				_1: {
+					ctor: '::',
+					_0: 'member',
+					_1: {ctor: '[]'}
+				}
 			}
-		}
-	},
-	_user$project$Members$memberDecoder);
+		},
+		_user$project$Members$memberDecoder);
+};
 var _user$project$SubmitMember$rolesEncoder = function (roles) {
 	return A2(
 		_elm_lang$core$List$map,
@@ -15050,19 +15276,30 @@ var _user$project$SubmitMember$dateToString = function (date) {
 			}
 		});
 };
-var _user$project$SubmitMember$submit = F2(
-	function (date, member) {
+var _user$project$SubmitMember$submit = F3(
+	function (token, date, member) {
 		var isNew = _elm_lang$core$String$isEmpty(member.id);
 		var _p2 = function () {
 			var _p3 = isNew;
 			if (_p3 === true) {
-				return {ctor: '_Tuple2', _0: 'CreateMember', _1: 'mutation CreateMember($input: CreateMemberInput!) { createMember(input: $input) { member { firstName lastName email dateOfBirth payed volunteer roles } } }'};
+				return {
+					ctor: '_Tuple3',
+					_0: 'CreateMember',
+					_1: 'mutation CreateMember($input: CreateMemberInput!) { createMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }',
+					_2: _user$project$SubmitMember$submitMemberDecoder('createMember')
+				};
 			} else {
-				return {ctor: '_Tuple2', _0: 'UpdateMember', _1: 'mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }'};
+				return {
+					ctor: '_Tuple3',
+					_0: 'UpdateMember',
+					_1: 'mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }',
+					_2: _user$project$SubmitMember$submitMemberDecoder('updateMember')
+				};
 			}
 		}();
 		var operationName = _p2._0;
 		var graphQLQuery = _p2._1;
+		var decoder = _p2._2;
 		var encoders = {
 			ctor: '::',
 			_0: {
@@ -15149,7 +15386,7 @@ var _user$project$SubmitMember$submit = F2(
 				},
 				_1: {ctor: '[]'}
 			});
-		return A5(_user$project$GraphQL$mutation, _user$project$SubmitMember$endpointUrl, graphQLQuery, operationName, graphQLParams, _user$project$SubmitMember$updateMemberDecoder);
+		return A6(_user$project$GraphQL$mutation, _user$project$SubmitMember$endpointUrl, token, graphQLQuery, operationName, graphQLParams, decoder);
 	});
 
 var _user$project$Main$drawer = function (toggled) {
@@ -15230,7 +15467,7 @@ var _user$project$Main$toolbar = A2(
 	_user$project$MDC$toolbar,
 	'Club Didi',
 	_user$project$Model$OnToggleFlag(_user$project$Model$Menu));
-var _user$project$Main$view = function (model) {
+var _user$project$Main$authenticatedView = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -15297,6 +15534,14 @@ var _user$project$Main$view = function (model) {
 			}
 		});
 };
+var _user$project$Main$view = function (model) {
+	var _p3 = _user$project$Login$isAuthenticated(model.user);
+	if (_p3 === true) {
+		return _user$project$Main$authenticatedView(model);
+	} else {
+		return _user$project$Login$loginScreen(model.user);
+	}
+};
 var _user$project$Main$blankMember = A8(
 	_user$project$Members$Member,
 	'',
@@ -15317,12 +15562,13 @@ var _user$project$Main$initialModel = {
 	},
 	flags: {menu: true},
 	mutate: _user$project$Main$blankMember,
-	route: _user$project$Model$MembersList
+	route: _user$project$Model$MembersList,
+	user: A2(_user$project$Model$User, '', '')
 };
-var _user$project$Main$init = function () {
-	var commands = A2(_elm_lang$http$Http$send, _user$project$Model$ReceiveMembers, _user$project$Members$members);
-	return {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: commands};
-}();
+var _user$project$Main$init = A2(
+	_elm_lang$core$Platform_Cmd_ops['!'],
+	_user$project$Main$initialModel,
+	{ctor: '[]'});
 var _user$project$Main$openDatepicker = _elm_lang$core$Native_Platform.outgoingPort(
 	'openDatepicker',
 	function (v) {
@@ -15330,29 +15576,29 @@ var _user$project$Main$openDatepicker = _elm_lang$core$Native_Platform.outgoingP
 	});
 var _user$project$Main$update = F2(
 	function (action, model) {
-		var _p3 = model;
-		var members = _p3.members;
-		var filters = _p3.filters;
-		var flags = _p3.flags;
-		var mutate = _p3.mutate;
-		var _p4 = action;
-		switch (_p4.ctor) {
+		var _p4 = model;
+		var members = _p4.members;
+		var filters = _p4.filters;
+		var flags = _p4.flags;
+		var mutate = _p4.mutate;
+		var _p5 = action;
+		switch (_p5.ctor) {
 			case 'ReceiveMembers':
-				if (_p4._0.ctor === 'Ok') {
+				if (_p5._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{members: _p4._0._0}),
+							{members: _p5._0._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p4._0._0);
+					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p5._0._0);
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'ReceiveMember':
-				if (_p4._0.ctor === 'Ok') {
-					var _p7 = _p4._0._0;
+				if (_p5._0.ctor === 'Ok') {
+					var _p8 = _p5._0._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -15360,12 +15606,12 @@ var _user$project$Main$update = F2(
 							{
 								members: {
 									ctor: '::',
-									_0: _p7,
+									_0: _p8,
 									_1: A2(
 										_elm_lang$core$List$filter,
-										function (_p5) {
-											var _p6 = _p5;
-											return !_elm_lang$core$Native_Utils.eq(_p6.id, _p7.id);
+										function (_p6) {
+											var _p7 = _p6;
+											return !_elm_lang$core$Native_Utils.eq(_p7.id, _p8.id);
 										},
 										members)
 								}
@@ -15373,11 +15619,54 @@ var _user$project$Main$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p4._0._0);
+					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p5._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Login':
+				var _p9 = model.user;
+				if (_p9.ctor === 'Authenticated') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								user: A2(_user$project$Model$User, '', '')
+							}),
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{
+							ctor: '::',
+							_0: A2(_user$project$Login$login, _p9._0, _p9._1),
+							_1: {ctor: '[]'}
+						});
+				}
+			case 'ReceiveToken':
+				if (_p5._0.ctor === 'Ok') {
+					var _p10 = _p5._0._0;
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								user: _user$project$Model$Authenticated(_p10)
+							}),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$http$Http$send,
+								_user$project$Model$ReceiveMembers,
+								_user$project$Members$members(_p10)),
+							_1: {ctor: '[]'}
+						});
+				} else {
+					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p5._0._0);
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'OnToggleFlag':
-				var _p8 = _p4._0;
+				var _p11 = _p5._0;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -15390,8 +15679,8 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'OnFilter':
-				var _p9 = _p4._0;
-				switch (_p9.ctor) {
+				var _p12 = _p5._0;
+				switch (_p12.ctor) {
 					case 'ByFirstName':
 						return {
 							ctor: '_Tuple2',
@@ -15400,7 +15689,7 @@ var _user$project$Main$update = F2(
 								{
 									filters: _elm_lang$core$Native_Utils.update(
 										filters,
-										{firstName: _p9._0})
+										{firstName: _p12._0})
 								}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
@@ -15412,7 +15701,7 @@ var _user$project$Main$update = F2(
 								{
 									filters: _elm_lang$core$Native_Utils.update(
 										filters,
-										{lastName: _p9._0})
+										{lastName: _p12._0})
 								}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
@@ -15420,19 +15709,19 @@ var _user$project$Main$update = F2(
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'OnEdit':
-				var _p10 = _p4._0;
+				var _p13 = _p5._0;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							mutate: _p10,
+							mutate: _p13,
 							route: _user$project$Model$EditMember(
-								_elm_lang$core$Maybe$Just(_p10))
+								_elm_lang$core$Maybe$Just(_p13))
 						}),
 					{
 						ctor: '::',
-						_0: _user$project$Main$openDatepicker(_p10.dateOfBirth),
+						_0: _user$project$Main$openDatepicker(_p13.dateOfBirth),
 						_1: {ctor: '[]'}
 					});
 			case 'OnChange':
@@ -15440,53 +15729,61 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{mutate: _p4._0}),
+						{mutate: _p5._0}),
 					{ctor: '[]'});
 			case 'OnSubmit':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{
-						ctor: '::',
-						_0: function () {
-							var httpTask = A2(
-								_elm_lang$core$Task$andThen,
-								function (date) {
-									return _elm_lang$http$Http$toTask(
-										A2(_user$project$SubmitMember$submit, date, model.mutate));
-								},
-								_elm_lang$core$Date$now);
-							return A2(_elm_lang$core$Task$attempt, _user$project$Model$ReceiveMember, httpTask);
-						}(),
-						_1: {ctor: '[]'}
-					});
+				var _p14 = model.user;
+				if (_p14.ctor === 'Authenticated') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{
+							ctor: '::',
+							_0: function () {
+								var httpTask = A2(
+									_elm_lang$core$Task$andThen,
+									function (date) {
+										return _elm_lang$http$Http$toTask(
+											A3(_user$project$SubmitMember$submit, _p14._0, date, model.mutate));
+									},
+									_elm_lang$core$Date$now);
+								return A2(_elm_lang$core$Task$attempt, _user$project$Model$ReceiveMember, httpTask);
+							}(),
+							_1: {ctor: '[]'}
+						});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				}
 			case 'OnRoute':
-				var _p14 = _p4._0;
-				var _p11 = _p14;
-				switch (_p11.ctor) {
+				var _p18 = _p5._0;
+				var _p15 = _p18;
+				switch (_p15.ctor) {
 					case 'AddMember':
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
 								model,
-								{route: _p14, mutate: _user$project$Main$blankMember}),
+								{route: _p18, mutate: _user$project$Main$blankMember}),
 							{
 								ctor: '::',
 								_0: _user$project$Main$openDatepicker(mutate.dateOfBirth),
 								_1: {ctor: '[]'}
 							});
 					case 'EditMember':
-						var _p12 = _p11._0;
-						if (_p12.ctor === 'Just') {
-							var _p13 = _p12._0;
+						var _p16 = _p15._0;
+						if (_p16.ctor === 'Just') {
+							var _p17 = _p16._0;
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
 								_elm_lang$core$Native_Utils.update(
 									model,
-									{route: _p14, mutate: _p13}),
+									{route: _p18, mutate: _p17}),
 								{
 									ctor: '::',
-									_0: _user$project$Main$openDatepicker(_p13.dateOfBirth),
+									_0: _user$project$Main$openDatepicker(_p17.dateOfBirth),
 									_1: {ctor: '[]'}
 								});
 						} else {
@@ -15494,7 +15791,7 @@ var _user$project$Main$update = F2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
 								_elm_lang$core$Native_Utils.update(
 									model,
-									{route: _p14}),
+									{route: _p18}),
 								{
 									ctor: '::',
 									_0: _user$project$Main$openDatepicker(mutate.dateOfBirth),
@@ -15515,10 +15812,10 @@ var _user$project$Main$update = F2(
 					model,
 					{
 						ctor: '::',
-						_0: _user$project$Main$openDatepicker(_p4._0),
+						_0: _user$project$Main$openDatepicker(_p5._0),
 						_1: {ctor: '[]'}
 					});
-			default:
+			case 'UpdateDateValue':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -15526,8 +15823,15 @@ var _user$project$Main$update = F2(
 						{
 							mutate: _elm_lang$core$Native_Utils.update(
 								mutate,
-								{dateOfBirth: _p4._0})
+								{dateOfBirth: _p5._0})
 						}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{user: _p5._0}),
 					{ctor: '[]'});
 		}
 	});
@@ -15541,7 +15845,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Model.FilterBy":{"args":[],"tags":{"ByRole":["Members.Role"],"ByVolunteer":["Maybe.Maybe","Bool"],"ByFirstName":["String"],"ByLastName":["String"]}},"Model.Flag":{"args":[],"tags":{"Menu":[]}},"Model.Route":{"args":[],"tags":{"DeleteMember":[],"MembersList":[],"EditMember":["Maybe.Maybe Members.Member"],"AddMember":[]}},"Model.Msg":{"args":[],"tags":{"OnToggleFlag":["Model.Flag"],"OnChange":["Members.Member"],"OnSubmit":[],"OnRoute":["Model.Route"],"UpdateDateValue":["String"],"OnFilter":["Model.FilterBy"],"OnEdit":["Members.Member"],"ReceiveMembers":["Result.Result Http.Error Members.Members"],"ReceiveMember":["Result.Result Http.Error Members.Member"],"OpenDatePicker":["String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Members.Role":{"args":[],"tags":{"Other":["String"],"SetUp":[],"Maintenance":[],"FrontOfHouse":[],"WhateverMamaNeeds":[],"BarTending":[],"Tech":[],"Cleaning":[],"Floating":[],"Security":[]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Members.Members":{"args":[],"type":"List Members.Member"},"Members.Roles":{"args":[],"type":"List Members.Role"},"Members.Member":{"args":[],"type":"{ id : String , firstName : String , lastName : String , email : String , dateOfBirth : String , payed : Bool , volunteer : Bool , roles : Members.Roles }"}},"message":"Model.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Model.FilterBy":{"args":[],"tags":{"ByRole":["Members.Role"],"ByVolunteer":["Maybe.Maybe","Bool"],"ByFirstName":["String"],"ByLastName":["String"]}},"Model.Flag":{"args":[],"tags":{"Menu":[]}},"Model.Route":{"args":[],"tags":{"DeleteMember":[],"MembersList":[],"EditMember":["Maybe.Maybe Members.Member"],"AddMember":[]}},"Model.Msg":{"args":[],"tags":{"OnToggleFlag":["Model.Flag"],"OnChange":["Members.Member"],"OnSubmit":[],"OnRoute":["Model.Route"],"UpdateDateValue":["String"],"OnFilter":["Model.FilterBy"],"OnEdit":["Members.Member"],"UpdateUser":["Model.User"],"ReceiveMembers":["Result.Result Http.Error Members.Members"],"ReceiveToken":["Result.Result Http.Error String"],"Login":[],"ReceiveMember":["Result.Result Http.Error Members.Member"],"OpenDatePicker":["String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Model.User":{"args":[],"tags":{"User":["String","String"],"Authenticated":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Members.Role":{"args":[],"tags":{"Other":["String"],"SetUp":[],"Maintenance":[],"FrontOfHouse":[],"WhateverMamaNeeds":[],"BarTending":[],"Tech":[],"Cleaning":[],"Floating":[],"Security":[]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Members.Members":{"args":[],"type":"List Members.Member"},"Members.Roles":{"args":[],"type":"List Members.Role"},"Members.Member":{"args":[],"type":"{ id : String , firstName : String , lastName : String , email : String , dateOfBirth : String , payed : Bool , volunteer : Bool , roles : Members.Roles }"}},"message":"Model.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

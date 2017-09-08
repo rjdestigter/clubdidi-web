@@ -21,29 +21,29 @@ import Http exposing (..)
 
 {-| Executes a GraphQL query.
 -}
-query : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
-query method url query operation variables decoder =
-    fetch method url query operation variables decoder
+query : String -> String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
+query method url token query operation variables decoder =
+    fetch method url token query operation variables decoder
 
 
 {-| Executes a GraphQL mutation.
 -}
-mutation : String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
-mutation url query operation variables decoder =
-    fetch "POST" url query operation variables decoder
+mutation : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
+mutation url token query operation variables decoder =
+    fetch "POST" url token query operation variables decoder
 
 
-fetch : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
-fetch verb url query operation variables decoder =
+fetch : String -> String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
+fetch verb url token query operation variables decoder =
     let
         request =
-            buildRequestWithBody "POST" url query operation variables decoder
+            buildRequestWithBody "POST" url token query operation variables decoder
     in
         request
 
 
-buildRequestWithBody : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Http.Request a
-buildRequestWithBody verb url query operation variables decoder =
+buildRequestWithBody : String -> String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Http.Request a
+buildRequestWithBody verb url token query operation variables decoder =
     let
         params =
             Json.Encode.object
@@ -56,6 +56,7 @@ buildRequestWithBody verb url query operation variables decoder =
             { method = verb
             , headers =
                 [ (header "Accept" "application/json")
+                , (header "Authorization" (String.join " " ["Bearer", token]))
                 ]
             , url = url
             , body = Http.jsonBody <| params

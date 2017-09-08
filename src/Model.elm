@@ -26,6 +26,9 @@ type Msg
     | OnSubmit
     | OpenDatePicker String
     | UpdateDateValue String
+    | UpdateUser User
+    | Login
+    | ReceiveToken (Result Http.Error String)
 
 
 type alias Filters =
@@ -42,6 +45,9 @@ type Route
     | EditMember (Maybe Member)
     | DeleteMember
 
+type User
+  = Authenticated String
+  | User String String
 
 type alias Model =
     { members : Members
@@ -49,4 +55,5 @@ type alias Model =
     , flags : { menu : Bool }
     , mutate : Member
     , route : Route
+    , user: User
     }

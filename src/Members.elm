@@ -117,8 +117,8 @@ roleToString role =
             other
 
 
-members : Http.Request Members
-members =
+members : String -> Http.Request Members
+members token =
     let
         graphQLQuery =
             """query members { members { id firstName lastName email dateOfBirth payed volunteer roles } }"""
@@ -128,7 +128,7 @@ members =
                 Json.Encode.object
                     []
         in
-            GraphQL.query "GET" endpointUrl graphQLQuery "members" graphQLParams membersDecoder
+            GraphQL.query "GET" endpointUrl token graphQLQuery "members" graphQLParams membersDecoder
 
 
 rolesDecoder : Decoder Roles
