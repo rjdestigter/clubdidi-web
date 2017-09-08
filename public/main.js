@@ -13671,7 +13671,7 @@ var _user$project$Members$roleToString = function (role) {
 			return _p0._0;
 	}
 };
-var _user$project$Members$endpointUrl = 'http://localhost:8080/graphql';
+var _user$project$Members$endpointUrl = 'http://138.197.161.149:8080/graphql';
 var _user$project$Members$Member = F8(
 	function (a, b, c, d, e, f, g, h) {
 		return {id: a, firstName: b, lastName: c, email: d, dateOfBirth: e, payed: f, volunteer: g, roles: h};
@@ -14897,7 +14897,7 @@ var _user$project$Login$login = F2(
 						_0: A2(_elm_lang$http$Http$header, 'Accept', 'application/json'),
 						_1: {ctor: '[]'}
 					},
-					url: 'http://localhost:8080/token',
+					url: 'http://138.197.161.149:8080/token',
 					body: _elm_lang$http$Http$jsonBody(
 						_elm_lang$core$Json_Encode$object(
 							{
@@ -15225,7 +15225,7 @@ var _user$project$SubmitMember$dateOfBirthEncoder = function (dob) {
 		return '';
 	}
 };
-var _user$project$SubmitMember$endpointUrl = 'http://localhost:8080/graphql';
+var _user$project$SubmitMember$endpointUrl = 'http://138.197.161.149:8080/graphql';
 var _user$project$SubmitMember$monthToInt = function (month) {
 	var _p1 = month;
 	switch (_p1.ctor) {

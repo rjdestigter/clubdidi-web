@@ -17,7 +17,7 @@ login username password =
             [ (header "Accept" "application/json")
             -- , (header "Content-Type" "application/json")
             ]
-        , url = "http://localhost:8080/token"
+        , url = "http://138.197.161.149:8080/token"
         , body = Http.jsonBody <| Encode.object [ ("email", Encode.string username), ("password", Encode.string password)]
         , expect = Http.expectJson (Decode.at ["token"] Decode.string)
         , timeout = Nothing
