@@ -1,35 +1,34 @@
-module Form exposing (memberForm)
+module Members.Form exposing (memberForm)
 
-import Members exposing (Member, Role(..))
-import Model exposing (Msg(..))
+import Members.Model exposing (Member, Role(..))
+import Members.Actions exposing (MembersAction(..))
 import Html as H exposing (Html, form, div, text, section, button)
 import Html.Attributes as A exposing (class, style, type_)
 import Html.Events as E exposing (onClick)
 import MDC exposing (..)
-import Svg as S
 
 
-onChangeFirstName : Member -> String -> Msg
+onChangeFirstName : Member -> String -> MembersAction
 onChangeFirstName member value =
     OnChange { member | firstName = value }
 
 
-onChangeLastName : Member -> String -> Msg
+onChangeLastName : Member -> String -> MembersAction
 onChangeLastName member value =
     OnChange { member | lastName = value }
 
 
-onChangeEmail : Member -> String -> Msg
+onChangeEmail : Member -> String -> MembersAction
 onChangeEmail member value =
     OnChange { member | email = value }
 
 
-onChangeDOB : Member -> String -> Msg
+onChangeDOB : Member -> String -> MembersAction
 onChangeDOB member value =
     OnChange { member | dateOfBirth = value }
 
 
-onToggleRole : Role -> Member -> Msg
+onToggleRole : Role -> Member -> MembersAction
 onToggleRole role member =
     let
         nextRoles =
@@ -94,7 +93,7 @@ radio label checked =
         ]
 
 
-memberForm : Member -> Html Msg
+memberForm : Member -> Html MembersAction
 memberForm member =
     form [ class "mdc-card", style [ ( "max-width", "800px" ), ( "margin", "15px" ), ( "padding", "15px" ) ] ]
         [ textfield member.firstName "First Name" (onChangeFirstName member) |> formField
@@ -114,5 +113,5 @@ memberForm member =
             , div [] [ checkbox "Whatever Mama needs" (List.member WhateverMamaNeeds member.roles) (onToggleRole WhateverMamaNeeds member) ]
             ]
         , section [ class "mdc-card__actions" ]
-            [ button [ class "mdc-button mdc-button--raised", type_ "button", onClick OnSubmit ] [ text "Submit" ] ]
+            [ button [ class "mdc-button mdc-button--raised", type_ "button", onClick OnSubmit ] [ icon "save" ] ]
         ]

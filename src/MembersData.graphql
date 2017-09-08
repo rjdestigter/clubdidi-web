@@ -1,7 +1,0 @@
-query members {
-    members {
-      id
-      firstName
-      lastName
-    }
-}

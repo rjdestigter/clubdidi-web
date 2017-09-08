@@ -1,14 +1,9 @@
 module Model exposing (..)
 
-import Members exposing (Members, Member, Role)
+import Members.Model exposing (Member)
+import Members.Actions exposing (MembersAction)
+import Events.Model exposing (Event)
 import Http
-
-
-type FilterBy
-    = ByFirstName String
-    | ByLastName String
-    | ByRole Role
-    | ByVolunteer Maybe Bool
 
 
 type Flag
@@ -16,44 +11,37 @@ type Flag
 
 
 type Msg
-    = ReceiveMembers (Result Http.Error Members)
-    | ReceiveMember (Result Http.Error Member)
-    | OnFilter FilterBy
+    = MembersRoute MembersAction
     | OnToggleFlag Flag
-    | OnEdit Member
-    | OnChange Member
     | OnRoute Route
-    | OnSubmit
-    | OpenDatePicker String
-    | UpdateDateValue String
     | UpdateUser User
     | Login
     | ReceiveToken (Result Http.Error String)
 
 
-type alias Filters =
-    { firstName : String
-    , lastName : String
-    , volunteer : Maybe Bool
-    , roles : List Role
-    }
-
-
-type Route
+type
+    Route
+    -- Members
     = MembersList
     | AddMember
-    | EditMember (Maybe Member)
-    | DeleteMember
+    | EditMember Member
+    | DeleteMember Member
+      -- Events
+    | EventsList
+    | AddEvent
+    | EditEvent Event
+    | DeleteEvent Event
+
 
 type User
-  = Authenticated String
-  | User String String
+    = Authenticated String
+    | User String String
+
 
 type alias Model =
-    { members : Members
-    , filters : Filters
+    { members : Members.Model.Model
+    , events : Events.Model.Model
     , flags : { menu : Bool }
-    , mutate : Member
     , route : Route
-    , user: User
+    , user : User
     }

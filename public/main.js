@@ -13536,6 +13536,71 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
+var _user$project$Env$path = '/graphql';
+var _user$project$Env$digitalocean = '138.197.161.149:8080';
+var _user$project$Env$localhost = 'localhost:8080';
+var _user$project$Env$url = function (host) {
+	var _p0 = host;
+	if (_p0.ctor === 'Local') {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			{
+				ctor: '::',
+				_0: 'http://',
+				_1: {
+					ctor: '::',
+					_0: _user$project$Env$localhost,
+					_1: {
+						ctor: '::',
+						_0: _user$project$Env$path,
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+	} else {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			{
+				ctor: '::',
+				_0: 'http://',
+				_1: {
+					ctor: '::',
+					_0: _user$project$Env$digitalocean,
+					_1: {
+						ctor: '::',
+						_0: _user$project$Env$path,
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+	}
+};
+var _user$project$Env$Remote = {ctor: 'Remote'};
+var _user$project$Env$remote = _user$project$Env$url(_user$project$Env$Remote);
+var _user$project$Env$Local = {ctor: 'Local'};
+var _user$project$Env$local = _user$project$Env$url(_user$project$Env$Local);
+var _user$project$Env$current = _user$project$Env$local;
+
+var _user$project$Events_Model$Event = F3(
+	function (a, b, c) {
+		return {id: a, name: b, date: c};
+	});
+var _user$project$Events_Model$blank = A3(_user$project$Events_Model$Event, '', '', '');
+var _user$project$Events_Model$Filters = function (a) {
+	return {name: a};
+};
+var _user$project$Events_Model$initial = {
+	events: {ctor: '[]'},
+	filters: _user$project$Events_Model$Filters(''),
+	operation: _user$project$Events_Model$blank
+};
+var _user$project$Events_Model$Model = F3(
+	function (a, b, c) {
+		return {events: a, operation: b, filters: c};
+	});
+
 var _user$project$GraphQL$maybeEncode = F2(
 	function (e, v) {
 		var _p0 = v;
@@ -13575,8 +13640,8 @@ var _user$project$GraphQL$queryResult = function (decoder) {
 			}
 		});
 };
-var _user$project$GraphQL$buildRequestWithBody = F7(
-	function (verb, url, token, query, operation, variables, decoder) {
+var _user$project$GraphQL$buildRequestWithBody = F6(
+	function (verb, token, query, operation, variables, decoder) {
 		var params = _elm_lang$core$Json_Encode$object(
 			{
 				ctor: '::',
@@ -13625,198 +13690,26 @@ var _user$project$GraphQL$buildRequestWithBody = F7(
 						_1: {ctor: '[]'}
 					}
 				},
-				url: url,
+				url: _user$project$Env$current,
 				body: _elm_lang$http$Http$jsonBody(params),
 				expect: _elm_lang$http$Http$expectJson(decoder),
 				timeout: _elm_lang$core$Maybe$Nothing,
 				withCredentials: false
 			});
 	});
-var _user$project$GraphQL$fetch = F7(
-	function (verb, url, token, query, operation, variables, decoder) {
-		var request = A7(_user$project$GraphQL$buildRequestWithBody, 'POST', url, token, query, operation, variables, decoder);
+var _user$project$GraphQL$fetch = F6(
+	function (verb, token, query, operation, variables, decoder) {
+		var request = A6(_user$project$GraphQL$buildRequestWithBody, 'POST', token, query, operation, variables, decoder);
 		return request;
 	});
-var _user$project$GraphQL$mutation = F6(
-	function (url, token, query, operation, variables, decoder) {
-		return A7(_user$project$GraphQL$fetch, 'POST', url, token, query, operation, variables, decoder);
+var _user$project$GraphQL$mutation = F5(
+	function (token, query, operation, variables, decoder) {
+		return A6(_user$project$GraphQL$fetch, 'POST', token, query, operation, variables, decoder);
 	});
-var _user$project$GraphQL$query = F7(
-	function (method, url, token, query, operation, variables, decoder) {
-		return A7(_user$project$GraphQL$fetch, method, url, token, query, operation, variables, decoder);
+var _user$project$GraphQL$query = F6(
+	function (method, token, query, operation, variables, decoder) {
+		return A6(_user$project$GraphQL$fetch, method, token, query, operation, variables, decoder);
 	});
-
-var _user$project$Members$roleToString = function (role) {
-	var _p0 = role;
-	switch (_p0.ctor) {
-		case 'FrontOfHouse':
-			return 'Front Of House';
-		case 'BarTending':
-			return 'Bar Tending';
-		case 'Security':
-			return 'Security';
-		case 'Floating':
-			return 'Floating';
-		case 'SetUp':
-			return 'Set-up';
-		case 'Tech':
-			return 'Tech';
-		case 'Maintenance':
-			return 'Maintenance';
-		case 'Cleaning':
-			return 'Cleaning';
-		case 'WhateverMamaNeeds':
-			return 'Whatever Mama Needs';
-		default:
-			return _p0._0;
-	}
-};
-var _user$project$Members$endpointUrl = 'http://138.197.161.149:8080/graphql';
-var _user$project$Members$Member = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {id: a, firstName: b, lastName: c, email: d, dateOfBirth: e, payed: f, volunteer: g, roles: h};
-	});
-var _user$project$Members$Other = function (a) {
-	return {ctor: 'Other', _0: a};
-};
-var _user$project$Members$WhateverMamaNeeds = {ctor: 'WhateverMamaNeeds'};
-var _user$project$Members$Cleaning = {ctor: 'Cleaning'};
-var _user$project$Members$Maintenance = {ctor: 'Maintenance'};
-var _user$project$Members$Tech = {ctor: 'Tech'};
-var _user$project$Members$SetUp = {ctor: 'SetUp'};
-var _user$project$Members$Floating = {ctor: 'Floating'};
-var _user$project$Members$Security = {ctor: 'Security'};
-var _user$project$Members$BarTending = {ctor: 'BarTending'};
-var _user$project$Members$FrontOfHouse = {ctor: 'FrontOfHouse'};
-var _user$project$Members$stringToRole = function (role) {
-	var _p1 = role;
-	switch (_p1) {
-		case 'Front of House':
-			return _user$project$Members$FrontOfHouse;
-		case 'Bar Tending':
-			return _user$project$Members$BarTending;
-		case 'Security':
-			return _user$project$Members$Security;
-		case 'Floating':
-			return _user$project$Members$Floating;
-		case 'Set-up':
-			return _user$project$Members$SetUp;
-		case 'Tech':
-			return _user$project$Members$Tech;
-		case 'Maintenance':
-			return _user$project$Members$Maintenance;
-		case 'Cleaning':
-			return _user$project$Members$Cleaning;
-		case 'Whatever Mama needs':
-			return _user$project$Members$WhateverMamaNeeds;
-		default:
-			return _user$project$Members$Other(role);
-	}
-};
-var _user$project$Members$rolesDecoder = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(_user$project$Members$stringToRole),
-	_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string));
-var _user$project$Members$memberDecoder = A9(
-	_elm_lang$core$Json_Decode$map8,
-	_user$project$Members$Member,
-	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'firstName', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'lastName', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'dateOfBirth', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'payed', _elm_lang$core$Json_Decode$bool),
-	A2(_elm_lang$core$Json_Decode$field, 'volunteer', _elm_lang$core$Json_Decode$bool),
-	A2(_elm_lang$core$Json_Decode$field, 'roles', _user$project$Members$rolesDecoder));
-var _user$project$Members$membersDecoder = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'data',
-		_1: {
-			ctor: '::',
-			_0: 'members',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$list(_user$project$Members$memberDecoder));
-var _user$project$Members$members = function (token) {
-	var graphQLQuery = 'query members { members { id firstName lastName email dateOfBirth payed volunteer roles } }';
-	var graphQLParams = _elm_lang$core$Json_Encode$object(
-		{ctor: '[]'});
-	return A7(_user$project$GraphQL$query, 'GET', _user$project$Members$endpointUrl, token, graphQLQuery, 'members', graphQLParams, _user$project$Members$membersDecoder);
-};
-
-var _user$project$Model$Filters = F4(
-	function (a, b, c, d) {
-		return {firstName: a, lastName: b, volunteer: c, roles: d};
-	});
-var _user$project$Model$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {members: a, filters: b, flags: c, mutate: d, route: e, user: f};
-	});
-var _user$project$Model$ByVolunteer = F2(
-	function (a, b) {
-		return {ctor: 'ByVolunteer', _0: a, _1: b};
-	});
-var _user$project$Model$ByRole = function (a) {
-	return {ctor: 'ByRole', _0: a};
-};
-var _user$project$Model$ByLastName = function (a) {
-	return {ctor: 'ByLastName', _0: a};
-};
-var _user$project$Model$ByFirstName = function (a) {
-	return {ctor: 'ByFirstName', _0: a};
-};
-var _user$project$Model$Menu = {ctor: 'Menu'};
-var _user$project$Model$ReceiveToken = function (a) {
-	return {ctor: 'ReceiveToken', _0: a};
-};
-var _user$project$Model$Login = {ctor: 'Login'};
-var _user$project$Model$UpdateUser = function (a) {
-	return {ctor: 'UpdateUser', _0: a};
-};
-var _user$project$Model$UpdateDateValue = function (a) {
-	return {ctor: 'UpdateDateValue', _0: a};
-};
-var _user$project$Model$OpenDatePicker = function (a) {
-	return {ctor: 'OpenDatePicker', _0: a};
-};
-var _user$project$Model$OnSubmit = {ctor: 'OnSubmit'};
-var _user$project$Model$OnRoute = function (a) {
-	return {ctor: 'OnRoute', _0: a};
-};
-var _user$project$Model$OnChange = function (a) {
-	return {ctor: 'OnChange', _0: a};
-};
-var _user$project$Model$OnEdit = function (a) {
-	return {ctor: 'OnEdit', _0: a};
-};
-var _user$project$Model$OnToggleFlag = function (a) {
-	return {ctor: 'OnToggleFlag', _0: a};
-};
-var _user$project$Model$OnFilter = function (a) {
-	return {ctor: 'OnFilter', _0: a};
-};
-var _user$project$Model$ReceiveMember = function (a) {
-	return {ctor: 'ReceiveMember', _0: a};
-};
-var _user$project$Model$ReceiveMembers = function (a) {
-	return {ctor: 'ReceiveMembers', _0: a};
-};
-var _user$project$Model$DeleteMember = {ctor: 'DeleteMember'};
-var _user$project$Model$EditMember = function (a) {
-	return {ctor: 'EditMember', _0: a};
-};
-var _user$project$Model$AddMember = {ctor: 'AddMember'};
-var _user$project$Model$MembersList = {ctor: 'MembersList'};
-var _user$project$Model$User = F2(
-	function (a, b) {
-		return {ctor: 'User', _0: a, _1: b};
-	});
-var _user$project$Model$Authenticated = function (a) {
-	return {ctor: 'Authenticated', _0: a};
-};
 
 var _user$project$MDC$formFields = function (children) {
 	return A2(
@@ -13999,6 +13892,14 @@ var _user$project$MDC$persistentDrawer = F2(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$MDC$divider = A2(
+	_elm_lang$html$Html$hr,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('mdc-list-divider'),
+		_1: {ctor: '[]'}
+	},
+	{ctor: '[]'});
 var _user$project$MDC$toolbar = F2(
 	function (title, onToggle) {
 		return A2(
@@ -14181,6 +14082,27 @@ var _user$project$MDC$textfield = F3(
 		return A4(_user$project$MDC$input, 'text', value, label, onChange);
 	});
 var _user$project$MDC$ariaHidden = A2(_elm_lang$html$Html_Attributes$attribute, 'aria-hidden', 'true');
+var _user$project$MDC$iconWithClass = F2(
+	function (className, name) {
+		return A2(
+			_elm_lang$html$Html$i,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$String$append, className, ' material-icons')),
+				_1: {
+					ctor: '::',
+					_0: _user$project$MDC$ariaHidden,
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(name),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$MDC$icon = _user$project$MDC$iconWithClass('');
 var _user$project$MDC$drawerItem = F3(
 	function (msg, icon, child) {
 		return A2(
@@ -14200,22 +14122,7 @@ var _user$project$MDC$drawerItem = F3(
 			},
 			{
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$i,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('material-icons mdc-list-item__start-detail'),
-						_1: {
-							ctor: '::',
-							_0: _user$project$MDC$ariaHidden,
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(icon),
-						_1: {ctor: '[]'}
-					}),
+				_0: A2(_user$project$MDC$iconWithClass, 'mdc-list-item__start-detail', icon),
 				_1: {
 					ctor: '::',
 					_0: child,
@@ -14280,463 +14187,124 @@ var _user$project$MDC$menu = F2(
 			});
 	});
 
-var _user$project$Form$radio = F2(
-	function (label, checked) {
-		return _user$project$MDC$formFields(
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('mdc-radio'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$input,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('mdc-radio__native-control'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$type_('radio'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$id('radio-1'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$name('radios'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$checked(checked),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							},
-							{ctor: '[]'}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('mdc-radio__background'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('mdc-radio__outer-circle'),
-											_1: {ctor: '[]'}
-										},
-										{ctor: '[]'}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('mdc-radio__inner-circle'),
-												_1: {ctor: '[]'}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$label,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$id(label),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$for(label),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(label),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
+var _user$project$Members_Model$Member = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {id: a, firstName: b, lastName: c, email: d, dateOfBirth: e, payed: f, volunteer: g, roles: h};
 	});
-var _user$project$Form$months = {
-	ctor: '::',
-	_0: 'Jan',
-	_1: {
-		ctor: '::',
-		_0: 'Feb',
-		_1: {
-			ctor: '::',
-			_0: 'Mar',
-			_1: {
-				ctor: '::',
-				_0: 'Apr',
-				_1: {
-					ctor: '::',
-					_0: 'May',
-					_1: {
-						ctor: '::',
-						_0: 'Jun',
-						_1: {
-							ctor: '::',
-							_0: 'Jul',
-							_1: {
-								ctor: '::',
-								_0: 'Aug',
-								_1: {
-									ctor: '::',
-									_0: 'Sep',
-									_1: {
-										ctor: '::',
-										_0: 'Oct',
-										_1: {
-											ctor: '::',
-											_0: 'Nov',
-											_1: {
-												ctor: '::',
-												_0: 'Dec',
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+var _user$project$Members_Model$blank = A8(
+	_user$project$Members_Model$Member,
+	'',
+	'',
+	'',
+	'',
+	'',
+	false,
+	false,
+	{ctor: '[]'});
+var _user$project$Members_Model$Filters = F4(
+	function (a, b, c, d) {
+		return {firstName: a, lastName: b, volunteer: c, roles: d};
+	});
+var _user$project$Members_Model$initial = {
+	members: {ctor: '[]'},
+	filters: A4(
+		_user$project$Members_Model$Filters,
+		'',
+		'',
+		_elm_lang$core$Maybe$Nothing,
+		{ctor: '[]'}),
+	operation: _user$project$Members_Model$blank
 };
-var _user$project$Form$strokedBtn = function (label) {
-	return A2(
-		_elm_lang$html$Html$button,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--stroked mdc-button--dense mdc-button--primary'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(label),
-			_1: {ctor: '[]'}
-		});
+var _user$project$Members_Model$Model = F3(
+	function (a, b, c) {
+		return {members: a, operation: b, filters: c};
+	});
+var _user$project$Members_Model$Other = function (a) {
+	return {ctor: 'Other', _0: a};
 };
-var _user$project$Form$monthSelector = _user$project$MDC$formFields(
-	A2(_elm_lang$core$List$map, _user$project$Form$strokedBtn, _user$project$Form$months));
-var _user$project$Form$onToggleRole = F2(
-	function (role, member) {
-		var nextRoles = function () {
-			var _p0 = A2(_elm_lang$core$List$member, role, member.roles);
-			if (_p0 === true) {
-				return A2(
-					_elm_lang$core$List$filter,
-					function (r) {
-						return !_elm_lang$core$Native_Utils.eq(r, role);
-					},
-					member.roles);
-			} else {
-				return {ctor: '::', _0: role, _1: member.roles};
-			}
-		}();
-		return _user$project$Model$OnChange(
-			_elm_lang$core$Native_Utils.update(
-				member,
-				{roles: nextRoles}));
+var _user$project$Members_Model$WhateverMamaNeeds = {ctor: 'WhateverMamaNeeds'};
+var _user$project$Members_Model$Cleaning = {ctor: 'Cleaning'};
+var _user$project$Members_Model$Maintenance = {ctor: 'Maintenance'};
+var _user$project$Members_Model$Tech = {ctor: 'Tech'};
+var _user$project$Members_Model$SetUp = {ctor: 'SetUp'};
+var _user$project$Members_Model$Floating = {ctor: 'Floating'};
+var _user$project$Members_Model$Security = {ctor: 'Security'};
+var _user$project$Members_Model$BarTending = {ctor: 'BarTending'};
+var _user$project$Members_Model$FrontOfHouse = {ctor: 'FrontOfHouse'};
+
+var _user$project$Members_Actions$ByVolunteer = F2(
+	function (a, b) {
+		return {ctor: 'ByVolunteer', _0: a, _1: b};
 	});
-var _user$project$Form$onChangeDOB = F2(
-	function (member, value) {
-		return _user$project$Model$OnChange(
-			_elm_lang$core$Native_Utils.update(
-				member,
-				{dateOfBirth: value}));
+var _user$project$Members_Actions$ByRole = function (a) {
+	return {ctor: 'ByRole', _0: a};
+};
+var _user$project$Members_Actions$ByLastName = function (a) {
+	return {ctor: 'ByLastName', _0: a};
+};
+var _user$project$Members_Actions$ByFirstName = function (a) {
+	return {ctor: 'ByFirstName', _0: a};
+};
+var _user$project$Members_Actions$UpdateDateValue = function (a) {
+	return {ctor: 'UpdateDateValue', _0: a};
+};
+var _user$project$Members_Actions$OnSubmit = {ctor: 'OnSubmit'};
+var _user$project$Members_Actions$OnChange = function (a) {
+	return {ctor: 'OnChange', _0: a};
+};
+var _user$project$Members_Actions$OnFilter = function (a) {
+	return {ctor: 'OnFilter', _0: a};
+};
+var _user$project$Members_Actions$ReceiveMember = function (a) {
+	return {ctor: 'ReceiveMember', _0: a};
+};
+var _user$project$Members_Actions$ReceiveMembers = function (a) {
+	return {ctor: 'ReceiveMembers', _0: a};
+};
+
+var _user$project$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {members: a, events: b, flags: c, route: d, user: e};
 	});
-var _user$project$Form$onChangeEmail = F2(
-	function (member, value) {
-		return _user$project$Model$OnChange(
-			_elm_lang$core$Native_Utils.update(
-				member,
-				{email: value}));
+var _user$project$Model$Menu = {ctor: 'Menu'};
+var _user$project$Model$ReceiveToken = function (a) {
+	return {ctor: 'ReceiveToken', _0: a};
+};
+var _user$project$Model$Login = {ctor: 'Login'};
+var _user$project$Model$UpdateUser = function (a) {
+	return {ctor: 'UpdateUser', _0: a};
+};
+var _user$project$Model$OnRoute = function (a) {
+	return {ctor: 'OnRoute', _0: a};
+};
+var _user$project$Model$OnToggleFlag = function (a) {
+	return {ctor: 'OnToggleFlag', _0: a};
+};
+var _user$project$Model$MembersRoute = function (a) {
+	return {ctor: 'MembersRoute', _0: a};
+};
+var _user$project$Model$DeleteEvent = function (a) {
+	return {ctor: 'DeleteEvent', _0: a};
+};
+var _user$project$Model$EditEvent = function (a) {
+	return {ctor: 'EditEvent', _0: a};
+};
+var _user$project$Model$AddEvent = {ctor: 'AddEvent'};
+var _user$project$Model$EventsList = {ctor: 'EventsList'};
+var _user$project$Model$DeleteMember = function (a) {
+	return {ctor: 'DeleteMember', _0: a};
+};
+var _user$project$Model$EditMember = function (a) {
+	return {ctor: 'EditMember', _0: a};
+};
+var _user$project$Model$AddMember = {ctor: 'AddMember'};
+var _user$project$Model$MembersList = {ctor: 'MembersList'};
+var _user$project$Model$User = F2(
+	function (a, b) {
+		return {ctor: 'User', _0: a, _1: b};
 	});
-var _user$project$Form$onChangeLastName = F2(
-	function (member, value) {
-		return _user$project$Model$OnChange(
-			_elm_lang$core$Native_Utils.update(
-				member,
-				{lastName: value}));
-	});
-var _user$project$Form$onChangeFirstName = F2(
-	function (member, value) {
-		return _user$project$Model$OnChange(
-			_elm_lang$core$Native_Utils.update(
-				member,
-				{firstName: value}));
-	});
-var _user$project$Form$memberForm = function (member) {
-	return A2(
-		_elm_lang$html$Html$form,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('mdc-card'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$style(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'max-width', _1: '800px'},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'margin', _1: '15px'},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
-								_1: {ctor: '[]'}
-							}
-						}
-					}),
-				_1: {ctor: '[]'}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$MDC$formField(
-				A3(
-					_user$project$MDC$textfield,
-					member.firstName,
-					'First Name',
-					_user$project$Form$onChangeFirstName(member))),
-			_1: {
-				ctor: '::',
-				_0: _user$project$MDC$formField(
-					A3(
-						_user$project$MDC$textfield,
-						member.lastName,
-						'Last Name',
-						_user$project$Form$onChangeLastName(member))),
-				_1: {
-					ctor: '::',
-					_0: _user$project$MDC$formField(
-						A3(
-							_user$project$MDC$textfield,
-							member.email,
-							'E-mail',
-							_user$project$Form$onChangeEmail(member))),
-					_1: {
-						ctor: '::',
-						_0: _user$project$MDC$formField(
-							A3(
-								_user$project$MDC$datepicker,
-								member.dateOfBirth,
-								'Date of Birth',
-								_user$project$Form$onChangeDOB(member))),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Volunteer'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: A3(
-													_user$project$MDC$checkbox,
-													'Front of House',
-													A2(_elm_lang$core$List$member, _user$project$Members$FrontOfHouse, member.roles),
-													A2(_user$project$Form$onToggleRole, _user$project$Members$FrontOfHouse, member)),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: A3(
-														_user$project$MDC$checkbox,
-														'Bar Tending',
-														A2(_elm_lang$core$List$member, _user$project$Members$BarTending, member.roles),
-														A2(_user$project$Form$onToggleRole, _user$project$Members$BarTending, member)),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$div,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: A3(
-															_user$project$MDC$checkbox,
-															'Security',
-															A2(_elm_lang$core$List$member, _user$project$Members$Security, member.roles),
-															A2(_user$project$Form$onToggleRole, _user$project$Members$Security, member)),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: A3(
-																_user$project$MDC$checkbox,
-																'Floating',
-																A2(_elm_lang$core$List$member, _user$project$Members$Floating, member.roles),
-																A2(_user$project$Form$onToggleRole, _user$project$Members$Floating, member)),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$div,
-															{ctor: '[]'},
-															{
-																ctor: '::',
-																_0: A3(
-																	_user$project$MDC$checkbox,
-																	'Set-up',
-																	A2(_elm_lang$core$List$member, _user$project$Members$SetUp, member.roles),
-																	A2(_user$project$Form$onToggleRole, _user$project$Members$SetUp, member)),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$div,
-																{ctor: '[]'},
-																{
-																	ctor: '::',
-																	_0: A3(
-																		_user$project$MDC$checkbox,
-																		'Tech',
-																		A2(_elm_lang$core$List$member, _user$project$Members$Tech, member.roles),
-																		A2(_user$project$Form$onToggleRole, _user$project$Members$Tech, member)),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$div,
-																	{ctor: '[]'},
-																	{
-																		ctor: '::',
-																		_0: A3(
-																			_user$project$MDC$checkbox,
-																			'Maintenance',
-																			A2(_elm_lang$core$List$member, _user$project$Members$Maintenance, member.roles),
-																			A2(_user$project$Form$onToggleRole, _user$project$Members$Maintenance, member)),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$div,
-																		{ctor: '[]'},
-																		{
-																			ctor: '::',
-																			_0: A3(
-																				_user$project$MDC$checkbox,
-																				'Cleaning',
-																				A2(_elm_lang$core$List$member, _user$project$Members$Cleaning, member.roles),
-																				A2(_user$project$Form$onToggleRole, _user$project$Members$Cleaning, member)),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_elm_lang$html$Html$div,
-																			{ctor: '[]'},
-																			{
-																				ctor: '::',
-																				_0: A3(
-																					_user$project$MDC$checkbox,
-																					'Whatever Mama needs',
-																					A2(_elm_lang$core$List$member, _user$project$Members$WhateverMamaNeeds, member.roles),
-																					A2(_user$project$Form$onToggleRole, _user$project$Members$WhateverMamaNeeds, member)),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$section,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$button,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$type_('button'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onClick(_user$project$Model$OnSubmit),
-														_1: {ctor: '[]'}
-													}
-												}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Submit'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			}
-		});
+var _user$project$Model$Authenticated = function (a) {
+	return {ctor: 'Authenticated', _0: a};
 };
 
 var _user$project$Login$isAuthenticated = function (user) {
@@ -14931,7 +14499,318 @@ var _user$project$Login$login = F2(
 				}));
 	});
 
-var _user$project$MembersList$filterCell = function (child) {
+var _user$project$Members_Utils$roleToString = function (role) {
+	var _p0 = role;
+	switch (_p0.ctor) {
+		case 'FrontOfHouse':
+			return 'Front Of House';
+		case 'BarTending':
+			return 'Bar Tending';
+		case 'Security':
+			return 'Security';
+		case 'Floating':
+			return 'Floating';
+		case 'SetUp':
+			return 'Set-up';
+		case 'Tech':
+			return 'Tech';
+		case 'Maintenance':
+			return 'Maintenance';
+		case 'Cleaning':
+			return 'Cleaning';
+		case 'WhateverMamaNeeds':
+			return 'Whatever Mama Needs';
+		default:
+			return _p0._0;
+	}
+};
+var _user$project$Members_Utils$stringToRole = function (role) {
+	var _p1 = role;
+	switch (_p1) {
+		case 'Front of House':
+			return _user$project$Members_Model$FrontOfHouse;
+		case 'Bar Tending':
+			return _user$project$Members_Model$BarTending;
+		case 'Security':
+			return _user$project$Members_Model$Security;
+		case 'Floating':
+			return _user$project$Members_Model$Floating;
+		case 'Set-up':
+			return _user$project$Members_Model$SetUp;
+		case 'Tech':
+			return _user$project$Members_Model$Tech;
+		case 'Maintenance':
+			return _user$project$Members_Model$Maintenance;
+		case 'Cleaning':
+			return _user$project$Members_Model$Cleaning;
+		case 'Whatever Mama needs':
+			return _user$project$Members_Model$WhateverMamaNeeds;
+		default:
+			return _user$project$Members_Model$Other(role);
+	}
+};
+
+var _user$project$Members_Decoders$rolesDecoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$List$map(_user$project$Members_Utils$stringToRole),
+	_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string));
+var _user$project$Members_Decoders$memberDecoder = A9(
+	_elm_lang$core$Json_Decode$map8,
+	_user$project$Members_Model$Member,
+	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'firstName', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'lastName', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'dateOfBirth', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'payed', _elm_lang$core$Json_Decode$bool),
+	A2(_elm_lang$core$Json_Decode$field, 'volunteer', _elm_lang$core$Json_Decode$bool),
+	A2(_elm_lang$core$Json_Decode$field, 'roles', _user$project$Members_Decoders$rolesDecoder));
+var _user$project$Members_Decoders$membersDecoder = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'data',
+		_1: {
+			ctor: '::',
+			_0: 'members',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$list(_user$project$Members_Decoders$memberDecoder));
+
+var _user$project$Members$members = function (token) {
+	var graphQLQuery = 'query members { members { id firstName lastName email dateOfBirth payed volunteer roles } }';
+	var graphQLParams = _elm_lang$core$Json_Encode$object(
+		{ctor: '[]'});
+	return A6(_user$project$GraphQL$query, 'GET', token, graphQLQuery, 'members', graphQLParams, _user$project$Members_Decoders$membersDecoder);
+};
+
+var _user$project$Members_Encoders$rolesEncoder = function (roles) {
+	return A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$Json_Encode$string,
+		A2(_elm_lang$core$List$map, _user$project$Members_Utils$roleToString, roles));
+};
+var _user$project$Members_Encoders$dateOfBirthEncoder = function (dob) {
+	return _elm_lang$core$Json_Encode$string(
+		function () {
+			if (!_elm_lang$core$String$isEmpty(dob)) {
+				var yyymmdd = A2(
+					_elm_lang$core$String$join,
+					'/',
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$split, '/', dob)));
+				var _p0 = _elm_lang$core$Date$fromString(yyymmdd);
+				if (_p0.ctor === 'Ok') {
+					return yyymmdd;
+				} else {
+					return '';
+				}
+			} else {
+				return '';
+			}
+		}());
+};
+
+var _user$project$Members_Submit$submitMemberDecoder = function (key) {
+	return A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'data',
+			_1: {
+				ctor: '::',
+				_0: key,
+				_1: {
+					ctor: '::',
+					_0: 'member',
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		_user$project$Members_Decoders$memberDecoder);
+};
+var _user$project$Members_Submit$submit = F3(
+	function (token, date, member) {
+		var isNew = _elm_lang$core$String$isEmpty(member.id);
+		var _p0 = function () {
+			var _p1 = isNew;
+			if (_p1 === true) {
+				return {
+					ctor: '_Tuple3',
+					_0: 'CreateMember',
+					_1: 'mutation CreateMember($input: CreateMemberInput!) { createMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }',
+					_2: _user$project$Members_Submit$submitMemberDecoder('createMember')
+				};
+			} else {
+				return {
+					ctor: '_Tuple3',
+					_0: 'UpdateMember',
+					_1: 'mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }',
+					_2: _user$project$Members_Submit$submitMemberDecoder('updateMember')
+				};
+			}
+		}();
+		var operationName = _p0._0;
+		var graphQLQuery = _p0._1;
+		var decoder = _p0._2;
+		var encoders = {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'firstName',
+				_1: _elm_lang$core$Json_Encode$string(member.firstName)
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'lastName',
+					_1: _elm_lang$core$Json_Encode$string(member.lastName)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'email',
+						_1: _elm_lang$core$Json_Encode$string(member.email)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'volunteer',
+							_1: _elm_lang$core$Json_Encode$bool(member.volunteer)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'dateOfBirth',
+								_1: _user$project$Members_Encoders$dateOfBirthEncoder(member.dateOfBirth)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'roles',
+									_1: _elm_lang$core$Json_Encode$list(
+										_user$project$Members_Encoders$rolesEncoder(member.roles))
+								},
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		};
+		var graphQLParams = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'input',
+					_1: _elm_lang$core$Json_Encode$object(
+						function () {
+							var _p2 = isNew;
+							if (_p2 === true) {
+								return encoders;
+							} else {
+								return {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'id',
+										_1: _elm_lang$core$Json_Encode$string(member.id)
+									},
+									_1: encoders
+								};
+							}
+						}())
+				},
+				_1: {ctor: '[]'}
+			});
+		return A5(_user$project$GraphQL$mutation, token, graphQLQuery, operationName, graphQLParams, decoder);
+	});
+
+var _user$project$Members_Commands$submit = F2(
+	function (token, member) {
+		var httpTask = A2(
+			_elm_lang$core$Task$andThen,
+			function (date) {
+				return _elm_lang$http$Http$toTask(
+					A3(_user$project$Members_Submit$submit, token, date, member));
+			},
+			_elm_lang$core$Date$now);
+		return A2(_elm_lang$core$Task$attempt, _user$project$Members_Actions$ReceiveMember, httpTask);
+	});
+var _user$project$Members_Commands$fetch = function (token) {
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Members_Actions$ReceiveMembers,
+		_user$project$Members$members(token));
+};
+
+var _user$project$Utils$monthToInt = function (month) {
+	var _p0 = month;
+	switch (_p0.ctor) {
+		case 'Jan':
+			return '01';
+		case 'Feb':
+			return '02';
+		case 'Mar':
+			return '03';
+		case 'Apr':
+			return '04';
+		case 'May':
+			return '05';
+		case 'Jun':
+			return '06';
+		case 'Jul':
+			return '07';
+		case 'Aug':
+			return '08';
+		case 'Sep':
+			return '09';
+		case 'Oct':
+			return '10';
+		case 'Nov':
+			return '11';
+		default:
+			return '12';
+	}
+};
+var _user$project$Utils$test = F2(
+	function (pattern, input) {
+		return _elm_lang$core$String$isEmpty(input) || A2(
+			_elm_lang$core$Regex$contains,
+			_elm_lang$core$Regex$regex(
+				_elm_lang$core$String$toLower(pattern)),
+			_elm_lang$core$String$toLower(input));
+	});
+var _user$project$Utils$dateToString = function (date) {
+	return A2(
+		_elm_lang$core$String$join,
+		'-',
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Basics$toString(
+				_elm_lang$core$Date$year(date)),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Utils$monthToInt(
+					_elm_lang$core$Date$month(date)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Basics$toString(
+						_elm_lang$core$Date$day(date)),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+
+var _user$project$Members_List$filterCell = function (child) {
 	return A2(
 		_elm_lang$html$Html$td,
 		{
@@ -14950,20 +14829,20 @@ var _user$project$MembersList$filterCell = function (child) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$MembersList$onFilter = F2(
+var _user$project$Members_List$onFilter = F2(
 	function (filterBy, value) {
-		return _user$project$Model$OnFilter(
+		return _user$project$Members_Actions$OnFilter(
 			filterBy(value));
 	});
-var _user$project$MembersList$stringFilterInput = F3(
+var _user$project$Members_List$stringFilterInput = F3(
 	function (filterBy, value, label) {
 		return A3(
 			_user$project$MDC$textfield,
 			value,
 			label,
-			_user$project$MembersList$onFilter(filterBy));
+			_user$project$Members_List$onFilter(filterBy));
 	});
-var _user$project$MembersList$filterRow = function (filters) {
+var _user$project$Members_List$filterRow = function (filters) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		{
@@ -14973,12 +14852,12 @@ var _user$project$MembersList$filterRow = function (filters) {
 		},
 		{
 			ctor: '::',
-			_0: _user$project$MembersList$filterCell(
-				A3(_user$project$MembersList$stringFilterInput, _user$project$Model$ByFirstName, filters.firstName, 'First Name')),
+			_0: _user$project$Members_List$filterCell(
+				A3(_user$project$Members_List$stringFilterInput, _user$project$Members_Actions$ByFirstName, filters.firstName, 'First Name')),
 			_1: {
 				ctor: '::',
-				_0: _user$project$MembersList$filterCell(
-					A3(_user$project$MembersList$stringFilterInput, _user$project$Model$ByLastName, filters.lastName, 'Last Name')),
+				_0: _user$project$Members_List$filterCell(
+					A3(_user$project$Members_List$stringFilterInput, _user$project$Members_Actions$ByLastName, filters.lastName, 'Last Name')),
 				_1: {
 					ctor: '::',
 					_0: A2(
@@ -14994,7 +14873,18 @@ var _user$project$MembersList$filterRow = function (filters) {
 			}
 		});
 };
-var _user$project$MembersList$dob = function (value) {
+var _user$project$Members_List$filterMembers = F2(
+	function (filters, member) {
+		return A2(_user$project$Utils$test, filters.firstName, member.firstName) && A2(_user$project$Utils$test, filters.lastName, member.lastName);
+	});
+var _user$project$Members_List$getMembers = F2(
+	function (filters, members) {
+		return A2(
+			_elm_lang$core$List$filter,
+			_user$project$Members_List$filterMembers(filters),
+			members);
+	});
+var _user$project$Members_List$dob = function (value) {
 	var _p0 = _elm_lang$core$Date$fromString(value);
 	if (_p0.ctor === 'Ok') {
 		var _p1 = _p0._0;
@@ -15021,7 +14911,7 @@ var _user$project$MembersList$dob = function (value) {
 		return '';
 	}
 };
-var _user$project$MembersList$cell = _elm_lang$html$Html$td(
+var _user$project$Members_List$cell = _elm_lang$html$Html$td(
 	{
 		ctor: '::',
 		_0: _elm_lang$html$Html_Attributes$style(
@@ -15036,7 +14926,7 @@ var _user$project$MembersList$cell = _elm_lang$html$Html$td(
 			}),
 		_1: {ctor: '[]'}
 	});
-var _user$project$MembersList$memberRow = function (member) {
+var _user$project$Members_List$memberRow = function (member) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		{
@@ -15055,16 +14945,11 @@ var _user$project$MembersList$memberRow = function (member) {
 						}
 					}
 				}),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(
-					_user$project$Model$OnEdit(member)),
-				_1: {ctor: '[]'}
-			}
+			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
-			_0: _user$project$MembersList$cell(
+			_0: _user$project$Members_List$cell(
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html$text(member.firstName),
@@ -15072,7 +14957,7 @@ var _user$project$MembersList$memberRow = function (member) {
 				}),
 			_1: {
 				ctor: '::',
-				_0: _user$project$MembersList$cell(
+				_0: _user$project$Members_List$cell(
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text(member.lastName),
@@ -15080,7 +14965,7 @@ var _user$project$MembersList$memberRow = function (member) {
 					}),
 				_1: {
 					ctor: '::',
-					_0: _user$project$MembersList$cell(
+					_0: _user$project$Members_List$cell(
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text(member.email),
@@ -15088,16 +14973,16 @@ var _user$project$MembersList$memberRow = function (member) {
 						}),
 					_1: {
 						ctor: '::',
-						_0: _user$project$MembersList$cell(
+						_0: _user$project$Members_List$cell(
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(
-									_user$project$MembersList$dob(member.dateOfBirth)),
+									_user$project$Members_List$dob(member.dateOfBirth)),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
 							ctor: '::',
-							_0: _user$project$MembersList$cell(
+							_0: _user$project$Members_List$cell(
 								{
 									ctor: '::',
 									_0: _elm_lang$html$Html$text(
@@ -15156,239 +15041,788 @@ var _user$project$MembersList$memberRow = function (member) {
 			}
 		});
 };
-var _user$project$MembersList$membersView = F2(
-	function (members, filters) {
-		return function (rows) {
-			return A2(
-				_elm_lang$html$Html$table,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'border-collapse', _1: 'collapse'},
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _user$project$MembersList$filterRow(filters),
-					_1: rows
-				});
-		}(
-			A2(_elm_lang$core$List$map, _user$project$MembersList$memberRow, members));
-	});
-
-var _user$project$SubmitMember$submitMemberDecoder = function (key) {
-	return A2(
-		_elm_lang$core$Json_Decode$at,
-		{
-			ctor: '::',
-			_0: 'data',
-			_1: {
+var _user$project$Members_List$membersView = function (_p2) {
+	var _p3 = _p2;
+	var _p4 = _p3.filters;
+	return function (rows) {
+		return A2(
+			_elm_lang$html$Html$table,
+			{
 				ctor: '::',
-				_0: key,
-				_1: {
-					ctor: '::',
-					_0: 'member',
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		_user$project$Members$memberDecoder);
-};
-var _user$project$SubmitMember$rolesEncoder = function (roles) {
-	return A2(
-		_elm_lang$core$List$map,
-		_elm_lang$core$Json_Encode$string,
-		A2(_elm_lang$core$List$map, _user$project$Members$roleToString, roles));
-};
-var _user$project$SubmitMember$dateOfBirthEncoder = function (dob) {
-	if (!_elm_lang$core$String$isEmpty(dob)) {
-		var yyymmdd = A2(
-			_elm_lang$core$String$join,
-			'/',
-			_elm_lang$core$List$reverse(
-				A2(_elm_lang$core$String$split, '/', dob)));
-		var _p0 = _elm_lang$core$Date$fromString(yyymmdd);
-		if (_p0.ctor === 'Ok') {
-			return yyymmdd;
-		} else {
-			return '';
-		}
-	} else {
-		return '';
-	}
-};
-var _user$project$SubmitMember$endpointUrl = 'http://138.197.161.149:8080/graphql';
-var _user$project$SubmitMember$monthToInt = function (month) {
-	var _p1 = month;
-	switch (_p1.ctor) {
-		case 'Jan':
-			return '01';
-		case 'Feb':
-			return '02';
-		case 'Mar':
-			return '03';
-		case 'Apr':
-			return '04';
-		case 'May':
-			return '05';
-		case 'Jun':
-			return '06';
-		case 'Jul':
-			return '07';
-		case 'Aug':
-			return '08';
-		case 'Sep':
-			return '09';
-		case 'Oct':
-			return '10';
-		case 'Nov':
-			return '11';
-		default:
-			return '12';
-	}
-};
-var _user$project$SubmitMember$dateToString = function (date) {
-	return A2(
-		_elm_lang$core$String$join,
-		'-',
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Basics$toString(
-				_elm_lang$core$Date$year(date)),
-			_1: {
-				ctor: '::',
-				_0: _user$project$SubmitMember$monthToInt(
-					_elm_lang$core$Date$month(date)),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Basics$toString(
-						_elm_lang$core$Date$day(date)),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
-var _user$project$SubmitMember$submit = F3(
-	function (token, date, member) {
-		var isNew = _elm_lang$core$String$isEmpty(member.id);
-		var _p2 = function () {
-			var _p3 = isNew;
-			if (_p3 === true) {
-				return {
-					ctor: '_Tuple3',
-					_0: 'CreateMember',
-					_1: 'mutation CreateMember($input: CreateMemberInput!) { createMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }',
-					_2: _user$project$SubmitMember$submitMemberDecoder('createMember')
-				};
-			} else {
-				return {
-					ctor: '_Tuple3',
-					_0: 'UpdateMember',
-					_1: 'mutation UpdateMember($input: UpdateMemberInput!) { updateMember(input: $input) { member { id firstName lastName email dateOfBirth payed volunteer roles } } }',
-					_2: _user$project$SubmitMember$submitMemberDecoder('updateMember')
-				};
-			}
-		}();
-		var operationName = _p2._0;
-		var graphQLQuery = _p2._1;
-		var decoder = _p2._2;
-		var encoders = {
-			ctor: '::',
-			_0: {
-				ctor: '_Tuple2',
-				_0: 'firstName',
-				_1: _elm_lang$core$Json_Encode$string(member.firstName)
-			},
-			_1: {
-				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'lastName',
-					_1: _elm_lang$core$Json_Encode$string(member.lastName)
-				},
-				_1: {
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'email',
-						_1: _elm_lang$core$Json_Encode$string(member.email)
-					},
-					_1: {
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
 						ctor: '::',
-						_0: {
-							ctor: '_Tuple2',
-							_0: 'volunteer',
-							_1: _elm_lang$core$Json_Encode$bool(member.volunteer)
-						},
+						_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
 						_1: {
 							ctor: '::',
-							_0: {
-								ctor: '_Tuple2',
-								_0: 'dateOfBirth',
-								_1: _elm_lang$core$Json_Encode$string(
-									_user$project$SubmitMember$dateOfBirthEncoder(member.dateOfBirth))
-							},
-							_1: {
+							_0: {ctor: '_Tuple2', _0: 'border-collapse', _1: 'collapse'},
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _user$project$Members_List$filterRow(_p4),
+				_1: rows
+			});
+	}(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Members_List$memberRow,
+			A2(_user$project$Members_List$getMembers, _p4, _p3.members)));
+};
+
+var _user$project$Members_Form$radio = F2(
+	function (label, checked) {
+		return _user$project$MDC$formFields(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('mdc-radio'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
 								ctor: '::',
-								_0: {
-									ctor: '_Tuple2',
-									_0: 'payed',
-									_1: _elm_lang$core$Json_Encode$string(
-										_user$project$SubmitMember$dateToString(date))
-								},
+								_0: _elm_lang$html$Html_Attributes$class('mdc-radio__native-control'),
 								_1: {
 									ctor: '::',
-									_0: {
-										ctor: '_Tuple2',
-										_0: 'roles',
-										_1: _elm_lang$core$Json_Encode$list(
-											_user$project$SubmitMember$rolesEncoder(member.roles))
-									},
+									_0: _elm_lang$html$Html_Attributes$type_('radio'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$id('radio-1'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$name('radios'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$checked(checked),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('mdc-radio__background'),
 									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('mdc-radio__outer-circle'),
+											_1: {ctor: '[]'}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('mdc-radio__inner-circle'),
+												_1: {ctor: '[]'}
+											},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$id(label),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$for(label),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(label),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Members_Form$months = {
+	ctor: '::',
+	_0: 'Jan',
+	_1: {
+		ctor: '::',
+		_0: 'Feb',
+		_1: {
+			ctor: '::',
+			_0: 'Mar',
+			_1: {
+				ctor: '::',
+				_0: 'Apr',
+				_1: {
+					ctor: '::',
+					_0: 'May',
+					_1: {
+						ctor: '::',
+						_0: 'Jun',
+						_1: {
+							ctor: '::',
+							_0: 'Jul',
+							_1: {
+								ctor: '::',
+								_0: 'Aug',
+								_1: {
+									ctor: '::',
+									_0: 'Sep',
+									_1: {
+										ctor: '::',
+										_0: 'Oct',
+										_1: {
+											ctor: '::',
+											_0: 'Nov',
+											_1: {
+												ctor: '::',
+												_0: 'Dec',
+												_1: {ctor: '[]'}
+											}
+										}
+									}
 								}
 							}
 						}
 					}
 				}
 			}
-		};
-		var graphQLParams = _elm_lang$core$Json_Encode$object(
-			{
+		}
+	}
+};
+var _user$project$Members_Form$strokedBtn = function (label) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--stroked mdc-button--dense mdc-button--primary'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(label),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Members_Form$monthSelector = _user$project$MDC$formFields(
+	A2(_elm_lang$core$List$map, _user$project$Members_Form$strokedBtn, _user$project$Members_Form$months));
+var _user$project$Members_Form$onToggleRole = F2(
+	function (role, member) {
+		var nextRoles = function () {
+			var _p0 = A2(_elm_lang$core$List$member, role, member.roles);
+			if (_p0 === true) {
+				return A2(
+					_elm_lang$core$List$filter,
+					function (r) {
+						return !_elm_lang$core$Native_Utils.eq(r, role);
+					},
+					member.roles);
+			} else {
+				return {ctor: '::', _0: role, _1: member.roles};
+			}
+		}();
+		return _user$project$Members_Actions$OnChange(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{roles: nextRoles}));
+	});
+var _user$project$Members_Form$onChangeDOB = F2(
+	function (member, value) {
+		return _user$project$Members_Actions$OnChange(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{dateOfBirth: value}));
+	});
+var _user$project$Members_Form$onChangeEmail = F2(
+	function (member, value) {
+		return _user$project$Members_Actions$OnChange(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{email: value}));
+	});
+var _user$project$Members_Form$onChangeLastName = F2(
+	function (member, value) {
+		return _user$project$Members_Actions$OnChange(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{lastName: value}));
+	});
+var _user$project$Members_Form$onChangeFirstName = F2(
+	function (member, value) {
+		return _user$project$Members_Actions$OnChange(
+			_elm_lang$core$Native_Utils.update(
+				member,
+				{firstName: value}));
+	});
+var _user$project$Members_Form$memberForm = function (member) {
+	return A2(
+		_elm_lang$html$Html$form,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('mdc-card'),
+			_1: {
 				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'input',
-					_1: _elm_lang$core$Json_Encode$object(
-						function () {
-							var _p4 = isNew;
-							if (_p4 === true) {
-								return encoders;
-							} else {
-								return {
-									ctor: '::',
-									_0: {
-										ctor: '_Tuple2',
-										_0: 'id',
-										_1: _elm_lang$core$Json_Encode$string(member.id)
-									},
-									_1: encoders
-								};
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'max-width', _1: '800px'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'margin', _1: '15px'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
+								_1: {ctor: '[]'}
 							}
-						}())
-				},
+						}
+					}),
 				_1: {ctor: '[]'}
-			});
-		return A6(_user$project$GraphQL$mutation, _user$project$SubmitMember$endpointUrl, token, graphQLQuery, operationName, graphQLParams, decoder);
+			}
+		},
+		{
+			ctor: '::',
+			_0: _user$project$MDC$formField(
+				A3(
+					_user$project$MDC$textfield,
+					member.firstName,
+					'First Name',
+					_user$project$Members_Form$onChangeFirstName(member))),
+			_1: {
+				ctor: '::',
+				_0: _user$project$MDC$formField(
+					A3(
+						_user$project$MDC$textfield,
+						member.lastName,
+						'Last Name',
+						_user$project$Members_Form$onChangeLastName(member))),
+				_1: {
+					ctor: '::',
+					_0: _user$project$MDC$formField(
+						A3(
+							_user$project$MDC$textfield,
+							member.email,
+							'E-mail',
+							_user$project$Members_Form$onChangeEmail(member))),
+					_1: {
+						ctor: '::',
+						_0: _user$project$MDC$formField(
+							A3(
+								_user$project$MDC$datepicker,
+								member.dateOfBirth,
+								'Date of Birth',
+								_user$project$Members_Form$onChangeDOB(member))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$label,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Volunteer'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A3(
+													_user$project$MDC$checkbox,
+													'Front of House',
+													A2(_elm_lang$core$List$member, _user$project$Members_Model$FrontOfHouse, member.roles),
+													A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$FrontOfHouse, member)),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A3(
+														_user$project$MDC$checkbox,
+														'Bar Tending',
+														A2(_elm_lang$core$List$member, _user$project$Members_Model$BarTending, member.roles),
+														A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$BarTending, member)),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A3(
+															_user$project$MDC$checkbox,
+															'Security',
+															A2(_elm_lang$core$List$member, _user$project$Members_Model$Security, member.roles),
+															A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$Security, member)),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$div,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: A3(
+																_user$project$MDC$checkbox,
+																'Floating',
+																A2(_elm_lang$core$List$member, _user$project$Members_Model$Floating, member.roles),
+																A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$Floating, member)),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$div,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: A3(
+																	_user$project$MDC$checkbox,
+																	'Set-up',
+																	A2(_elm_lang$core$List$member, _user$project$Members_Model$SetUp, member.roles),
+																	A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$SetUp, member)),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$div,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: A3(
+																		_user$project$MDC$checkbox,
+																		'Tech',
+																		A2(_elm_lang$core$List$member, _user$project$Members_Model$Tech, member.roles),
+																		A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$Tech, member)),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$div,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: A3(
+																			_user$project$MDC$checkbox,
+																			'Maintenance',
+																			A2(_elm_lang$core$List$member, _user$project$Members_Model$Maintenance, member.roles),
+																			A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$Maintenance, member)),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$div,
+																		{ctor: '[]'},
+																		{
+																			ctor: '::',
+																			_0: A3(
+																				_user$project$MDC$checkbox,
+																				'Cleaning',
+																				A2(_elm_lang$core$List$member, _user$project$Members_Model$Cleaning, member.roles),
+																				A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$Cleaning, member)),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(
+																			_elm_lang$html$Html$div,
+																			{ctor: '[]'},
+																			{
+																				ctor: '::',
+																				_0: A3(
+																					_user$project$MDC$checkbox,
+																					'Whatever Mama needs',
+																					A2(_elm_lang$core$List$member, _user$project$Members_Model$WhateverMamaNeeds, member.roles),
+																					A2(_user$project$Members_Form$onToggleRole, _user$project$Members_Model$WhateverMamaNeeds, member)),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$section,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('mdc-card__actions'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$button,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('mdc-button mdc-button--raised'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$type_('button'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onClick(_user$project$Members_Actions$OnSubmit),
+														_1: {ctor: '[]'}
+													}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _user$project$MDC$icon('save'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+
+var _user$project$Members_Update$updateMember = F2(
+	function (response, members) {
+		var _p0 = response;
+		if (_p0.ctor === 'Ok') {
+			var _p3 = _p0._0;
+			return {
+				ctor: '::',
+				_0: _p3,
+				_1: A2(
+					_elm_lang$core$List$filter,
+					function (_p1) {
+						var _p2 = _p1;
+						return !_elm_lang$core$Native_Utils.eq(_p2.id, _p3.id);
+					},
+					members)
+			};
+		} else {
+			return members;
+		}
+	});
+var _user$project$Members_Update$receiveMember = F2(
+	function (response, model) {
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{
+					members: A2(_user$project$Members_Update$updateMember, response, model.members)
+				}),
+			{ctor: '[]'});
+	});
+var _user$project$Members_Update$updateMembers = function (response) {
+	var _p4 = response;
+	if (_p4.ctor === 'Ok') {
+		return _p4._0;
+	} else {
+		return {ctor: '[]'};
+	}
+};
+var _user$project$Members_Update$receiveMembers = F2(
+	function (response, model) {
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{
+					members: _user$project$Members_Update$updateMembers(response)
+				}),
+			{ctor: '[]'});
+	});
+var _user$project$Members_Update$update = F3(
+	function (action, model, token) {
+		var _p5 = model;
+		var members = _p5.members;
+		var filters = _p5.filters;
+		var operation = _p5.operation;
+		var _p6 = action;
+		switch (_p6.ctor) {
+			case 'ReceiveMembers':
+				return A2(_user$project$Members_Update$receiveMembers, _p6._0, model);
+			case 'ReceiveMember':
+				return A2(_user$project$Members_Update$receiveMember, _p6._0, model);
+			case 'OnFilter':
+				var _p7 = _p6._0;
+				switch (_p7.ctor) {
+					case 'ByFirstName':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									filters: _elm_lang$core$Native_Utils.update(
+										filters,
+										{firstName: _p7._0})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					case 'ByLastName':
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									filters: _elm_lang$core$Native_Utils.update(
+										filters,
+										{lastName: _p7._0})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					default:
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'OnChange':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{operation: _p6._0}),
+					{ctor: '[]'});
+			case 'OnSubmit':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{
+						ctor: '::',
+						_0: A2(_user$project$Members_Commands$submit, token, model.operation),
+						_1: {ctor: '[]'}
+					});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							operation: _elm_lang$core$Native_Utils.update(
+								operation,
+								{dateOfBirth: _p6._0})
+						}),
+					{ctor: '[]'});
+		}
 	});
 
+var _user$project$Update$authenticatedUpdate = F2(
+	function (model, update) {
+		var _p0 = model.user;
+		if (_p0.ctor === 'Authenticated') {
+			return _elm_lang$core$Maybe$Just(
+				update(_p0._0));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _user$project$Update$updateMembers = F2(
+	function (action, model) {
+		var next = A2(
+			_user$project$Update$authenticatedUpdate,
+			model,
+			A2(_user$project$Members_Update$update, action, model.members));
+		var _p1 = next;
+		if (_p1.ctor === 'Just') {
+			return A2(
+				_elm_lang$core$Platform_Cmd_ops['!'],
+				_elm_lang$core$Native_Utils.update(
+					model,
+					{members: _p1._0._0}),
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Model$MembersRoute, _p1._0._1),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_elm_lang$core$Platform_Cmd_ops['!'],
+				model,
+				{ctor: '[]'});
+		}
+	});
+var _user$project$Update$openDatepicker = _elm_lang$core$Native_Platform.outgoingPort(
+	'openDatepicker',
+	function (v) {
+		return v;
+	});
+var _user$project$Update$tokenReceived = _elm_lang$core$Native_Platform.outgoingPort(
+	'tokenReceived',
+	function (v) {
+		return v;
+	});
+var _user$project$Update$update = F2(
+	function (action, model) {
+		var _p2 = model;
+		var members = _p2.members;
+		var flags = _p2.flags;
+		var events = _p2.events;
+		var _p3 = action;
+		switch (_p3.ctor) {
+			case 'MembersRoute':
+				return A2(_user$project$Update$updateMembers, _p3._0, model);
+			case 'Login':
+				var _p4 = model.user;
+				if (_p4.ctor === 'Authenticated') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								user: A2(_user$project$Model$User, '', '')
+							}),
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{
+							ctor: '::',
+							_0: A2(_user$project$Login$login, _p4._0, _p4._1),
+							_1: {ctor: '[]'}
+						});
+				}
+			case 'ReceiveToken':
+				if (_p3._0.ctor === 'Ok') {
+					var _p5 = _p3._0._0;
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								user: _user$project$Model$Authenticated(_p5)
+							}),
+						{
+							ctor: '::',
+							_0: _user$project$Update$tokenReceived(_p5),
+							_1: {ctor: '[]'}
+						});
+				} else {
+					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p3._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'OnToggleFlag':
+				var _p6 = _p3._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							flags: _elm_lang$core$Native_Utils.update(
+								flags,
+								{menu: !flags.menu})
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'OnRoute':
+				var _p8 = _p3._0;
+				var _p7 = _p8;
+				switch (_p7.ctor) {
+					case 'AddMember':
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{route: _p8}),
+							{
+								ctor: '::',
+								_0: _user$project$Update$openDatepicker(''),
+								_1: {ctor: '[]'}
+							});
+					case 'EditMember':
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							model,
+							{ctor: '[]'});
+					default:
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{route: _user$project$Model$MembersList}),
+							{ctor: '[]'});
+				}
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{user: _p3._0}),
+					{ctor: '[]'});
+		}
+	});
+
+var _user$project$Main$update = _user$project$Update$update;
+var _user$project$Main$routedView = function (model) {
+	var _p0 = model.route;
+	switch (_p0.ctor) {
+		case 'MembersList':
+			return A2(
+				_elm_lang$html$Html$map,
+				_user$project$Model$MembersRoute,
+				_user$project$Members_List$membersView(model.members));
+		case 'EditMember':
+			return A2(
+				_elm_lang$html$Html$map,
+				_user$project$Model$MembersRoute,
+				_user$project$Members_Form$memberForm(model.members.operation));
+		case 'AddMember':
+			return A2(
+				_elm_lang$html$Html$map,
+				_user$project$Model$MembersRoute,
+				_user$project$Members_Form$memberForm(model.members.operation));
+		default:
+			return _elm_lang$html$Html$text('WIP');
+	}
+};
 var _user$project$Main$drawer = function (toggled) {
 	return A2(
 		_user$project$MDC$persistentDrawer,
@@ -15399,7 +15833,7 @@ var _user$project$Main$drawer = function (toggled) {
 				_user$project$MDC$drawerItem,
 				_user$project$Model$OnRoute(_user$project$Model$MembersList),
 				'view_list',
-				_elm_lang$html$Html$text('Home')),
+				_elm_lang$html$Html$text('Members')),
 			_1: {
 				ctor: '::',
 				_0: A3(
@@ -15409,59 +15843,19 @@ var _user$project$Main$drawer = function (toggled) {
 					_elm_lang$html$Html$text('Add Member')),
 				_1: {
 					ctor: '::',
-					_0: A3(
-						_user$project$MDC$drawerItem,
-						_user$project$Model$OnRoute(
-							_user$project$Model$EditMember(_elm_lang$core$Maybe$Nothing)),
-						'mode_edit',
-						_elm_lang$html$Html$text('Edit Member')),
+					_0: _user$project$MDC$divider,
 					_1: {
 						ctor: '::',
 						_0: A3(
 							_user$project$MDC$drawerItem,
-							_user$project$Model$OnRoute(_user$project$Model$DeleteMember),
-							'delete',
-							_elm_lang$html$Html$text('Delete Member')),
+							_user$project$Model$OnRoute(_user$project$Model$EventsList),
+							'event',
+							_elm_lang$html$Html$text('Events')),
 						_1: {ctor: '[]'}
 					}
 				}
 			}
 		});
-};
-var _user$project$Main$test = F2(
-	function (pattern, input) {
-		return _elm_lang$core$String$isEmpty(input) || A2(
-			_elm_lang$core$Regex$contains,
-			_elm_lang$core$Regex$regex(
-				_elm_lang$core$String$toLower(pattern)),
-			_elm_lang$core$String$toLower(input));
-	});
-var _user$project$Main$filterMembers = F2(
-	function (filters, member) {
-		return A2(_user$project$Main$test, filters.firstName, member.firstName) && A2(_user$project$Main$test, filters.lastName, member.lastName);
-	});
-var _user$project$Main$getMembers = function (_p0) {
-	var _p1 = _p0;
-	return A2(
-		_elm_lang$core$List$filter,
-		_user$project$Main$filterMembers(_p1.filters),
-		_p1.members);
-};
-var _user$project$Main$routedView = function (model) {
-	var _p2 = model.route;
-	switch (_p2.ctor) {
-		case 'MembersList':
-			return A2(
-				_user$project$MembersList$membersView,
-				_user$project$Main$getMembers(model),
-				model.filters);
-		case 'EditMember':
-			return _user$project$Form$memberForm(model.mutate);
-		case 'AddMember':
-			return _user$project$Form$memberForm(model.mutate);
-		default:
-			return _elm_lang$html$Html$text('WIP');
-	}
 };
 var _user$project$Main$toolbar = A2(
 	_user$project$MDC$toolbar,
@@ -15535,317 +15929,62 @@ var _user$project$Main$authenticatedView = function (model) {
 		});
 };
 var _user$project$Main$view = function (model) {
-	var _p3 = _user$project$Login$isAuthenticated(model.user);
-	if (_p3 === true) {
+	var _p1 = _user$project$Login$isAuthenticated(model.user);
+	if (_p1 === true) {
 		return _user$project$Main$authenticatedView(model);
 	} else {
 		return _user$project$Login$loginScreen(model.user);
 	}
 };
-var _user$project$Main$blankMember = A8(
-	_user$project$Members$Member,
-	'',
-	'',
-	'',
-	'',
-	'',
-	false,
-	false,
-	{ctor: '[]'});
-var _user$project$Main$initialModel = {
-	members: {ctor: '[]'},
-	filters: {
-		firstName: '',
-		lastName: '',
-		volunteer: _elm_lang$core$Maybe$Nothing,
-		roles: {ctor: '[]'}
-	},
-	flags: {menu: true},
-	mutate: _user$project$Main$blankMember,
-	route: _user$project$Model$MembersList,
-	user: A2(_user$project$Model$User, '', '')
+var _user$project$Main$initialModel = function (token) {
+	return {
+		members: _user$project$Members_Model$initial,
+		events: _user$project$Events_Model$initial,
+		flags: {menu: true},
+		route: _user$project$Model$MembersList,
+		user: _elm_lang$core$String$isEmpty(token) ? A2(_user$project$Model$User, '', '') : _user$project$Model$Authenticated(token)
+	};
 };
-var _user$project$Main$init = A2(
-	_elm_lang$core$Platform_Cmd_ops['!'],
-	_user$project$Main$initialModel,
-	{ctor: '[]'});
-var _user$project$Main$openDatepicker = _elm_lang$core$Native_Platform.outgoingPort(
-	'openDatepicker',
-	function (v) {
-		return v;
-	});
-var _user$project$Main$update = F2(
-	function (action, model) {
-		var _p4 = model;
-		var members = _p4.members;
-		var filters = _p4.filters;
-		var flags = _p4.flags;
-		var mutate = _p4.mutate;
-		var _p5 = action;
-		switch (_p5.ctor) {
-			case 'ReceiveMembers':
-				if (_p5._0.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{members: _p5._0._0}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p5._0._0);
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'ReceiveMember':
-				if (_p5._0.ctor === 'Ok') {
-					var _p8 = _p5._0._0;
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								members: {
-									ctor: '::',
-									_0: _p8,
-									_1: A2(
-										_elm_lang$core$List$filter,
-										function (_p6) {
-											var _p7 = _p6;
-											return !_elm_lang$core$Native_Utils.eq(_p7.id, _p8.id);
-										},
-										members)
-								}
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p5._0._0);
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'Login':
-				var _p9 = model.user;
-				if (_p9.ctor === 'Authenticated') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								user: A2(_user$project$Model$User, '', '')
-							}),
-						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{
-							ctor: '::',
-							_0: A2(_user$project$Login$login, _p9._0, _p9._1),
-							_1: {ctor: '[]'}
-						});
-				}
-			case 'ReceiveToken':
-				if (_p5._0.ctor === 'Ok') {
-					var _p10 = _p5._0._0;
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								user: _user$project$Model$Authenticated(_p10)
-							}),
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$http$Http$send,
-								_user$project$Model$ReceiveMembers,
-								_user$project$Members$members(_p10)),
-							_1: {ctor: '[]'}
-						});
-				} else {
-					var foo = A2(_elm_lang$core$Debug$log, 'Oops', _p5._0._0);
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'OnToggleFlag':
-				var _p11 = _p5._0;
+var _user$project$Main$init = function (_p2) {
+	var _p3 = _p2;
+	var _p5 = _p3.token;
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		_user$project$Main$initialModel(_p5),
+		function () {
+			var _p4 = _elm_lang$core$String$isEmpty(_p5);
+			if (_p4 === true) {
+				return {ctor: '[]'};
+			} else {
 				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							flags: _elm_lang$core$Native_Utils.update(
-								flags,
-								{menu: !flags.menu})
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Platform_Cmd$map,
+						_user$project$Model$MembersRoute,
+						_user$project$Members_Commands$fetch(_p5)),
+					_1: {ctor: '[]'}
 				};
-			case 'OnFilter':
-				var _p12 = _p5._0;
-				switch (_p12.ctor) {
-					case 'ByFirstName':
-						return {
-							ctor: '_Tuple2',
-							_0: _elm_lang$core$Native_Utils.update(
-								model,
-								{
-									filters: _elm_lang$core$Native_Utils.update(
-										filters,
-										{firstName: _p12._0})
-								}),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					case 'ByLastName':
-						return {
-							ctor: '_Tuple2',
-							_0: _elm_lang$core$Native_Utils.update(
-								model,
-								{
-									filters: _elm_lang$core$Native_Utils.update(
-										filters,
-										{lastName: _p12._0})
-								}),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					default:
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'OnEdit':
-				var _p13 = _p5._0;
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							mutate: _p13,
-							route: _user$project$Model$EditMember(
-								_elm_lang$core$Maybe$Just(_p13))
-						}),
-					{
-						ctor: '::',
-						_0: _user$project$Main$openDatepicker(_p13.dateOfBirth),
-						_1: {ctor: '[]'}
-					});
-			case 'OnChange':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{mutate: _p5._0}),
-					{ctor: '[]'});
-			case 'OnSubmit':
-				var _p14 = model.user;
-				if (_p14.ctor === 'Authenticated') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{
-							ctor: '::',
-							_0: function () {
-								var httpTask = A2(
-									_elm_lang$core$Task$andThen,
-									function (date) {
-										return _elm_lang$http$Http$toTask(
-											A3(_user$project$SubmitMember$submit, _p14._0, date, model.mutate));
-									},
-									_elm_lang$core$Date$now);
-								return A2(_elm_lang$core$Task$attempt, _user$project$Model$ReceiveMember, httpTask);
-							}(),
-							_1: {ctor: '[]'}
-						});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
-				}
-			case 'OnRoute':
-				var _p18 = _p5._0;
-				var _p15 = _p18;
-				switch (_p15.ctor) {
-					case 'AddMember':
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{route: _p18, mutate: _user$project$Main$blankMember}),
-							{
-								ctor: '::',
-								_0: _user$project$Main$openDatepicker(mutate.dateOfBirth),
-								_1: {ctor: '[]'}
-							});
-					case 'EditMember':
-						var _p16 = _p15._0;
-						if (_p16.ctor === 'Just') {
-							var _p17 = _p16._0;
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{route: _p18, mutate: _p17}),
-								{
-									ctor: '::',
-									_0: _user$project$Main$openDatepicker(_p17.dateOfBirth),
-									_1: {ctor: '[]'}
-								});
-						} else {
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{route: _p18}),
-								{
-									ctor: '::',
-									_0: _user$project$Main$openDatepicker(mutate.dateOfBirth),
-									_1: {ctor: '[]'}
-								});
-						}
-					default:
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{route: _user$project$Model$MembersList}),
-							{ctor: '[]'});
-				}
-			case 'OpenDatePicker':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{
-						ctor: '::',
-						_0: _user$project$Main$openDatepicker(_p5._0),
-						_1: {ctor: '[]'}
-					});
-			case 'UpdateDateValue':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							mutate: _elm_lang$core$Native_Utils.update(
-								mutate,
-								{dateOfBirth: _p5._0})
-						}),
-					{ctor: '[]'});
-			default:
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{user: _p5._0}),
-					{ctor: '[]'});
-		}
-	});
-var _user$project$Main$changeDateValue = _elm_lang$core$Native_Platform.incomingPort('changeDateValue', _elm_lang$core$Json_Decode$string);
-var _user$project$Main$subscriptions = function (model) {
-	return _user$project$Main$changeDateValue(_user$project$Model$UpdateDateValue);
+			}
+		}());
 };
-var _user$project$Main$main = _elm_lang$html$Html$program(
-	{init: _user$project$Main$init, update: _user$project$Main$update, view: _user$project$Main$view, subscriptions: _user$project$Main$subscriptions})();
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
+	{init: _user$project$Main$init, update: _user$project$Main$update, view: _user$project$Main$view, subscriptions: _user$project$Main$subscriptions})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (token) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{token: token});
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'token', _elm_lang$core$Json_Decode$string)));
+var _user$project$Main$changeDateValue = _elm_lang$core$Native_Platform.incomingPort('changeDateValue', _elm_lang$core$Json_Decode$string);
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Model.FilterBy":{"args":[],"tags":{"ByRole":["Members.Role"],"ByVolunteer":["Maybe.Maybe","Bool"],"ByFirstName":["String"],"ByLastName":["String"]}},"Model.Flag":{"args":[],"tags":{"Menu":[]}},"Model.Route":{"args":[],"tags":{"DeleteMember":[],"MembersList":[],"EditMember":["Maybe.Maybe Members.Member"],"AddMember":[]}},"Model.Msg":{"args":[],"tags":{"OnToggleFlag":["Model.Flag"],"OnChange":["Members.Member"],"OnSubmit":[],"OnRoute":["Model.Route"],"UpdateDateValue":["String"],"OnFilter":["Model.FilterBy"],"OnEdit":["Members.Member"],"UpdateUser":["Model.User"],"ReceiveMembers":["Result.Result Http.Error Members.Members"],"ReceiveToken":["Result.Result Http.Error String"],"Login":[],"ReceiveMember":["Result.Result Http.Error Members.Member"],"OpenDatePicker":["String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Model.User":{"args":[],"tags":{"User":["String","String"],"Authenticated":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Members.Role":{"args":[],"tags":{"Other":["String"],"SetUp":[],"Maintenance":[],"FrontOfHouse":[],"WhateverMamaNeeds":[],"BarTending":[],"Tech":[],"Cleaning":[],"Floating":[],"Security":[]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Members.Members":{"args":[],"type":"List Members.Member"},"Members.Roles":{"args":[],"type":"List Members.Role"},"Members.Member":{"args":[],"type":"{ id : String , firstName : String , lastName : String , email : String , dateOfBirth : String , payed : Bool , volunteer : Bool , roles : Members.Roles }"}},"message":"Model.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Model.Flag":{"args":[],"tags":{"Menu":[]}},"Model.Route":{"args":[],"tags":{"DeleteEvent":["Events.Model.Event"],"EditEvent":["Events.Model.Event"],"DeleteMember":["Members.Model.Member"],"MembersList":[],"EditMember":["Members.Model.Member"],"AddEvent":[],"EventsList":[],"AddMember":[]}},"Members.Model.Role":{"args":[],"tags":{"Other":["String"],"SetUp":[],"Maintenance":[],"FrontOfHouse":[],"WhateverMamaNeeds":[],"BarTending":[],"Tech":[],"Cleaning":[],"Floating":[],"Security":[]}},"Model.Msg":{"args":[],"tags":{"OnToggleFlag":["Model.Flag"],"OnRoute":["Model.Route"],"MembersRoute":["Members.Actions.MembersAction"],"UpdateUser":["Model.User"],"ReceiveToken":["Result.Result Http.Error String"],"Login":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Members.Actions.FilterBy":{"args":[],"tags":{"ByRole":["Members.Model.Role"],"ByVolunteer":["Maybe.Maybe","Bool"],"ByFirstName":["String"],"ByLastName":["String"]}},"Model.User":{"args":[],"tags":{"User":["String","String"],"Authenticated":["String"]}},"Members.Actions.MembersAction":{"args":[],"tags":{"OnChange":["Members.Model.Member"],"OnSubmit":[],"UpdateDateValue":["String"],"OnFilter":["Members.Actions.FilterBy"],"ReceiveMembers":["Result.Result Http.Error Members.Model.Members"],"ReceiveMember":["Result.Result Http.Error Members.Model.Member"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Events.Model.Event":{"args":[],"type":"{ id : String, name : String, date : String }"},"Members.Model.Member":{"args":[],"type":"{ id : String , firstName : String , lastName : String , email : String , dateOfBirth : String , payed : Bool , volunteer : Bool , roles : Members.Model.Roles }"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Members.Model.Members":{"args":[],"type":"List Members.Model.Member"},"Members.Model.Roles":{"args":[],"type":"List Members.Model.Role"}},"message":"Model.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

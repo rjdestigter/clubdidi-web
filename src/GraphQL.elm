@@ -7,9 +7,11 @@ module GraphQL
         )
 
 {-| This library provides support functions used by
-    [elm-graphql](https://github.com/jahewson/elm-graphql), the GraphQL code generator for Elm.
+[elm-graphql](https://github.com/jahewson/elm-graphql), the GraphQL code generator for Elm.
+
 
 # Helper functions
+
 @docs query, mutation, apply, maybeEncode
 
 -}
@@ -17,33 +19,34 @@ module GraphQL
 import Json.Decode exposing (..)
 import Json.Encode exposing (..)
 import Http exposing (..)
+import Env exposing (current)
 
 
 {-| Executes a GraphQL query.
 -}
-query : String -> String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
-query method url token query operation variables decoder =
-    fetch method url token query operation variables decoder
+query : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
+query method token query operation variables decoder =
+    fetch method token query operation variables decoder
 
 
 {-| Executes a GraphQL mutation.
 -}
-mutation : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
-mutation url token query operation variables decoder =
-    fetch "POST" url token query operation variables decoder
+mutation : String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
+mutation token query operation variables decoder =
+    fetch "POST" token query operation variables decoder
 
 
-fetch : String -> String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
-fetch verb url token query operation variables decoder =
+fetch : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Request a
+fetch verb token query operation variables decoder =
     let
         request =
-            buildRequestWithBody "POST" url token query operation variables decoder
+            buildRequestWithBody "POST" token query operation variables decoder
     in
         request
 
 
-buildRequestWithBody : String -> String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Http.Request a
-buildRequestWithBody verb url token query operation variables decoder =
+buildRequestWithBody : String -> String -> String -> String -> Json.Encode.Value -> Decoder a -> Http.Request a
+buildRequestWithBody verb token query operation variables decoder =
     let
         params =
             Json.Encode.object
@@ -56,9 +59,9 @@ buildRequestWithBody verb url token query operation variables decoder =
             { method = verb
             , headers =
                 [ (header "Accept" "application/json")
-                , (header "Authorization" (String.join " " ["Bearer", token]))
+                , (header "Authorization" (String.join " " [ "Bearer", token ]))
                 ]
-            , url = url
+            , url = current
             , body = Http.jsonBody <| params
             , expect = expectJson decoder
             , timeout = Nothing
@@ -71,7 +74,8 @@ queryResult decoder =
     oneOf
         [ at [ "data" ] decoder
         , fail "Expected 'data' field"
-          -- todo: report failure reason from server
+
+        -- todo: report failure reason from server
         ]
 
 

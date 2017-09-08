@@ -64,15 +64,29 @@ toolbar title onToggle =
         ]
 
 
+iconWithClass : String -> String -> Html msg
+iconWithClass className name =
+    i [ class (String.append className " material-icons"), ariaHidden ]
+        [ text name ]
+
+
+icon : String -> Html msg
+icon =
+    iconWithClass ""
+
+
 drawerItem : msg -> String -> Html msg -> Html msg
 drawerItem msg icon child =
     a
         [ class "mdc-list-item mdc-persistent-drawer--selected", href "#", onClick msg ]
-        [ i
-            [ class "material-icons mdc-list-item__start-detail", ariaHidden ]
-            [ text icon ]
+        [ iconWithClass "mdc-list-item__start-detail" icon
         , child
         ]
+
+
+divider : Html msg
+divider =
+    H.hr [ A.class "mdc-list-divider" ] []
 
 
 persistentDrawer : Bool -> List (H.Html a) -> H.Html a
