@@ -6,6 +6,7 @@ module Members.Model
         , Role(..)
         , Model
         , Filters
+        , Route(..)
         , blank
         , initial
         )
@@ -51,11 +52,17 @@ type alias Filters =
     , roles : List Role
     }
 
+type Route
+  = Index
+  | Add
+  | Edit Member
+  | Delete Member
 
 type alias Model =
     { members : Members
     , operation : Member
     , filters : Filters
+    , route : Route
     }
 
 
@@ -69,4 +76,5 @@ initial =
     { members = []
     , filters = Filters "" "" Nothing []
     , operation = blank
+    , route = Index
     }

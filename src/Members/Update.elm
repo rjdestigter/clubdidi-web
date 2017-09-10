@@ -1,13 +1,11 @@
-module Members.Update exposing (update)
+module Members.Update exposing (update, onDate)
 
 import Http
-import Task
-import Date
-import Members.Model exposing (Member, Members, Model)
+import Members.Model exposing (Member, Members, Model, Route(..))
 import Members.Actions exposing (MembersAction(..), FilterBy(..))
-import Members.Submit
 import Members.Commands exposing (submit)
-
+import Debug
+import Ports exposing (onRenderDatepicker)
 
 updateMembers : Result Http.Error Members -> Members
 updateMembers response =
@@ -16,6 +14,9 @@ updateMembers response =
             members
 
         Err e ->
+          let
+            foo = Debug.log "error" e
+          in
             []
 
 
@@ -26,6 +27,9 @@ updateMember response members =
             member :: (List.filter (\{ id } -> id /= member.id) members)
 
         Err e ->
+          let
+            foo = Debug.log "error" e
+          in
             members
 
 
@@ -38,6 +42,9 @@ receiveMember : Result Http.Error Member -> Model -> ( Model, Cmd MembersAction 
 receiveMember response model =
     { model | members = updateMember response model.members } ! []
 
+
+onDate : String -> MembersAction
+onDate date = OnChangeDateOfBirth date
 
 update : MembersAction -> Model -> String -> ( Model, Cmd MembersAction )
 update action model token =
@@ -62,6 +69,12 @@ update action model token =
 
                     _ ->
                         ( model, Cmd.none )
+            OnRoute route ->
+              case route of
+                Add -> { model | operation = Members.Model.blank, route = route } ! [onRenderDatepicker ""]
+                Edit member -> { model | operation = member, route = route } ! [onRenderDatepicker member.dateOfBirth]
+                Delete member -> { model | operation = member, route = route } ! []
+                _ -> { model | route = route } ! []
 
             OnChange member ->
                 { model | operation = member } ! []
@@ -70,5 +83,5 @@ update action model token =
                 model
                     ! [ Members.Commands.submit token model.operation ]
 
-            UpdateDateValue dateString ->
-                { model | operation = { operation | dateOfBirth = dateString } } ! []
+            OnChangeDateOfBirth date ->
+                { model | operation = { operation | dateOfBirth = date } } ! []

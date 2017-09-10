@@ -1,15 +1,10 @@
 port module Update exposing (update)
 
+import Router.Model exposing (Route(..))
 import Members.Update
-import Members.Model exposing (Member, Members)
-import Members.Actions exposing (MembersAction)
-import Members
+import Events.Update
 import Model exposing (..)
-import Http
 import Login exposing (..)
-import Task
-import Members.Submit
-import Date
 
 
 authenticatedUpdate : Model -> (String -> ( m, Cmd a )) -> Maybe ( m, Cmd a )
@@ -29,7 +24,19 @@ updateMembers action model =
     in
         case next of
             Just ( members, commands ) ->
-                { model | members = members } ! [ Cmd.map MembersRoute commands ]
+                { model | route = MembersRoute, members = members } ! [ Cmd.map MembersApp commands ]
+
+            Nothing ->
+                model ! []
+
+updateEvents action model =
+    let
+        next =
+            Events.Update.update action model.events |> authenticatedUpdate model
+    in
+        case next of
+            Just ( events, commands ) ->
+                { model | route = EventsRoute, events = events } ! [ Cmd.map EventsApp commands ]
 
             Nothing ->
                 model ! []
@@ -42,8 +49,19 @@ update action model =
             model
     in
         case action of
-            MembersRoute membersAction ->
+            MembersApp membersAction ->
                 updateMembers membersAction model
+
+            EventsApp eventsAction ->
+                updateEvents eventsAction model
+
+            OnChangeDate date ->
+              let
+                action2 = case model.route of
+                  MembersRoute -> Members.Update.onDate date |> MembersApp
+                  EventsRoute -> Events.Update.onDate date |> EventsApp
+              in
+                update action2 model
 
             Login ->
                 case model.user of
@@ -73,23 +91,23 @@ update action model =
                     Menu ->
                         ( { model | flags = { flags | menu = not flags.menu } }, Cmd.none )
 
-            OnRoute route ->
-                case route of
-                    AddMember ->
-                        { model | route = route } ! [ openDatepicker "" ]
-
-                    -- [ openDatepicker mutate.dateOfBirth ]
-                    EditMember maybeMember ->
-                        model ! []
-
-                    -- case maybeMember of
-                    --     Just member ->
-                    --         { model | route = route, mutate = member } ! [ openDatepicker member.dateOfBirth ]
-                    --
-                    --     Nothing ->
-                    --         { model | route = route } ! [ openDatepicker mutate.dateOfBirth ]
-                    _ ->
-                        { model | route = MembersList } ! []
+            -- OnRoute route ->
+            --     case route of
+            --         AddMember ->
+            --             { model | route = route } ! [ openDatepicker "" ]
+            --
+            --         -- [ openDatepicker mutate.dateOfBirth ]
+            --         EditMember maybeMember ->
+            --             model ! []
+            --
+            --         -- case maybeMember of
+            --         --     Just member ->
+            --         --         { model | route = route, mutate = member } ! [ openDatepicker member.dateOfBirth ]
+            --         --
+            --         --     Nothing ->
+            --         --         { model | route = route } ! [ openDatepicker mutate.dateOfBirth ]
+            --         _ ->
+            --             { model | route = MembersList } ! []
 
             UpdateUser user ->
                 { model | user = user } ! []

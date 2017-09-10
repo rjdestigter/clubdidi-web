@@ -1,13 +1,14 @@
-module Events.List exposing (eventsView)
+module Events.List exposing (render)
 
-import Model exposing (..)
-import Events.Model exposing (Events, Event)
+import Events.Model exposing (Model, Events, Event, Filters)
+import Events.Actions exposing (EventsAction(..), FilterBy(..))
+
 import Html exposing (Html, table, tr, td, text)
 import Html.Attributes exposing (style, class, colspan)
 import Date
 
 
-cell : List (Html Msg) -> Html Msg
+cell : List (Html EventsAction) -> Html EventsAction
 cell =
     td [ style [ ( "padding", "10px" ), ( "white-space", "nowrap" ) ] ]
 
@@ -22,7 +23,7 @@ date value =
             ""
 
 
-eventRow : Event -> Html Msg
+eventRow : Event -> Html EventsAction
 eventRow event =
     tr
         [ style
@@ -36,8 +37,8 @@ eventRow event =
         ]
 
 
-eventsView : Events -> Filters -> Html Msg
-eventsView events filters =
+render : Model -> Html EventsAction
+render { events, filters } =
     events
         |> List.map eventRow
         |> \rows ->

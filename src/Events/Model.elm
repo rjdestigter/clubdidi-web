@@ -1,4 +1,12 @@
-module Events.Model exposing (Events, Event, Model, blank, initial)
+module Events.Model exposing
+  ( Events
+  , Event
+  , Model
+  , Filters
+  , Route(..)
+  , blank
+  , initial
+  )
 
 
 type alias Event =
@@ -11,6 +19,11 @@ type alias Event =
 type alias Events =
     List Event
 
+type Route
+  = Index
+  | Add
+  | Edit Event
+  | Delete Event
 
 type alias Filters =
     { name : String
@@ -18,9 +31,10 @@ type alias Filters =
 
 
 type alias Model =
-    { events : List Events
+    { events : Events
     , operation : Event
     , filters : Filters
+    , route : Route
     }
 
 
@@ -34,4 +48,5 @@ initial =
     { events = []
     , filters = Filters ""
     , operation = blank
+    , route = Index
     }

@@ -1,6 +1,6 @@
 module Members.Actions exposing (MembersAction(..), FilterBy(..))
 
-import Members.Model exposing (Members, Member, Role)
+import Members.Model exposing (Members, Member, Role, Route)
 import Http
 
 
@@ -16,5 +16,6 @@ type MembersAction
     | ReceiveMember (Result Http.Error Member)
     | OnFilter FilterBy
     | OnChange Member
+    | OnChangeDateOfBirth String
     | OnSubmit
-    | UpdateDateValue String
+    | OnRoute Route

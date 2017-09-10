@@ -1,4 +1,4 @@
-module Members.Form exposing (memberForm)
+module Members.Form exposing (render)
 
 import Members.Model exposing (Member, Role(..))
 import Members.Actions exposing (MembersAction(..))
@@ -93,12 +93,12 @@ radio label checked =
         ]
 
 
-memberForm : Member -> Html MembersAction
-memberForm member =
+render : Member -> Html MembersAction
+render member =
     form [ class "mdc-card", style [ ( "max-width", "800px" ), ( "margin", "15px" ), ( "padding", "15px" ) ] ]
         [ textfield member.firstName "First Name" (onChangeFirstName member) |> formField
         , textfield member.lastName "Last Name" (onChangeLastName member) |> formField
-        , textfield member.email "E-mail" (onChangeEmail member) |> formField
+        , MDC.input "email" member.email "E-mail" (onChangeEmail member) |> formField
         , datepicker member.dateOfBirth "Date of Birth" (onChangeDOB member) |> formField
         , div []
             [ H.label [] [ text "Volunteer" ]

@@ -1,12 +1,12 @@
-module Members.List exposing (membersView)
+module Members.List exposing (render)
 
-import Members.Model exposing (Model, Members, Member, Filters)
+import Members.Model exposing (Model, Members, Member, Filters, Route (..))
 import Members.Actions exposing (MembersAction(..), FilterBy(..))
-import Html exposing (Html, table, tr, td, text)
+import Html exposing (Html, table, tr, td, text, div)
 import Html.Attributes exposing (style, class, colspan)
 import Html.Events exposing (onClick)
 import Date
-import MDC exposing (textfield)
+import MDC exposing (textfield, icon)
 import Utils exposing (test)
 
 
@@ -54,29 +54,25 @@ memberRow member =
         , cell [ member.dateOfBirth |> dob |> text ]
         , cell
             [ (if member.payed then
-                "Yes"
+                text ""
                else
-                "No"
+                icon "money_off"
               )
-                |> text
             ]
         , td [ style [ ( "padding", "5px" ) ] ]
             [ (if member.volunteer then
-                "Yes"
+                icon "check"
                else
-                "No"
+                text ""
               )
-                |> text
             ]
         , td [ style [ ( "padding", "5px" ) ] ]
-            [ (if member.volunteer then
-                member.roles
-                    |> List.map toString
-                    |> String.join ", "
-               else
-                ""
-              )
-                |> text
+            [
+              div [ onClick (OnRoute (Edit member))] [ icon "mode_edit"]
+            ]
+        , td [ style [ ( "padding", "5px" ) ] ]
+            [
+              div [ onClick (OnRoute (Delete member))] [ icon "delete"]
             ]
         ]
 
@@ -105,8 +101,8 @@ filterRow filters =
         ]
 
 
-membersView : Model -> Html MembersAction
-membersView { members, filters } =
+render : Model -> Html MembersAction
+render { members, filters } =
     members
         |> getMembers filters
         |> List.map memberRow

@@ -3,13 +3,14 @@ port module Main exposing (..)
 import Html as Html
 import Html exposing (Html, node, div, header, section, a, span, ul, li, button, text, table, tr, td)
 import Html.Attributes as Attr exposing (attribute, class, href, style)
-import Members.Model exposing (Member, Members, Role)
+import Members.Model
+import Router.Model exposing(..)
 import Members.Commands
 import Events.Model
 import MDC exposing (..)
 import Model exposing (..)
-import Members.List exposing (membersView)
-import Members.Form exposing (memberForm)
+import Members.View
+import Events.View
 import Login exposing (..)
 import Update
 
@@ -20,12 +21,7 @@ main =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
-
-
-
--- changeDateValue UpdateDateValue
+subscriptions model = onChangeDate OnChangeDate
 
 
 initialModel : String -> Model
@@ -35,7 +31,7 @@ initialModel token =
     , flags =
         { menu = True
         }
-    , route = MembersList
+    , route = MembersRoute
     , user =
         if String.isEmpty token then
             User "" ""
@@ -52,7 +48,7 @@ init { token } =
                 []
 
             False ->
-                [ Cmd.map MembersRoute (Members.Commands.fetch token) ]
+                [ Cmd.map MembersApp (Members.Commands.fetch token) ]
 
 
 toolbar : Html Msg
@@ -60,34 +56,27 @@ toolbar =
     MDC.toolbar "Club Didi" (OnToggleFlag Menu)
 
 
-drawer : Bool -> Html Msg
-drawer toggled =
-    persistentDrawer toggled
-        [ drawerItem (OnRoute MembersList) "view_list" (text "Members")
-        , drawerItem (OnRoute AddMember) "person_add" (text "Add Member")
-
-        -- , drawerItem (OnRoute (EditMember Nothing)) "mode_edit" (text "Edit Member")
-        -- , drawerItem (OnRoute DeleteMember) "delete" (text "Delete Member")
-        , divider
-        , drawerItem (OnRoute EventsList) "event" (text "Events")
-        ]
+drawer : Bool -> Model -> Html Msg
+drawer toggled model =
+    List.concat
+    [ Members.View.menuItems model.members |> List.map (Html.map MembersApp)
+    , [ divider ]
+    , Events.View.menuItems model.events |> List.map (Html.map EventsApp)
+    , [ divider ]
+    ]
+     |> persistentDrawer toggled
 
 
 routedView : Model -> Html Msg
 routedView model =
     case model.route of
-        MembersList ->
-            membersView model.members
-                |> Html.map MembersRoute
+        MembersRoute ->
+            Members.View.render model.members
+                |> Html.map MembersApp
 
-        EditMember _ ->
-            memberForm model.members.operation |> Html.map MembersRoute
-
-        AddMember ->
-            memberForm model.members.operation |> Html.map MembersRoute
-
-        _ ->
-            text "WIP"
+        EventsRoute ->
+            Events.View.render model.events
+                |> Html.map EventsApp
 
 
 view : Model -> Html Msg
@@ -113,7 +102,7 @@ authenticatedView model =
             , ( "display", "flex" )
             ]
         ]
-        [ drawer model.flags.menu
+        [ drawer model.flags.menu model
         , div
             [ style [ ( "flex", "1 1 auto" ) ]
             ]
@@ -126,4 +115,4 @@ update =
     Update.update
 
 
-port changeDateValue : (String -> msg) -> Sub msg
+port onChangeDate : (String -> msg) -> Sub msg

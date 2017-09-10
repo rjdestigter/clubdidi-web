@@ -1,33 +1,13 @@
 module Events.Submit exposing (submit)
 
-import GraphQL exposing (apply, maybeEncode)
 import Http
 import Json.Decode exposing (..)
-import Json.Encode as Encode exposing (encode)
-import Events exposing (Event, eventDecoder)
 import Date exposing (Date, Month(..))
-
-
-date : String -> String
-date dob =
-    if String.isEmpty dob |> not then
-        let
-            yyymmdd =
-                dob |> String.split "/" |> List.reverse |> String.join "/"
-        in
-            case Date.fromString yyymmdd of
-                Ok date ->
-                    yyymmdd
-
-                _ ->
-                    ""
-    else
-        ""
-
-
-dateToString : Date -> String
-dateToString date =
-    String.join "-" [ Date.year date |> toString, Date.month date |> monthToInt, Date.day date |> toString ]
+import Json.Encode as Encode exposing (encode)
+import GraphQL exposing (apply, maybeEncode)
+import Events.Model exposing (Event)
+import Events.Decoders exposing (eventDecoder)
+import Events.Encoders exposing (dateEncoder)
 
 
 submit : String -> Date -> Event -> Http.Request Event
@@ -53,7 +33,7 @@ submit token date event =
         let
             encoders =
                 [ ( "name", Encode.string event.name )
-                , ( "date", Encode.string event.date )
+                , ( "date", dateEncoder event.date )
                 ]
 
             graphQLParams =

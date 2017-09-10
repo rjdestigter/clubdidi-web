@@ -1,8 +1,10 @@
 module Model exposing (..)
 
-import Members.Model exposing (Member)
+import Members.Model
 import Members.Actions exposing (MembersAction)
-import Events.Model exposing (Event)
+import Events.Model
+import Events.Actions exposing (EventsAction)
+import Router.Model exposing (Route)
 import Http
 
 
@@ -11,26 +13,13 @@ type Flag
 
 
 type Msg
-    = MembersRoute MembersAction
+    = MembersApp MembersAction
+    | EventsApp EventsAction
     | OnToggleFlag Flag
-    | OnRoute Route
     | UpdateUser User
     | Login
     | ReceiveToken (Result Http.Error String)
-
-
-type
-    Route
-    -- Members
-    = MembersList
-    | AddMember
-    | EditMember Member
-    | DeleteMember Member
-      -- Events
-    | EventsList
-    | AddEvent
-    | EditEvent Event
-    | DeleteEvent Event
+    | OnChangeDate String
 
 
 type User

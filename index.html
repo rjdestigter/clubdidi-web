@@ -36,37 +36,49 @@
     <script src="datepicker.en.js"></script>
     <script src="main.js"></script>
       <script>
-        var node = document.getElementById('body');
-        var token = localStorage.getItem('token') || ""
-        var app = Elm.Main.embed(node, { token: token });
+      var node = document.getElementById('body');
+var token = localStorage.getItem('token') || '';
+var app = Elm.Main.embed(node, { token: token });
 
-        app.ports.tokenReceived.subscribe(function(token) {
-          localStorage.setItem('token', token)
-        })
+function toggleDatePicker(date) {
+  setTimeout(function() {
+    var picker = $('#date-input')
+      .datepicker({
+        showOn: 'focus',
+        onSelect: sendDate,
+        dateFormat: 'dd/mm/yyyy',
+      })
+      .data('datepicker');
 
-        app.ports.openDatepicker.subscribe(function(date) {
-          setTimeout (function () {
+    if (date) {
+      var dateObj = new Date(
+        date
+          .split('/')
+          .reverse()
+          .join('/'),
+      );
 
-            var picker = $("#date-input").datepicker({
-              showOn: "focus",
-              onSelect: sendDate,
-              dateFormat: 'dd/mm/yyyy',
-            }).data('datepicker')
+      if (dateObj.toString() !== 'Invalid Date') {
+        picker.selectDate(dateObj);
+      } else {
+        picker.clear();
+      }
+    } else {
+      picker.clear();
+    }
+  }, 500);
+}
 
-            if (date) {
-              var dateObj = new Date(date.split("/").reverse().join("/"))
+app.ports.tokenReceived.subscribe(function(token) {
+  localStorage.setItem('token', token);
+});
 
-              if (dateObj.toString() !== "Invalid Date") {
-                picker.selectDate(dateObj)
-              }
-            }
-          }, 500)
-        });
+app.ports.openDatepicker.subscribe(toggleDatePicker);
+app.ports.onRenderDatepicker.subscribe(toggleDatePicker);
 
-        function sendDate (dateString) {
-          debugger
-          app.ports.changeDateValue.send(dateString)
-        }
-      </script>
+function sendDate(dateString) {
+  app.ports.onChangeDate.send(dateString);
+}
+</script>
   </body>
 </html>
