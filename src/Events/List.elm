@@ -1,10 +1,12 @@
 module Events.List exposing (render)
 
-import Events.Model exposing (Model, Events, Event, Filters)
+import Events.Model exposing (Model, Events, Event, Filters, Route(..))
 import Events.Actions exposing (EventsAction(..), FilterBy(..))
 
-import Html exposing (Html, table, tr, td, text)
-import Html.Attributes exposing (style, class, colspan)
+import Html as H exposing (Html, table, tr, td, text)
+import Html.Attributes as A exposing (style, class, colspan)
+import Html.Events as E
+import MDC
 import Date
 
 
@@ -34,6 +36,14 @@ eventRow event =
         ]
         [ cell [ text event.name ]
         , cell [ event.date |> date |> text ]
+        , td [ style [ ( "padding", "5px" ) ] ]
+            [
+              H.div [ E.onClick (OnRoute (Edit event))] [ MDC.icon "mode_edit"]
+            ]
+        , td [ style [ ( "padding", "5px" ) ] ]
+            [
+              H.div [ E.onClick (OnRoute (Delete event))] [ MDC.icon "delete"]
+            ]
         ]
 
 

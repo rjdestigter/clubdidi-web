@@ -28,6 +28,7 @@ initialModel : String -> Model
 initialModel token =
     { members = Members.Model.initial
     , events = Events.Model.initial
+    , attendance = []
     , flags =
         { menu = True
         }

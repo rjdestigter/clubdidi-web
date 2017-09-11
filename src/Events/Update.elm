@@ -68,7 +68,7 @@ update action model token =
                 Add -> { model | operation = Events.Model.blank, route = route } ! [onRenderDatepicker ""]
                 Edit event -> { model | operation = event, route = route } ! [onRenderDatepicker event.date]
                 Delete event -> { model | operation = event, route = route } ! []
-                _ -> { model | route = route } ! []
+                _ -> { model | route = route } ! [ Events.Commands.fetch token ]
 
             OnChange event ->
                 { model | operation = event } ! []

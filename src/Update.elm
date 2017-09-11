@@ -3,6 +3,7 @@ port module Update exposing (update)
 import Router.Model exposing (Route(..))
 import Members.Update
 import Events.Update
+import Attendance.Update
 import Model exposing (..)
 import Login exposing (..)
 
@@ -41,6 +42,18 @@ updateEvents action model =
             Nothing ->
                 model ! []
 
+updateAttendance action model =
+    let
+        next =
+            Attendance.Update.update action model.attendance |> authenticatedUpdate model
+    in
+        case next of
+            Just ( attendance, commands ) ->
+                { model, attendance = attendance } ! [ Cmd.map AttendanceApp commands ]
+
+            Nothing ->
+                model ! []
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
@@ -54,6 +67,9 @@ update action model =
 
             EventsApp eventsAction ->
                 updateEvents eventsAction model
+
+            AttendanceApp attendanceAction ->
+                updateAttendance attendanceAction model
 
             OnChangeDate date ->
               let

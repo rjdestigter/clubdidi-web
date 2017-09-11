@@ -13536,6 +13536,12 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
+var _user$project$Attendance_Model$initial = {ctor: '[]'};
+var _user$project$Attendance_Model$Attendance = F2(
+	function (a, b) {
+		return {ctor: 'Attendance', _0: a, _1: b};
+	});
+
 var _user$project$Env$path = '/graphql';
 var _user$project$Env$digitalocean = '138.197.161.149:8080';
 var _user$project$Env$localhost = 'localhost:8080';
@@ -14546,7 +14552,73 @@ var _user$project$Events_List$eventRow = function (event) {
 							_user$project$Events_List$date(event.date)),
 						_1: {ctor: '[]'}
 					}),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(
+								{
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(
+										_user$project$Events_Actions$OnRoute(
+											_user$project$Events_Model$Edit(event))),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _user$project$MDC$icon('mode_edit'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$td,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Events_Actions$OnRoute(
+												_user$project$Events_Model$Delete(event))),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _user$project$MDC$icon('delete'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
 			}
 		});
 };
@@ -14700,7 +14772,11 @@ var _user$project$Events_Update$update = F3(
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{route: _p10}),
-							{ctor: '[]'});
+							{
+								ctor: '::',
+								_0: _user$project$Events_Commands$fetch(token),
+								_1: {ctor: '[]'}
+							});
 				}
 			case 'OnChange':
 				return A2(
@@ -14855,9 +14931,9 @@ var _user$project$Members_Actions$ReceiveMembers = function (a) {
 var _user$project$Router_Model$EventsRoute = {ctor: 'EventsRoute'};
 var _user$project$Router_Model$MembersRoute = {ctor: 'MembersRoute'};
 
-var _user$project$Model$Model = F5(
-	function (a, b, c, d, e) {
-		return {members: a, events: b, flags: c, route: d, user: e};
+var _user$project$Model$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {members: a, events: b, attendance: c, flags: d, route: e, user: f};
 	});
 var _user$project$Model$Menu = {ctor: 'Menu'};
 var _user$project$Model$OnChangeDate = function (a) {
@@ -16656,6 +16732,7 @@ var _user$project$Main$initialModel = function (token) {
 	return {
 		members: _user$project$Members_Model$initial,
 		events: _user$project$Events_Model$initial,
+		attendance: {ctor: '[]'},
 		flags: {menu: true},
 		route: _user$project$Router_Model$MembersRoute,
 		user: _elm_lang$core$String$isEmpty(token) ? A2(_user$project$Model$User, '', '') : _user$project$Model$Authenticated(token)
