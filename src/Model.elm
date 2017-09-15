@@ -23,6 +23,7 @@ type Msg
     | Login
     | ReceiveToken (Result Http.Error String)
     | OnChangeDate String
+    | OnSelectEvent Events.Model.Event
 
 
 type User
@@ -37,4 +38,5 @@ type alias Model =
     , flags : { menu : Bool }
     , route : Route
     , user : User
+    , event : Maybe Events.Model.Event
     }

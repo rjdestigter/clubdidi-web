@@ -25,8 +25,13 @@ date value =
             ""
 
 
-eventRow : Event -> Html EventsAction
-eventRow event =
+eventRow : Maybe Event -> Event -> Html EventsAction
+eventRow selectedEvent event =
+  let
+    isSelected = case selectedEvent of
+      Just ev -> ev == event
+      Nothing -> False
+  in
     tr
         [ style
             [ ( "box-shadow", "0px 1px 1px rgba(0,0,0,0.1)" )
@@ -44,13 +49,17 @@ eventRow event =
             [
               H.div [ E.onClick (OnRoute (Delete event))] [ MDC.icon "delete"]
             ]
+        , td [ style [ ( "padding", "5px" ), ("color", if isSelected then "#333" else "#ccc") ] ]
+            [
+              H.div [ E.onClick (OnSelectEvent event)] [ MDC.icon "event available"]
+            ]
         ]
 
 
-render : Model -> Html EventsAction
-render { events, filters } =
+render : Maybe Event -> Model -> Html EventsAction
+render selectedEvent { events, filters } =
     events
-        |> List.map eventRow
+        |> List.map (eventRow selectedEvent)
         |> \rows ->
             rows
                 |> table [ style [ ( "width", "100%" ), ( "border-collapse", "collapse" ) ] ]

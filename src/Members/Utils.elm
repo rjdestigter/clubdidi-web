@@ -1,7 +1,7 @@
 module Members.Utils exposing (..)
 
+import Date
 import Members.Model exposing (..)
-
 
 stringToRole : String -> Role
 stringToRole role =

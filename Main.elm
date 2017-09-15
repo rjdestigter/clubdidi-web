@@ -13,7 +13,7 @@ import Members.View
 import Events.View
 import Login exposing (..)
 import Update
-
+import Utils
 
 main : Program { token : String } Model Msg
 main =
@@ -38,6 +38,7 @@ initialModel token =
             User "" ""
         else
             Authenticated token
+    , event = Nothing
     }
 
 
@@ -52,9 +53,14 @@ init { token } =
                 [ Cmd.map MembersApp (Members.Commands.fetch token) ]
 
 
-toolbar : Html Msg
-toolbar =
-    MDC.toolbar "Club Didi" (OnToggleFlag Menu)
+toolbar : Model -> Html Msg
+toolbar model =
+  let
+    event = case model.event of
+      Just event -> String.join ", " ["Club Didi", event.name, event.date]
+      Nothing -> "Club Didi"
+  in
+    MDC.toolbar event (OnToggleFlag Menu)
 
 
 drawer : Bool -> Model -> Html Msg
@@ -76,7 +82,7 @@ routedView model =
                 |> Html.map MembersApp
 
         EventsRoute ->
-            Events.View.render model.events
+            Events.View.render model.event model.events
                 |> Html.map EventsApp
 
 
@@ -107,7 +113,7 @@ authenticatedView model =
         , div
             [ style [ ( "flex", "1 1 auto" ) ]
             ]
-            [ toolbar, routedView model ]
+            [ toolbar model, routedView model ]
         ]
 
 

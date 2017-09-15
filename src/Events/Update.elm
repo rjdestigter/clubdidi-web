@@ -6,6 +6,7 @@ import Events.Actions exposing (EventsAction(..), FilterBy(..))
 import Events.Commands exposing (submit)
 import Debug
 import Ports exposing (onRenderDatepicker)
+import Model exposing (Msg)
 
 updateEvents : Result Http.Error Events -> Events
 updateEvents response =
@@ -79,3 +80,6 @@ update action model token =
 
             OnChangeDate date ->
                 { model | operation = { operation | date = date } } ! []
+
+            OnSelectEvent event ->
+                model ! []

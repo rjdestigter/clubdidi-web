@@ -8,6 +8,11 @@ dateToString : Date -> String
 dateToString date =
     String.join "-" [ Date.year date |> toString, Date.month date |> monthToInt, Date.day date |> toString ]
 
+dateStringToString : String -> String
+dateStringToString date =
+  case Date.fromString date of
+    Ok date -> dateToString date
+    _ -> ""
 
 test : String -> String -> Bool
 test pattern input =

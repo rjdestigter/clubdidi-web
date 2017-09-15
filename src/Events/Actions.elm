@@ -16,3 +16,4 @@ type EventsAction
     | OnChangeDate String
     | OnSubmit
     | OnRoute Route
+    | OnSelectEvent Event

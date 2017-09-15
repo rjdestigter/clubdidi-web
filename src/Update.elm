@@ -6,7 +6,9 @@ import Events.Update
 import Attendance.Update
 import Model exposing (..)
 import Login exposing (..)
-
+import Members.Actions exposing (MembersAction)
+import Events.Actions exposing (EventsAction(..))
+import Attendance.Actions exposing (AttendanceAction)
 
 authenticatedUpdate : Model -> (String -> ( m, Cmd a )) -> Maybe ( m, Cmd a )
 authenticatedUpdate model update =
@@ -17,7 +19,7 @@ authenticatedUpdate model update =
         _ ->
             Nothing
 
-
+updateMembers : MembersAction -> Model -> (Model, Cmd Msg)
 updateMembers action model =
     let
         next =
@@ -30,6 +32,7 @@ updateMembers action model =
             Nothing ->
                 model ! []
 
+updateEvents: EventsAction -> Model -> (Model, Cmd Msg)
 updateEvents action model =
     let
         next =
@@ -42,6 +45,7 @@ updateEvents action model =
             Nothing ->
                 model ! []
 
+updateAttendance: AttendanceAction -> Model -> (Model, Cmd Msg)
 updateAttendance action model =
     let
         next =
@@ -49,7 +53,7 @@ updateAttendance action model =
     in
         case next of
             Just ( attendance, commands ) ->
-                { model, attendance = attendance } ! [ Cmd.map AttendanceApp commands ]
+                { model | attendance = attendance } ! [ Cmd.map AttendanceApp commands ]
 
             Nothing ->
                 model ! []
@@ -66,12 +70,16 @@ update action model =
                 updateMembers membersAction model
 
             EventsApp eventsAction ->
-                updateEvents eventsAction model
+                case eventsAction of
+                  Events.Actions.OnSelectEvent event ->
+                    { model | event = Just event } ! []
+                  _ ->
+                    updateEvents eventsAction model
 
             AttendanceApp attendanceAction ->
                 updateAttendance attendanceAction model
 
-            OnChangeDate date ->
+            Model.OnChangeDate date ->
               let
                 action2 = case model.route of
                   MembersRoute -> Members.Update.onDate date |> MembersApp
@@ -107,27 +115,11 @@ update action model =
                     Menu ->
                         ( { model | flags = { flags | menu = not flags.menu } }, Cmd.none )
 
-            -- OnRoute route ->
-            --     case route of
-            --         AddMember ->
-            --             { model | route = route } ! [ openDatepicker "" ]
-            --
-            --         -- [ openDatepicker mutate.dateOfBirth ]
-            --         EditMember maybeMember ->
-            --             model ! []
-            --
-            --         -- case maybeMember of
-            --         --     Just member ->
-            --         --         { model | route = route, mutate = member } ! [ openDatepicker member.dateOfBirth ]
-            --         --
-            --         --     Nothing ->
-            --         --         { model | route = route } ! [ openDatepicker mutate.dateOfBirth ]
-            --         _ ->
-            --             { model | route = MembersList } ! []
-
             UpdateUser user ->
                 { model | user = user } ! []
 
+            Model.OnSelectEvent event ->
+                { model | event = Just event } ! []
 
 port openDatepicker : String -> Cmd msg
 
