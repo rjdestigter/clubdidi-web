@@ -85,3 +85,6 @@ update action model token =
 
             OnChangeDateOfBirth date ->
                 { model | operation = { operation | dateOfBirth = date } } ! []
+
+            OnAttend member ->
+               model ! []

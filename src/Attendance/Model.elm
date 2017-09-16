@@ -1,10 +1,10 @@
 module Attendance.Model exposing
-  ( Attendance(..)
+  ( Attendance
   , Model
   , initial
   )
 
-type Attendance = Attendance String String
+type alias Attendance = (String, String)
 
 type alias Model = List Attendance
 

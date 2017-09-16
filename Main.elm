@@ -73,12 +73,20 @@ drawer toggled model =
     ]
      |> persistentDrawer toggled
 
+attendees : Model -> List String
+attendees model =
+  case model.event of
+    Just event ->
+      model.attendance
+      |> List.filter (\(ev, mb) -> ev == event.id)
+      |> List.map (\(ev, mb) -> mb)
+    _ -> []
 
 routedView : Model -> Html Msg
 routedView model =
     case model.route of
         MembersRoute ->
-            Members.View.render model.members
+            Members.View.render model.members (attendees model)
                 |> Html.map MembersApp
 
         EventsRoute ->

@@ -3,7 +3,7 @@ module Attendance exposing (attendance)
 import GraphQL exposing (apply, maybeEncode)
 import Http
 import Json.Encode exposing (encode)
-import Attendance.Model exposing (Attendance(..))
+import Attendance.Model exposing (Attendance)
 import Attendance.Decoders exposing (attendancesDecoder)
 
 

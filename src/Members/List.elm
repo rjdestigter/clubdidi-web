@@ -37,8 +37,11 @@ getMembers filters members =
         |> List.filter (filterMembers filters)
 
 
-memberRow : Member -> Html MembersAction
-memberRow member =
+memberRow : List String -> Member -> Html MembersAction
+memberRow attendees member =
+  let
+    attending = List.member member.id attendees
+  in
     tr
         [ style
             [ ( "box-shadow", "0px 1px 1px rgba(0,0,0,0.1)" )
@@ -48,7 +51,11 @@ memberRow member =
 
         -- , onClick (OnEdit member)
         ]
-        [ cell [ text member.firstName ]
+        [ td [ style [ ( "padding", "5px" ), ( "color", if attending then "Pink" else "inherit") ] ]
+          [
+            div [ onClick (OnAttend member)] [ icon "face"]
+          ]
+        , cell [ text member.firstName ]
         , cell [ text member.lastName ]
         , cell [ text member.email ]
         , cell [ member.dateOfBirth |> dob |> text ]
@@ -101,11 +108,11 @@ filterRow filters =
         ]
 
 
-render : Model -> Html MembersAction
-render { members, filters } =
+render : Model -> List String -> Html MembersAction
+render { members, filters } attendees =
     members
         |> getMembers filters
-        |> List.map memberRow
+        |> List.map (memberRow attendees)
         |> \rows ->
             filterRow filters
                 :: rows

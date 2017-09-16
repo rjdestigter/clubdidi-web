@@ -13536,140 +13536,6 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
-var _user$project$Attendance_Model$initial = {ctor: '[]'};
-var _user$project$Attendance_Model$Attendance = F2(
-	function (a, b) {
-		return {ctor: 'Attendance', _0: a, _1: b};
-	});
-
-var _user$project$Members_Model$Member = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {id: a, firstName: b, lastName: c, email: d, dateOfBirth: e, payed: f, volunteer: g, roles: h};
-	});
-var _user$project$Members_Model$blank = A8(
-	_user$project$Members_Model$Member,
-	'',
-	'',
-	'',
-	'',
-	'',
-	false,
-	false,
-	{ctor: '[]'});
-var _user$project$Members_Model$Filters = F4(
-	function (a, b, c, d) {
-		return {firstName: a, lastName: b, volunteer: c, roles: d};
-	});
-var _user$project$Members_Model$Model = F4(
-	function (a, b, c, d) {
-		return {members: a, operation: b, filters: c, route: d};
-	});
-var _user$project$Members_Model$Other = function (a) {
-	return {ctor: 'Other', _0: a};
-};
-var _user$project$Members_Model$WhateverMamaNeeds = {ctor: 'WhateverMamaNeeds'};
-var _user$project$Members_Model$Cleaning = {ctor: 'Cleaning'};
-var _user$project$Members_Model$Maintenance = {ctor: 'Maintenance'};
-var _user$project$Members_Model$Tech = {ctor: 'Tech'};
-var _user$project$Members_Model$SetUp = {ctor: 'SetUp'};
-var _user$project$Members_Model$Floating = {ctor: 'Floating'};
-var _user$project$Members_Model$Security = {ctor: 'Security'};
-var _user$project$Members_Model$BarTending = {ctor: 'BarTending'};
-var _user$project$Members_Model$FrontOfHouse = {ctor: 'FrontOfHouse'};
-var _user$project$Members_Model$Delete = function (a) {
-	return {ctor: 'Delete', _0: a};
-};
-var _user$project$Members_Model$Edit = function (a) {
-	return {ctor: 'Edit', _0: a};
-};
-var _user$project$Members_Model$Add = {ctor: 'Add'};
-var _user$project$Members_Model$Index = {ctor: 'Index'};
-var _user$project$Members_Model$initial = {
-	members: {ctor: '[]'},
-	filters: A4(
-		_user$project$Members_Model$Filters,
-		'',
-		'',
-		_elm_lang$core$Maybe$Nothing,
-		{ctor: '[]'}),
-	operation: _user$project$Members_Model$blank,
-	route: _user$project$Members_Model$Index
-};
-
-var _user$project$Events_Model$Event = F3(
-	function (a, b, c) {
-		return {id: a, name: b, date: c};
-	});
-var _user$project$Events_Model$blank = A3(_user$project$Events_Model$Event, '', '', '');
-var _user$project$Events_Model$Filters = function (a) {
-	return {name: a};
-};
-var _user$project$Events_Model$Model = F4(
-	function (a, b, c, d) {
-		return {events: a, operation: b, filters: c, route: d};
-	});
-var _user$project$Events_Model$Delete = function (a) {
-	return {ctor: 'Delete', _0: a};
-};
-var _user$project$Events_Model$Edit = function (a) {
-	return {ctor: 'Edit', _0: a};
-};
-var _user$project$Events_Model$Add = {ctor: 'Add'};
-var _user$project$Events_Model$Index = {ctor: 'Index'};
-var _user$project$Events_Model$initial = {
-	events: {ctor: '[]'},
-	filters: _user$project$Events_Model$Filters(''),
-	operation: _user$project$Events_Model$blank,
-	route: _user$project$Events_Model$Index
-};
-
-var _user$project$Attendance_Actions$OnAttend = F2(
-	function (a, b) {
-		return {ctor: 'OnAttend', _0: a, _1: b};
-	});
-var _user$project$Attendance_Actions$ReceiveAttendance = function (a) {
-	return {ctor: 'ReceiveAttendance', _0: a};
-};
-
-var _user$project$Attendance_Update$updateAttendance = F2(
-	function (model, response) {
-		var _p0 = response;
-		if (_p0.ctor === 'Ok') {
-			return _elm_lang$core$List$concat(
-				{
-					ctor: '::',
-					_0: _p0._0,
-					_1: {
-						ctor: '::',
-						_0: model,
-						_1: {ctor: '[]'}
-					}
-				});
-		} else {
-			var foo = A2(_elm_lang$core$Debug$log, 'error', _p0._0);
-			return model;
-		}
-	});
-var _user$project$Attendance_Update$receiveAttendance = F2(
-	function (response, model) {
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			A2(_user$project$Attendance_Update$updateAttendance, model, response),
-			{ctor: '[]'});
-	});
-var _user$project$Attendance_Update$update = F3(
-	function (action, model, token) {
-		var _p1 = action;
-		if (_p1.ctor === 'ReceiveAttendance') {
-			return A2(_user$project$Attendance_Update$receiveAttendance, _p1._0, model);
-		} else {
-			return A2(
-				_elm_lang$core$Platform_Cmd_ops['!'],
-				model,
-				{ctor: '[]'});
-		}
-	});
-
 var _user$project$Env$path = '/graphql';
 var _user$project$Env$digitalocean = '138.197.161.149:8080';
 var _user$project$Env$localhost = 'localhost:8080';
@@ -13825,6 +13691,239 @@ var _user$project$GraphQL$mutation = F5(
 var _user$project$GraphQL$query = F6(
 	function (method, token, query, operation, variables, decoder) {
 		return A6(_user$project$GraphQL$fetch, method, token, query, operation, variables, decoder);
+	});
+
+var _user$project$Attendance_Model$initial = {ctor: '[]'};
+
+var _user$project$Attendance_Decoders$attendanceDecoder = A3(
+	_elm_lang$core$Json_Decode$map2,
+	F2(
+		function (v0, v1) {
+			return {ctor: '_Tuple2', _0: v0, _1: v1};
+		}),
+	A2(_elm_lang$core$Json_Decode$field, 'event', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'member', _elm_lang$core$Json_Decode$string));
+var _user$project$Attendance_Decoders$attendancesDecoder = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'data',
+		_1: {
+			ctor: '::',
+			_0: 'attendance',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$list(_user$project$Attendance_Decoders$attendanceDecoder));
+
+var _user$project$Attendance$attendance = function (token) {
+	var graphQLQuery = 'query attendance { attendance { event member } }';
+	var graphQLParams = _elm_lang$core$Json_Encode$object(
+		{ctor: '[]'});
+	return A6(_user$project$GraphQL$query, 'GET', token, graphQLQuery, 'attendance', graphQLParams, _user$project$Attendance_Decoders$attendancesDecoder);
+};
+
+var _user$project$Members_Model$Member = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {id: a, firstName: b, lastName: c, email: d, dateOfBirth: e, payed: f, volunteer: g, roles: h};
+	});
+var _user$project$Members_Model$blank = A8(
+	_user$project$Members_Model$Member,
+	'',
+	'',
+	'',
+	'',
+	'',
+	false,
+	false,
+	{ctor: '[]'});
+var _user$project$Members_Model$Filters = F4(
+	function (a, b, c, d) {
+		return {firstName: a, lastName: b, volunteer: c, roles: d};
+	});
+var _user$project$Members_Model$Model = F4(
+	function (a, b, c, d) {
+		return {members: a, operation: b, filters: c, route: d};
+	});
+var _user$project$Members_Model$Other = function (a) {
+	return {ctor: 'Other', _0: a};
+};
+var _user$project$Members_Model$WhateverMamaNeeds = {ctor: 'WhateverMamaNeeds'};
+var _user$project$Members_Model$Cleaning = {ctor: 'Cleaning'};
+var _user$project$Members_Model$Maintenance = {ctor: 'Maintenance'};
+var _user$project$Members_Model$Tech = {ctor: 'Tech'};
+var _user$project$Members_Model$SetUp = {ctor: 'SetUp'};
+var _user$project$Members_Model$Floating = {ctor: 'Floating'};
+var _user$project$Members_Model$Security = {ctor: 'Security'};
+var _user$project$Members_Model$BarTending = {ctor: 'BarTending'};
+var _user$project$Members_Model$FrontOfHouse = {ctor: 'FrontOfHouse'};
+var _user$project$Members_Model$Delete = function (a) {
+	return {ctor: 'Delete', _0: a};
+};
+var _user$project$Members_Model$Edit = function (a) {
+	return {ctor: 'Edit', _0: a};
+};
+var _user$project$Members_Model$Add = {ctor: 'Add'};
+var _user$project$Members_Model$Index = {ctor: 'Index'};
+var _user$project$Members_Model$initial = {
+	members: {ctor: '[]'},
+	filters: A4(
+		_user$project$Members_Model$Filters,
+		'',
+		'',
+		_elm_lang$core$Maybe$Nothing,
+		{ctor: '[]'}),
+	operation: _user$project$Members_Model$blank,
+	route: _user$project$Members_Model$Index
+};
+
+var _user$project$Events_Model$Event = F3(
+	function (a, b, c) {
+		return {id: a, name: b, date: c};
+	});
+var _user$project$Events_Model$blank = A3(_user$project$Events_Model$Event, '', '', '');
+var _user$project$Events_Model$Filters = function (a) {
+	return {name: a};
+};
+var _user$project$Events_Model$Model = F4(
+	function (a, b, c, d) {
+		return {events: a, operation: b, filters: c, route: d};
+	});
+var _user$project$Events_Model$Delete = function (a) {
+	return {ctor: 'Delete', _0: a};
+};
+var _user$project$Events_Model$Edit = function (a) {
+	return {ctor: 'Edit', _0: a};
+};
+var _user$project$Events_Model$Add = {ctor: 'Add'};
+var _user$project$Events_Model$Index = {ctor: 'Index'};
+var _user$project$Events_Model$initial = {
+	events: {ctor: '[]'},
+	filters: _user$project$Events_Model$Filters(''),
+	operation: _user$project$Events_Model$blank,
+	route: _user$project$Events_Model$Index
+};
+
+var _user$project$Attendance_Actions$OnAttend = F2(
+	function (a, b) {
+		return {ctor: 'OnAttend', _0: a, _1: b};
+	});
+var _user$project$Attendance_Actions$ReceiveAttendance = function (a) {
+	return {ctor: 'ReceiveAttendance', _0: a};
+};
+
+var _user$project$Attendance_Submit$submitAttendanceDecoder = function (key) {
+	return A2(
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$List$singleton,
+		A2(
+			_elm_lang$core$Json_Decode$at,
+			{
+				ctor: '::',
+				_0: 'data',
+				_1: {
+					ctor: '::',
+					_0: key,
+					_1: {
+						ctor: '::',
+						_0: 'attendance',
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			_user$project$Attendance_Decoders$attendanceDecoder));
+};
+var _user$project$Attendance_Submit$submit = F3(
+	function (token, event, member) {
+		var _p0 = {
+			ctor: '_Tuple3',
+			_0: 'CreateAttendance',
+			_1: 'mutation CreateAttendance($input: CreateAttendanceInput!) { createAttendance(input: $input) { attendance { event member } } }',
+			_2: _user$project$Attendance_Submit$submitAttendanceDecoder('createAttendance')
+		};
+		var operationName = _p0._0;
+		var graphQLQuery = _p0._1;
+		var decoder = _p0._2;
+		var encoders = {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'event',
+				_1: _elm_lang$core$Json_Encode$string(event.id)
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'member',
+					_1: _elm_lang$core$Json_Encode$string(member.id)
+				},
+				_1: {ctor: '[]'}
+			}
+		};
+		var graphQLParams = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'input',
+					_1: _elm_lang$core$Json_Encode$object(encoders)
+				},
+				_1: {ctor: '[]'}
+			});
+		return A5(_user$project$GraphQL$mutation, token, graphQLQuery, operationName, graphQLParams, decoder);
+	});
+
+var _user$project$Attendance_Commands$submit = F3(
+	function (token, event, member) {
+		var httpTask = _elm_lang$http$Http$toTask(
+			A3(_user$project$Attendance_Submit$submit, token, event, member));
+		return A2(_elm_lang$core$Task$attempt, _user$project$Attendance_Actions$ReceiveAttendance, httpTask);
+	});
+var _user$project$Attendance_Commands$fetch = function (token) {
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Attendance_Actions$ReceiveAttendance,
+		_user$project$Attendance$attendance(token));
+};
+
+var _user$project$Attendance_Update$updateAttendance = F2(
+	function (model, response) {
+		var _p0 = response;
+		if (_p0.ctor === 'Ok') {
+			return _elm_lang$core$List$concat(
+				{
+					ctor: '::',
+					_0: _p0._0,
+					_1: {
+						ctor: '::',
+						_0: model,
+						_1: {ctor: '[]'}
+					}
+				});
+		} else {
+			var foo = A2(_elm_lang$core$Debug$log, 'error', _p0._0);
+			return model;
+		}
+	});
+var _user$project$Attendance_Update$receiveAttendance = F2(
+	function (response, model) {
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A2(_user$project$Attendance_Update$updateAttendance, model, response),
+			{ctor: '[]'});
+	});
+var _user$project$Attendance_Update$update = F3(
+	function (action, model, token) {
+		var _p1 = action;
+		if (_p1.ctor === 'ReceiveAttendance') {
+			return A2(_user$project$Attendance_Update$receiveAttendance, _p1._0, model);
+		} else {
+			return A2(
+				_elm_lang$core$Platform_Cmd_ops['!'],
+				model,
+				{ctor: '[]'});
+		}
 	});
 
 var _user$project$Events_Decoders$eventDecoder = A4(
@@ -14822,6 +14921,9 @@ var _user$project$Members_Actions$ByLastName = function (a) {
 var _user$project$Members_Actions$ByFirstName = function (a) {
 	return {ctor: 'ByFirstName', _0: a};
 };
+var _user$project$Members_Actions$OnAttend = function (a) {
+	return {ctor: 'OnAttend', _0: a};
+};
 var _user$project$Members_Actions$OnRoute = function (a) {
 	return {ctor: 'OnRoute', _0: a};
 };
@@ -15705,41 +15807,66 @@ var _user$project$Members_List$cell = _elm_lang$html$Html$td(
 			}),
 		_1: {ctor: '[]'}
 	});
-var _user$project$Members_List$memberRow = function (member) {
-	return A2(
-		_elm_lang$html$Html$tr,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$style(
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'box-shadow', _1: '0px 1px 1px rgba(0,0,0,0.1)'},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'border', _1: '1px solid whitesmoke'},
-							_1: {ctor: '[]'}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$Members_List$cell(
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(member.firstName),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
+var _user$project$Members_List$memberRow = F2(
+	function (attendees, member) {
+		var attending = A2(_elm_lang$core$List$member, member.id, attendees);
+		return A2(
+			_elm_lang$html$Html$tr,
+			{
 				ctor: '::',
-				_0: _user$project$Members_List$cell(
+				_0: _elm_lang$html$Html_Attributes$style(
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(member.lastName),
+						_0: {ctor: '_Tuple2', _0: 'box-shadow', _1: '0px 1px 1px rgba(0,0,0,0.1)'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'padding', _1: '15px'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'border', _1: '1px solid whitesmoke'},
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'color',
+										_1: attending ? 'Pink' : 'inherit'
+									},
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(
+									_user$project$Members_Actions$OnAttend(member)),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _user$project$MDC$icon('face'),
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -15747,7 +15874,7 @@ var _user$project$Members_List$memberRow = function (member) {
 					_0: _user$project$Members_List$cell(
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(member.email),
+							_0: _elm_lang$html$Html$text(member.firstName),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -15755,8 +15882,7 @@ var _user$project$Members_List$memberRow = function (member) {
 						_0: _user$project$Members_List$cell(
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(
-									_user$project$Members_List$dob(member.dateOfBirth)),
+								_0: _elm_lang$html$Html$text(member.lastName),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
@@ -15764,58 +15890,24 @@ var _user$project$Members_List$memberRow = function (member) {
 							_0: _user$project$Members_List$cell(
 								{
 									ctor: '::',
-									_0: member.payed ? _elm_lang$html$Html$text('') : _user$project$MDC$icon('money_off'),
+									_0: _elm_lang$html$Html$text(member.email),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$td,
+								_0: _user$project$Members_List$cell(
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: member.volunteer ? _user$project$MDC$icon('check') : _elm_lang$html$Html$text(''),
+										_0: _elm_lang$html$Html$text(
+											_user$project$Members_List$dob(member.dateOfBirth)),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$td,
+									_0: _user$project$Members_List$cell(
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(
-														_user$project$Members_Actions$OnRoute(
-															_user$project$Members_Model$Edit(member))),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _user$project$MDC$icon('mode_edit'),
-													_1: {ctor: '[]'}
-												}),
+											_0: member.payed ? _elm_lang$html$Html$text('') : _user$project$MDC$icon('money_off'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
@@ -15834,63 +15926,116 @@ var _user$project$Members_List$memberRow = function (member) {
 											},
 											{
 												ctor: '::',
+												_0: member.volunteer ? _user$project$MDC$icon('check') : _elm_lang$html$Html$text(''),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$td,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$style(
+														{
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$div,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(
+																_user$project$Members_Actions$OnRoute(
+																	_user$project$Members_Model$Edit(member))),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _user$project$MDC$icon('mode_edit'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
 												_0: A2(
-													_elm_lang$html$Html$div,
+													_elm_lang$html$Html$td,
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onClick(
-															_user$project$Members_Actions$OnRoute(
-																_user$project$Members_Model$Delete(member))),
+														_0: _elm_lang$html$Html_Attributes$style(
+															{
+																ctor: '::',
+																_0: {ctor: '_Tuple2', _0: 'padding', _1: '5px'},
+																_1: {ctor: '[]'}
+															}),
 														_1: {ctor: '[]'}
 													},
 													{
 														ctor: '::',
-														_0: _user$project$MDC$icon('delete'),
+														_0: A2(
+															_elm_lang$html$Html$div,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Events$onClick(
+																	_user$project$Members_Actions$OnRoute(
+																		_user$project$Members_Model$Delete(member))),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _user$project$MDC$icon('delete'),
+																_1: {ctor: '[]'}
+															}),
 														_1: {ctor: '[]'}
 													}),
 												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
+											}
+										}
 									}
 								}
 							}
 						}
 					}
 				}
-			}
-		});
-};
-var _user$project$Members_List$render = function (_p2) {
-	var _p3 = _p2;
-	var _p4 = _p3.filters;
-	return function (rows) {
-		return A2(
-			_elm_lang$html$Html$table,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$style(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'border-collapse', _1: 'collapse'},
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _user$project$Members_List$filterRow(_p4),
-				_1: rows
 			});
-	}(
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$Members_List$memberRow,
-			A2(_user$project$Members_List$getMembers, _p4, _p3.members)));
-};
+	});
+var _user$project$Members_List$render = F2(
+	function (_p2, attendees) {
+		var _p3 = _p2;
+		var _p4 = _p3.filters;
+		return function (rows) {
+			return A2(
+				_elm_lang$html$Html$table,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'border-collapse', _1: 'collapse'},
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _user$project$Members_List$filterRow(_p4),
+					_1: rows
+				});
+		}(
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Members_List$memberRow(attendees),
+				A2(_user$project$Members_List$getMembers, _p4, _p3.members)));
+	});
 
 var _user$project$Members_Form$radio = F2(
 	function (label, checked) {
@@ -16371,19 +16516,20 @@ var _user$project$Members_View$menuItems = function (model) {
 		}
 	};
 };
-var _user$project$Members_View$render = function (model) {
-	var _p0 = model.route;
-	switch (_p0.ctor) {
-		case 'Add':
-			return _user$project$Members_Form$render(model.operation);
-		case 'Edit':
-			return _user$project$Members_Form$render(model.operation);
-		case 'Delete':
-			return _elm_lang$html$Html$text('WIP');
-		default:
-			return _user$project$Members_List$render(model);
-	}
-};
+var _user$project$Members_View$render = F2(
+	function (model, attendees) {
+		var _p0 = model.route;
+		switch (_p0.ctor) {
+			case 'Add':
+				return _user$project$Members_Form$render(model.operation);
+			case 'Edit':
+				return _user$project$Members_Form$render(model.operation);
+			case 'Delete':
+				return _elm_lang$html$Html$text('WIP');
+			default:
+				return A2(_user$project$Members_List$render, model, attendees);
+		}
+	});
 
 var _user$project$Members_Update$onDate = function (date) {
 	return _user$project$Members_Actions$OnChangeDateOfBirth(date);
@@ -16540,7 +16686,7 @@ var _user$project$Members_Update$update = F3(
 						_0: A2(_user$project$Members_Commands$submit, token, model.operation),
 						_1: {ctor: '[]'}
 					});
-			default:
+			case 'OnChangeDateOfBirth':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -16550,6 +16696,11 @@ var _user$project$Members_Update$update = F3(
 								operation,
 								{dateOfBirth: _p6._0})
 						}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
 					{ctor: '[]'});
 		}
 	});
@@ -16660,44 +16811,75 @@ var _user$project$Update$update = F2(
 			var _p5 = action;
 			switch (_p5.ctor) {
 				case 'MembersApp':
-					return A2(_user$project$Update$updateMembers, _p5._0, model);
+					var _p8 = _p5._0;
+					var _p6 = _p8;
+					if (_p6.ctor === 'OnAttend') {
+						var _p7 = {ctor: '_Tuple2', _0: model.user, _1: model.event};
+						if (((_p7.ctor === '_Tuple2') && (_p7._0.ctor === 'Authenticated')) && (_p7._1.ctor === 'Just')) {
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								model,
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$core$Platform_Cmd$map,
+										_user$project$Model$AttendanceApp,
+										A3(_user$project$Attendance_Commands$submit, _p7._0._0, _p7._1._0, _p6._0)),
+									_1: {ctor: '[]'}
+								});
+						} else {
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								model,
+								{ctor: '[]'});
+						}
+					} else {
+						return A2(_user$project$Update$updateMembers, _p8, model);
+					}
 				case 'EventsApp':
-					var _p7 = _p5._0;
-					var _p6 = _p7;
-					if (_p6.ctor === 'OnSelectEvent') {
+					var _p10 = _p5._0;
+					var _p9 = {ctor: '_Tuple2', _0: _p10, _1: model.user};
+					if (((_p9.ctor === '_Tuple2') && (_p9._0.ctor === 'OnSelectEvent')) && (_p9._1.ctor === 'Authenticated')) {
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
-									event: _elm_lang$core$Maybe$Just(_p6._0)
+									event: _elm_lang$core$Maybe$Just(_p9._0._0)
 								}),
-							{ctor: '[]'});
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Platform_Cmd$map,
+									_user$project$Model$AttendanceApp,
+									_user$project$Attendance_Commands$fetch(_p9._1._0)),
+								_1: {ctor: '[]'}
+							});
 					} else {
-						return A2(_user$project$Update$updateEvents, _p7, model);
+						return A2(_user$project$Update$updateEvents, _p10, model);
 					}
 				case 'AttendanceApp':
 					return A2(_user$project$Update$updateAttendance, _p5._0, model);
 				case 'OnChangeDate':
-					var _p9 = _p5._0;
+					var _p12 = _p5._0;
 					var action2 = function () {
-						var _p8 = model.route;
-						if (_p8.ctor === 'MembersRoute') {
+						var _p11 = model.route;
+						if (_p11.ctor === 'MembersRoute') {
 							return _user$project$Model$MembersApp(
-								_user$project$Members_Update$onDate(_p9));
+								_user$project$Members_Update$onDate(_p12));
 						} else {
 							return _user$project$Model$EventsApp(
-								_user$project$Events_Update$onDate(_p9));
+								_user$project$Events_Update$onDate(_p12));
 						}
 					}();
-					var _v7 = action2,
-						_v8 = model;
-					action = _v7;
-					model = _v8;
+					var _v9 = action2,
+						_v10 = model;
+					action = _v9;
+					model = _v10;
 					continue update;
 				case 'Login':
-					var _p10 = model.user;
-					if (_p10.ctor === 'Authenticated') {
+					var _p13 = model.user;
+					if (_p13.ctor === 'Authenticated') {
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
@@ -16712,23 +16894,23 @@ var _user$project$Update$update = F2(
 							model,
 							{
 								ctor: '::',
-								_0: A2(_user$project$Login$login, _p10._0, _p10._1),
+								_0: A2(_user$project$Login$login, _p13._0, _p13._1),
 								_1: {ctor: '[]'}
 							});
 					}
 				case 'ReceiveToken':
 					if (_p5._0.ctor === 'Ok') {
-						var _p11 = _p5._0._0;
+						var _p14 = _p5._0._0;
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
-									user: _user$project$Model$Authenticated(_p11)
+									user: _user$project$Model$Authenticated(_p14)
 								}),
 							{
 								ctor: '::',
-								_0: _user$project$Update$tokenReceived(_p11),
+								_0: _user$project$Update$tokenReceived(_p14),
 								_1: {ctor: '[]'}
 							});
 					} else {
@@ -16736,7 +16918,7 @@ var _user$project$Update$update = F2(
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				case 'OnToggleFlag':
-					var _p12 = _p5._0;
+					var _p15 = _p5._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -16769,13 +16951,36 @@ var _user$project$Update$update = F2(
 	});
 
 var _user$project$Main$update = _user$project$Update$update;
+var _user$project$Main$attendees = function (model) {
+	var _p0 = model.event;
+	if (_p0.ctor === 'Just') {
+		return A2(
+			_elm_lang$core$List$map,
+			function (_p1) {
+				var _p2 = _p1;
+				return _p2._1;
+			},
+			A2(
+				_elm_lang$core$List$filter,
+				function (_p3) {
+					var _p4 = _p3;
+					return _elm_lang$core$Native_Utils.eq(_p4._0, _p0._0.id);
+				},
+				model.attendance));
+	} else {
+		return {ctor: '[]'};
+	}
+};
 var _user$project$Main$routedView = function (model) {
-	var _p0 = model.route;
-	if (_p0.ctor === 'MembersRoute') {
+	var _p5 = model.route;
+	if (_p5.ctor === 'MembersRoute') {
 		return A2(
 			_elm_lang$html$Html$map,
 			_user$project$Model$MembersApp,
-			_user$project$Members_View$render(model.members));
+			A2(
+				_user$project$Members_View$render,
+				model.members,
+				_user$project$Main$attendees(model)));
 	} else {
 		return A2(
 			_elm_lang$html$Html$map,
@@ -16823,9 +17028,9 @@ var _user$project$Main$drawer = F2(
 	});
 var _user$project$Main$toolbar = function (model) {
 	var event = function () {
-		var _p1 = model.event;
-		if (_p1.ctor === 'Just') {
-			var _p2 = _p1._0;
+		var _p6 = model.event;
+		if (_p6.ctor === 'Just') {
+			var _p7 = _p6._0;
 			return A2(
 				_elm_lang$core$String$join,
 				', ',
@@ -16834,10 +17039,10 @@ var _user$project$Main$toolbar = function (model) {
 					_0: 'Club Didi',
 					_1: {
 						ctor: '::',
-						_0: _p2.name,
+						_0: _p7.name,
 						_1: {
 							ctor: '::',
-							_0: _p2.date,
+							_0: _p7.date,
 							_1: {ctor: '[]'}
 						}
 					}
@@ -16919,8 +17124,8 @@ var _user$project$Main$authenticatedView = function (model) {
 		});
 };
 var _user$project$Main$view = function (model) {
-	var _p3 = _user$project$Login$isAuthenticated(model.user);
-	if (_p3 === true) {
+	var _p8 = _user$project$Login$isAuthenticated(model.user);
+	if (_p8 === true) {
 		return _user$project$Main$authenticatedView(model);
 	} else {
 		return _user$project$Login$loginScreen(model.user);
@@ -16937,15 +17142,15 @@ var _user$project$Main$initialModel = function (token) {
 		event: _elm_lang$core$Maybe$Nothing
 	};
 };
-var _user$project$Main$init = function (_p4) {
-	var _p5 = _p4;
-	var _p7 = _p5.token;
+var _user$project$Main$init = function (_p9) {
+	var _p10 = _p9;
+	var _p12 = _p10.token;
 	return A2(
 		_elm_lang$core$Platform_Cmd_ops['!'],
-		_user$project$Main$initialModel(_p7),
+		_user$project$Main$initialModel(_p12),
 		function () {
-			var _p6 = _elm_lang$core$String$isEmpty(_p7);
-			if (_p6 === true) {
+			var _p11 = _elm_lang$core$String$isEmpty(_p12);
+			if (_p11 === true) {
 				return {ctor: '[]'};
 			} else {
 				return {
@@ -16953,7 +17158,7 @@ var _user$project$Main$init = function (_p4) {
 					_0: A2(
 						_elm_lang$core$Platform_Cmd$map,
 						_user$project$Model$MembersApp,
-						_user$project$Members_Commands$fetch(_p7)),
+						_user$project$Members_Commands$fetch(_p12)),
 					_1: {ctor: '[]'}
 				};
 			}
@@ -16976,7 +17181,7 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Model.Flag":{"args":[],"tags":{"Menu":[]}},"Members.Model.Role":{"args":[],"tags":{"Other":["String"],"SetUp":[],"Maintenance":[],"FrontOfHouse":[],"WhateverMamaNeeds":[],"BarTending":[],"Tech":[],"Cleaning":[],"Floating":[],"Security":[]}},"Model.Msg":{"args":[],"tags":{"OnToggleFlag":["Model.Flag"],"MembersApp":["Members.Actions.MembersAction"],"OnSelectEvent":["Events.Model.Event"],"UpdateUser":["Model.User"],"ReceiveToken":["Result.Result Http.Error String"],"OnChangeDate":["String"],"Login":[],"AttendanceApp":["Attendance.Actions.AttendanceAction"],"EventsApp":["Events.Actions.EventsAction"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Events.Model.Route":{"args":[],"tags":{"Edit":["Events.Model.Event"],"Add":[],"Index":[],"Delete":["Events.Model.Event"]}},"Events.Actions.FilterBy":{"args":[],"tags":{"ByName":["String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Attendance.Model.Attendance":{"args":[],"tags":{"Attendance":["String","String"]}},"Members.Model.Route":{"args":[],"tags":{"Edit":["Members.Model.Member"],"Add":[],"Index":[],"Delete":["Members.Model.Member"]}},"Members.Actions.FilterBy":{"args":[],"tags":{"ByRole":["Members.Model.Role"],"ByVolunteer":["Maybe.Maybe","Bool"],"ByFirstName":["String"],"ByLastName":["String"]}},"Model.User":{"args":[],"tags":{"User":["String","String"],"Authenticated":["String"]}},"Members.Actions.MembersAction":{"args":[],"tags":{"OnChange":["Members.Model.Member"],"OnSubmit":[],"OnRoute":["Members.Model.Route"],"OnFilter":["Members.Actions.FilterBy"],"OnChangeDateOfBirth":["String"],"ReceiveMembers":["Result.Result Http.Error Members.Model.Members"],"ReceiveMember":["Result.Result Http.Error Members.Model.Member"]}},"Attendance.Actions.AttendanceAction":{"args":[],"tags":{"ReceiveAttendance":["Result.Result Http.Error (List Attendance.Model.Attendance)"],"OnAttend":["Events.Model.Event","Members.Model.Member"]}},"Events.Actions.EventsAction":{"args":[],"tags":{"OnChange":["Events.Model.Event"],"OnSubmit":[],"OnRoute":["Events.Model.Route"],"OnFilter":["Events.Actions.FilterBy"],"ReceiveEvents":["Result.Result Http.Error Events.Model.Events"],"ReceiveEvent":["Result.Result Http.Error Events.Model.Event"],"OnSelectEvent":["Events.Model.Event"],"OnChangeDate":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Events.Model.Event":{"args":[],"type":"{ id : String, name : String, date : String }"},"Members.Model.Member":{"args":[],"type":"{ id : String , firstName : String , lastName : String , email : String , dateOfBirth : String , payed : Bool , volunteer : Bool , roles : Members.Model.Roles }"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Members.Model.Members":{"args":[],"type":"List Members.Model.Member"},"Events.Model.Events":{"args":[],"type":"List Events.Model.Event"},"Members.Model.Roles":{"args":[],"type":"List Members.Model.Role"}},"message":"Model.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Model.Flag":{"args":[],"tags":{"Menu":[]}},"Members.Model.Role":{"args":[],"tags":{"Other":["String"],"SetUp":[],"Maintenance":[],"FrontOfHouse":[],"WhateverMamaNeeds":[],"BarTending":[],"Tech":[],"Cleaning":[],"Floating":[],"Security":[]}},"Model.Msg":{"args":[],"tags":{"OnToggleFlag":["Model.Flag"],"MembersApp":["Members.Actions.MembersAction"],"OnSelectEvent":["Events.Model.Event"],"UpdateUser":["Model.User"],"ReceiveToken":["Result.Result Http.Error String"],"OnChangeDate":["String"],"Login":[],"AttendanceApp":["Attendance.Actions.AttendanceAction"],"EventsApp":["Events.Actions.EventsAction"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Events.Model.Route":{"args":[],"tags":{"Edit":["Events.Model.Event"],"Add":[],"Index":[],"Delete":["Events.Model.Event"]}},"Events.Actions.FilterBy":{"args":[],"tags":{"ByName":["String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Members.Model.Route":{"args":[],"tags":{"Edit":["Members.Model.Member"],"Add":[],"Index":[],"Delete":["Members.Model.Member"]}},"Members.Actions.FilterBy":{"args":[],"tags":{"ByRole":["Members.Model.Role"],"ByVolunteer":["Maybe.Maybe","Bool"],"ByFirstName":["String"],"ByLastName":["String"]}},"Model.User":{"args":[],"tags":{"User":["String","String"],"Authenticated":["String"]}},"Members.Actions.MembersAction":{"args":[],"tags":{"OnChange":["Members.Model.Member"],"OnSubmit":[],"OnRoute":["Members.Model.Route"],"OnFilter":["Members.Actions.FilterBy"],"OnAttend":["Members.Model.Member"],"OnChangeDateOfBirth":["String"],"ReceiveMembers":["Result.Result Http.Error Members.Model.Members"],"ReceiveMember":["Result.Result Http.Error Members.Model.Member"]}},"Attendance.Actions.AttendanceAction":{"args":[],"tags":{"ReceiveAttendance":["Result.Result Http.Error (List Attendance.Model.Attendance)"],"OnAttend":["Events.Model.Event","Members.Model.Member"]}},"Events.Actions.EventsAction":{"args":[],"tags":{"OnChange":["Events.Model.Event"],"OnSubmit":[],"OnRoute":["Events.Model.Route"],"OnFilter":["Events.Actions.FilterBy"],"ReceiveEvents":["Result.Result Http.Error Events.Model.Events"],"ReceiveEvent":["Result.Result Http.Error Events.Model.Event"],"OnSelectEvent":["Events.Model.Event"],"OnChangeDate":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Events.Model.Event":{"args":[],"type":"{ id : String, name : String, date : String }"},"Members.Model.Member":{"args":[],"type":"{ id : String , firstName : String , lastName : String , email : String , dateOfBirth : String , payed : Bool , volunteer : Bool , roles : Members.Model.Roles }"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Members.Model.Members":{"args":[],"type":"List Members.Model.Member"},"Events.Model.Events":{"args":[],"type":"List Events.Model.Event"},"Attendance.Model.Attendance":{"args":[],"type":"( String, String )"},"Members.Model.Roles":{"args":[],"type":"List Members.Model.Role"}},"message":"Model.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

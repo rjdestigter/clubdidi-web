@@ -19,3 +19,4 @@ type MembersAction
     | OnChangeDateOfBirth String
     | OnSubmit
     | OnRoute Route
+    | OnAttend Member

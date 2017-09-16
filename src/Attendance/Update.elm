@@ -1,7 +1,7 @@
 module Attendance.Update exposing (update)
 
 import Http
-import Attendance.Model exposing (Attendance(..), Model)
+import Attendance.Model exposing (Attendance, Model)
 import Attendance.Actions exposing (AttendanceAction(..))
 import Debug
 

@@ -6,12 +6,13 @@ import Members.Actions exposing (MembersAction(..))
 import Members.List
 import Members.Form
 import MDC
-render : Model -> Html MembersAction
-render model = case model.route of
+
+render : Model -> List String -> Html MembersAction
+render model attendees = case model.route of
   Add -> Members.Form.render model.operation
   Edit member -> Members.Form.render model.operation
   Delete member -> H.text "WIP"
-  Index -> Members.List.render model
+  Index -> Members.List.render model attendees
 
 
 

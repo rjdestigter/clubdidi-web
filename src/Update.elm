@@ -6,9 +6,10 @@ import Events.Update
 import Attendance.Update
 import Model exposing (..)
 import Login exposing (..)
-import Members.Actions exposing (MembersAction)
+import Members.Actions exposing (MembersAction(..))
 import Events.Actions exposing (EventsAction(..))
 import Attendance.Actions exposing (AttendanceAction)
+import Attendance.Commands
 
 authenticatedUpdate : Model -> (String -> ( m, Cmd a )) -> Maybe ( m, Cmd a )
 authenticatedUpdate model update =
@@ -67,12 +68,19 @@ update action model =
     in
         case action of
             MembersApp membersAction ->
-                updateMembers membersAction model
+                case membersAction of
+                  Members.Actions.OnAttend member ->
+                    case (model.user, model.event) of
+                      (Authenticated token, Just event) ->
+                        model ! [Cmd.map AttendanceApp (Attendance.Commands.submit token event member)]
+                      _ -> model ! []
+                  _ ->
+                    updateMembers membersAction model
 
             EventsApp eventsAction ->
-                case eventsAction of
-                  Events.Actions.OnSelectEvent event ->
-                    { model | event = Just event } ! []
+                case (eventsAction, model.user) of
+                  (Events.Actions.OnSelectEvent event, Authenticated token) ->
+                    { model | event = Just event } ! [Cmd.map AttendanceApp (Attendance.Commands.fetch token)]
                   _ ->
                     updateEvents eventsAction model
 
