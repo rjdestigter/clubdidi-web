@@ -8,6 +8,7 @@ import Attendance.Model exposing (Attendance)
 import Events.Model exposing (Event)
 import Members.Model exposing (Member)
 import Attendance.Submit as Submit
+import Attendance.Delete as Delete
 import Attendance.Actions exposing (AttendanceAction(..))
 
 
@@ -23,3 +24,10 @@ submit token event member =
         httpTask = Submit.submit token event member |> Http.toTask
     in
         Task.attempt ReceiveAttendance httpTask
+
+delete : String -> Event -> Member -> Cmd AttendanceAction
+delete token event member =
+    let
+        httpTask = Delete.delete token event member |> Http.toTask
+    in
+        Task.attempt (DeletedAttendance event member) httpTask

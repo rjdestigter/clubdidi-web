@@ -10,6 +10,7 @@ import Members.Actions exposing (MembersAction(..))
 import Events.Actions exposing (EventsAction(..))
 import Attendance.Actions exposing (AttendanceAction)
 import Attendance.Commands
+import Attendance.Utils exposing (isAttending)
 
 authenticatedUpdate : Model -> (String -> ( m, Cmd a )) -> Maybe ( m, Cmd a )
 authenticatedUpdate model update =
@@ -72,7 +73,9 @@ update action model =
                   Members.Actions.OnAttend member ->
                     case (model.user, model.event) of
                       (Authenticated token, Just event) ->
-                        model ! [Cmd.map AttendanceApp (Attendance.Commands.submit token event member)]
+                        case (isAttending model.attendance event member) of
+                          True -> model ! [Cmd.map AttendanceApp (Attendance.Commands.delete token event member)]
+                          False -> model ! [Cmd.map AttendanceApp (Attendance.Commands.submit token event member)]
                       _ -> model ! []
                   _ ->
                     updateMembers membersAction model
